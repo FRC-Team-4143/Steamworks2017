@@ -4,7 +4,7 @@
 #include "Commands/PositionDrive.h"
 #include "Commands/SetWheelsTwist.h"
 #include "Commands/SetWinchPosition.h"
-#include "Commands/StopShoot.h"
+
 
 // ==========================================================================
 
@@ -34,7 +34,7 @@ LowShot::LowShot() {
 	AddSequential(new SetWheelsTwist(2));
 
 	AddParallel(new SetWinchPosition(2, false, 4));
-	AddSequential(new StopShoot());
+	//AddSequential(new StopShoot());
 }
 
 // ==========================================================================

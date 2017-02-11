@@ -35,10 +35,10 @@ public:
 
 	static SerialPort* serialPort;
 
-	static CANTalon* leftFront;
-	static CANTalon* rightRear;
-	static CANTalon* rightFront;
-	static CANTalon* leftRear;
+    static CANTalon *shooterLeftFront;
+    static CANTalon *shooterLeftBack;
+    static CANTalon *shooterRightFront;
+    static CANTalon *shooterRightBack;
 
 	static SpeedController* feeder;
 	static AnalogInput* feederSensor;

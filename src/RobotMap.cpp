@@ -27,10 +27,10 @@ I2C* RobotMap::i2c = nullptr;
 
 SerialPort* RobotMap::serialPort = nullptr;
 
-CANTalon* RobotMap::leftFront;
-CANTalon* RobotMap::rightRear;
-CANTalon* RobotMap::rightFront;
-CANTalon* RobotMap::leftRear;
+CANTalon* RobotMap::shooterLeftFront;
+CANTalon* RobotMap::shooterRightBack;
+CANTalon* RobotMap::shooterRightFront;
+CANTalon* RobotMap::shooterLeftBack;
 
 SpeedController* RobotMap::feeder;
 AnalogInput* RobotMap::feederSensor;
@@ -65,21 +65,21 @@ AHRS* RobotMap::imu = nullptr;
 #define PERIOD .02
 #define RATIO 1
 
-#define FLD 12
+#define FLD 1
 #define FLP 2
 #define FLS 2
 
-#define FRD 11
+#define FRD 3
 #define FRP 5
-#define FRS 1
+#define FRS 4
 
-#define RLD 14
+#define RLD 5
 #define RLP 3
-#define RLS 4
+#define RLS 6
 
-#define RRD 13
+#define RRD 7
 #define RRP 4
-#define RRS 3
+#define RRS 8
 
 void RobotMap::Initialize() {
 	// LiveWindow* lw = LiveWindow::GetInstance();
@@ -190,10 +190,11 @@ void RobotMap::Initialize() {
 
 	i2c = new I2C((I2C::Port)1, 0x04);
 
-	rightRear = new CANTalon(9);
-	leftFront = new CANTalon(7);
-	rightFront = new CANTalon(8);
-	leftRear = new CANTalon(10);
+    shooterLeftFront = new CANTalon(12);
+    shooterLeftBack = new CANTalon(10);
+    shooterRightFront = new CANTalon(11);
+    shooterRightBack = new CANTalon(9);
+
 	feeder = new Talon(0);
 	feederSensor = new AnalogInput(0);
 	feederSensor->SetAverageBits(2);

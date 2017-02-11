@@ -1,140 +1,92 @@
-#include "Subsystems/Shooter.h"
-#include <CANTalon.h>
-#include "Commands/ShootDefault.h"
-#include "RobotMap.h"
+#include "CANTalon.h"
+#include "Shooter.h"
+#include "../RobotMap.h"
+#include "../Commands/ShootDefault.h"
 
-const int SHOOTING_SPEED_RPM = 5000;
+//const int RPM = 7000;
 
-// ==========================================================================
 
-Shooter::Shooter()
-: frc::Subsystem("Shooter"),
-	_leftFront(RobotMap::leftFront),
-	_leftRear(RobotMap::leftRear),
-	_rightFront(RobotMap::rightFront),
-	_rightRear(RobotMap::rightRear),
-	_feeder(RobotMap::feeder),
-	_feederSensor(RobotMap::feederSensor) {
+Shooter::Shooter() : Subsystem("Shooter") {
 
-	_leftFront->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
-	_rightFront->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
-	/*
-	leftFront->SetControlMode(CANSpeedController::kSpeed);
-	leftFront->ConfigNominalOutputVoltage(0.0, 0.0);
-	leftFront->ConfigPeakOutputVoltage(12.0, -12.0);
-	leftFront->SetSensorDirection(true);
-	leftFront->SetP(0.05);
-	leftFront->SetI(0.0);
-	leftFront->SetD(0.0);
-	leftFront->SetF(0.03);
+   shooterLeftFront = RobotMap::shooterLeftFront;
+   shooterLeftBack = RobotMap::shooterLeftBack;
+   shooterRightFront = RobotMap::shooterRightFront;
+   shooterRightBack = RobotMap::shooterRightBack;
 
-	rightFront->SetControlMode(CANSpeedController::kSpeed);
-	rightFront->ConfigNominalOutputVoltage(0.0, 0.0);
-	rightFront->ConfigPeakOutputVoltage(12.0, -12.0);
-	rightFront->SetSensorDirection(true);
-	rightFront->SetP(0.05);
-	rightFront->SetI(0.0);
-	rightFront->SetD(0.0);
-	rightFront->SetF(0.03);
-	*/
+   shooterLeftFront->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
+   shooterRightFront->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
+
+   shooterLeftFront->SetControlMode(CANSpeedController::kSpeed);
+   shooterLeftFront->ConfigNominalOutputVoltage(0.0, 0.0);
+   shooterLeftFront->ConfigPeakOutputVoltage(12.0, -12.0);
+   shooterLeftFront->SetSensorDirection(true);
+   shooterLeftFront->SetP(0.01);
+   shooterLeftFront->SetI(0.0);
+   shooterLeftFront->SetD(0.0);
+   shooterLeftFront->SetF(0.012);
+
+
+   shooterRightFront->SetControlMode(CANSpeedController::kSpeed);
+   shooterRightFront->ConfigNominalOutputVoltage(0.0, 0.0);
+   shooterRightFront->ConfigPeakOutputVoltage(12.0, -12.0);
+   shooterRightFront->SetSensorDirection(true);
+   shooterRightFront->SetP(0.01);
+   shooterRightFront->SetI(0.0);
+   shooterRightFront->SetD(0.0);
+   shooterRightFront->SetF(0.012);
+
+   SmartDashboard::PutNumber("Set Shooter Speed", 7000);
+
 }
 
-// ==========================================================================
+void Shooter::InitDefaultCommand() { SetDefaultCommand(new ShootDefault()); }
 
-double Shooter::GetVelocity() const {
-	return _leftFront->GetSpeed();
+void Shooter::shootFront() {
+
+	double RPM = SmartDashboard::GetNumber("Set Shooter Speed", 7000);
+	//shooterLeftFront->SetControlMode(CANSpeedController::kPercentVbus);
+	//shooterLeftFront->Set(0.75);
+	//shooterRightFront->SetControlMode(CANSpeedController::kPercentVbus);
+	//shooterRightFront->Set(-0.75);
+	shooterLeftFront->SetControlMode(CANSpeedController::kSpeed);
+	shooterLeftFront->Set(RPM);
+	shooterRightFront->SetControlMode(CANSpeedController::kSpeed);
+	shooterRightFront->Set(-RPM);
+
 }
 
-// ==========================================================================
+void Shooter::shootBack() {
 
-void Shooter::InitDefaultCommand() {
-	SetDefaultCommand(new ShootDefault());
+	//shooterLeftBack->Set(-1);
+	//shooterRightBack->Set(1);
 }
 
-// ==========================================================================
-
-bool Shooter::IsAtShootingSpeed() {
-	return std::abs(_leftFront->GetSpeed()) > SHOOTING_SPEED_RPM;
+void Shooter::stopFront() {
+	shooterLeftFront->SetControlMode(CANSpeedController::kPercentVbus);
+	shooterLeftFront->Set(0);
+	shooterRightFront->SetControlMode(CANSpeedController::kPercentVbus);
+	shooterRightFront->Set(0);
 }
 
-// ==========================================================================
-
-bool Shooter::SeesBall() {
-	return _feederSensor->GetAverageVoltage() > 4.0;
+void Shooter::stopBack() {
+	shooterLeftBack->Set(0);
+	shooterRightBack->Set(0);
 }
 
-// ==========================================================================
-
-void Shooter::Shoot(float right, float left) {
-	if (right > 0.1) {
-		ShootFront();
-		ShootBack();
-	}
-	else {
-		StopFront();
-		StopBack();
-	}
-
-	if ((left > 0.1 && SeesBall()) || (left > 0.1 && right > 0.1)) {
-		Feed();
-	}
-	else {
-		StopFeed();
-	}
+void Shooter::shootDefault(float right, float left) {
+	SmartDashboard::PutNumber("Bottom Velocity", getVelocity());
+	SmartDashboard::PutNumber("Top Velocity", shooterRightFront->GetSpeed());
+	if(right > 0.1) {
+		shootFront();
+		shootBack();
+  } else {
+		stopFront();
+		stopBack();
+  }
 }
 
-// ==========================================================================
+double Shooter::getVelocity() { return shooterLeftFront->GetSpeed(); }
 
-void Shooter::ShootFront() {
-	_leftFront->Set(1);
-	_rightFront->Set(-1);
-	/*
-	leftFront->SetControlMode(CANSpeedController::kSpeed);
-	leftFront->Set(SHOOTING_SPEED_RPM);
-	_rightFront->SetControlMode(CANSpeedController::kSpeed);
-	_rightFront->Set(-SHOOTING_SPEED_RPM);
-	*/
+
+void Shooter::readValues(){
 }
-
-// ==========================================================================
-
-void Shooter::ShootBack() {
-	_leftRear->Set(-1);
-	_rightRear->Set(1);
-}
-
-// ==========================================================================
-
-void Shooter::StopFront() {
-	_leftFront->SetControlMode(CANSpeedController::kPercentVbus);
-	_leftFront->Set(0);
-	_rightFront->SetControlMode(CANSpeedController::kPercentVbus);
-	_rightFront->Set(0);
-}
-
-// ==========================================================================
-
-void Shooter::StopBack() {
-	_leftRear->Set(0);
-	_rightRear->Set(0);
-}
-
-// ==========================================================================
-
-void Shooter::Feed() {
-	_feeder->Set(-0.7);
-}
-
-// ==========================================================================
-
-void Shooter::DeFeed() {
-	_feeder->Set(0.5);
-}
-
-// ==========================================================================
-
-void Shooter::StopFeed() {
-	_feeder->Set(0);
-}
-
-// ==========================================================================

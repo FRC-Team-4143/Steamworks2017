@@ -1,38 +1,33 @@
-#pragma once
+#ifndef SHOOTER_H
+#define SHOOTER_H
+#include "Commands/Subsystem.h"
+#include "WPILib.h"
 
-#include <Commands/Subsystem.h>
-#include <WPILib.h>
-#include <CANTalon.h>
 
-// ==========================================================================
-
-class Shooter : public frc::Subsystem {
+class Shooter: public Subsystem {
 public:
+
+	CANTalon *shooterLeftFront;
+	CANTalon *shooterLeftBack;
+	CANTalon *shooterRightFront;
+	CANTalon *shooterRightBack;
+
 	Shooter();
-
 	void InitDefaultCommand();
-
-	double GetVelocity() const;
-	bool IsAtShootingSpeed();
-	bool SeesBall();
-
-	void Shoot(float right, float left);
-	void ShootFront();
-	void ShootBack();
-	void StopFront();
-	void StopBack();
-
-	void Feed();
-	void DeFeed();
-	void StopFeed();
-
-private:
-	CANTalon* _leftFront;
-	CANTalon* _leftRear;
-	CANTalon* _rightFront;
-	CANTalon* _rightRear;
-	frc::SpeedController* _feeder;
-	frc::AnalogInput* _feederSensor;
+	void shootFront();
+	void shootBack();
+	void stopFront();
+	void stopBack();
+	void shootDefault(float right, float left);
+	double getVelocity();
+	void readValues();
+    void Feed() {}
+    bool IsAtShootingSpeed() { return true;}
+    bool SeesBall() { return true;}
+    void ShootFront() {}
+    void StopFeed() {}
+    void ShootBack() {}
+    void DeFeed() {}
 };
 
-// ==========================================================================
+#endif
