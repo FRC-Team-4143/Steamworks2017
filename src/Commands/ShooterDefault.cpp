@@ -1,39 +1,37 @@
-#include "Commands/StowArm.h"
+#include <Commands/ShooterDefault.h>
 #include "Robot.h"
 
 // ==========================================================================
 
-StowArm::StowArm() {
-	Requires(Robot::armSub);
+ShooterDefault::ShooterDefault() {
+	Requires(Robot::shooter.get());
 }
 
 // ==========================================================================
 
-void StowArm::Initialize() {
-	SetTimeout(1);
-	Robot::armSub->StowArm();
+void ShooterDefault::Initialize() {
 }
 
 // ==========================================================================
 
-void StowArm::Execute() {
+void ShooterDefault::Execute() {
+	Robot::shooter->Report();
 }
 
 // ==========================================================================
 
-bool StowArm::IsFinished() {
-	return IsTimedOut();
+bool ShooterDefault::IsFinished() {
+	return false;
 }
 
 // ==========================================================================
 
-void StowArm::End() {
-	Robot::armSub->DisablePositionControl();
+void ShooterDefault::End() {
 }
 
 // ==========================================================================
 
-void StowArm::Interrupted() {
+void ShooterDefault::Interrupted() {
 	End();
 }
 

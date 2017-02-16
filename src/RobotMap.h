@@ -35,16 +35,21 @@ public:
 
 	static SerialPort* serialPort;
 
-    static CANTalon *shooterLeftFront;
-    static CANTalon *shooterLeftBack;
-    static CANTalon *shooterRightFront;
-    static CANTalon *shooterRightBack;
+    //static CANTalon *shooterLeftFront;
+    //static CANTalon *shooterLeftBack;
+    //static CANTalon *shooterRightFront;
+    //static CANTalon *shooterRightBack;
+
+    static std::shared_ptr<CANTalon> shooterMotor1;
+    static std::shared_ptr<CANTalon> shooterMotor2;
 
 	static SpeedController* feeder;
 	static AnalogInput* feederSensor;
 
 	static CANTalon* armMotor;
 
+	static CANTalon* pickup;
+	static CANTalon* indexMotor;
 	static CANTalon* winchMotor;
 	static AnalogInput* winchPot;
 	static PIDController* shooterWinch;

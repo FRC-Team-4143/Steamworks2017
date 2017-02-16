@@ -1,38 +1,41 @@
-#include "Commands/ResetArm.h"
+#include <Commands/ShooterRun.h>
 #include "Robot.h"
 
+//const int SHOOTER_RPM = 4000;
+//const int SHOOTER_RPM_TOLERANCE = 50;
+
 // ==========================================================================
 
-ResetArm::ResetArm() {
-	Requires(Robot::armSub);
-	SetRunWhenDisabled(true);
+ShooterRun::ShooterRun() {
+	//Requires(Robot::shooter.get());
 }
 
 // ==========================================================================
 
-void ResetArm::Initialize() {
-	Robot::armSub->Reset();
+void ShooterRun::Initialize() {
+	Robot::shooter->Start();
 }
 
 // ==========================================================================
 
-void ResetArm::Execute() {
+void ShooterRun::Execute() {
 }
 
 // ==========================================================================
 
-bool ResetArm::IsFinished() {
-	return true;
+bool ShooterRun::IsFinished() {
+	return false;
 }
 
 // ==========================================================================
 
-void ResetArm::End() {
+void ShooterRun::End() {
+	Robot::shooter->Stop();
 }
 
 // ==========================================================================
 
-void ResetArm::Interrupted() {
+void ShooterRun::Interrupted() {
 	End();
 }
 

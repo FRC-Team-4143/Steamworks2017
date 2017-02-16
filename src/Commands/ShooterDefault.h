@@ -4,19 +4,15 @@
 
 // ==========================================================================
 
-class Feed : public frc::Command {
+class ShooterDefault : public frc::Command {
 public:
-	Feed(double seconds);
+	ShooterDefault();
 
 	void Initialize();
 	void Execute();
 	bool IsFinished();
 	void End();
 	void Interrupted();
-
-private:
-	double _seconds;
-	bool _seenBall;
 };
 
 // ==========================================================================

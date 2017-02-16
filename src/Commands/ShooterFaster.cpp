@@ -1,40 +1,38 @@
-#include "Commands/ShootDefault.h"
+#include <Commands/ShooterFaster.h>
 #include "Robot.h"
 
 // ==========================================================================
 
-ShootDefault::ShootDefault() {
-	Requires(Robot::shooter);
+ShooterFaster::ShooterFaster() {
+	// Do NOT require the Shooter subsystem. Doing so will interrupt the Run command.
+	//Requires(Robot::shooter.get());
 }
 
 // ==========================================================================
 
-void ShootDefault::Initialize() {
+void ShooterFaster::Initialize() {
+	Robot::shooter->IncreaseTargetRpm();
 }
 
 // ==========================================================================
 
-void ShootDefault::Execute() {
-	Robot::shooter->shootDefault(Robot::oi->GetRightTrigger(),
-								 Robot::oi->GetLeftTrigger());
+void ShooterFaster::Execute() {
 }
 
 // ==========================================================================
 
-bool ShootDefault::IsFinished() {
-	return false;
+bool ShooterFaster::IsFinished() {
+	return true;
 }
 
 // ==========================================================================
 
-void ShootDefault::End() {
-
-
+void ShooterFaster::End() {
 }
 
 // ==========================================================================
 
-void ShootDefault::Interrupted() {
+void ShooterFaster::Interrupted() {
 	End();
 }
 

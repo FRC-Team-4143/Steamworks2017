@@ -1,40 +1,38 @@
-#include "Commands/DeFeed.h"
+#include <Commands/ShooterSlower.h>
 #include "Robot.h"
 
 // ==========================================================================
 
-DeFeed::DeFeed(double timeoutSeconds)
-: _timeoutSeconds(timeoutSeconds) {
-	Requires(Robot::shooter);
+ShooterSlower::ShooterSlower() {
+	// Do NOT require the Shooter subsystem. Doing so will interrupt the Run command.
+	//Requires(Robot::shooter.get());
 }
 
 // ==========================================================================
 
-void DeFeed::Initialize() {
-	SetTimeout(_timeoutSeconds);
-	Robot::shooter->DeFeed();
+void ShooterSlower::Initialize() {
+	Robot::shooter->DecreaseTargetRpm();
 }
 
 // ==========================================================================
 
-void DeFeed::Execute() {
+void ShooterSlower::Execute() {
 }
 
 // ==========================================================================
 
-bool DeFeed::IsFinished() {
-	return IsTimedOut() || Robot::shooter->SeesBall();
+bool ShooterSlower::IsFinished() {
+	return true;
 }
 
 // ==========================================================================
 
-void DeFeed::End() {
-	Robot::shooter->StopFeed();
+void ShooterSlower::End() {
 }
 
 // ==========================================================================
 
-void DeFeed::Interrupted() {
+void ShooterSlower::Interrupted() {
 	End();
 }
 

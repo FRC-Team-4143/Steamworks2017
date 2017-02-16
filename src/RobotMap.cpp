@@ -27,13 +27,19 @@ I2C* RobotMap::i2c = nullptr;
 
 SerialPort* RobotMap::serialPort = nullptr;
 
-CANTalon* RobotMap::shooterLeftFront;
-CANTalon* RobotMap::shooterRightBack;
-CANTalon* RobotMap::shooterRightFront;
-CANTalon* RobotMap::shooterLeftBack;
+//CANTalon* RobotMap::shooterLeftFront;
+//CANTalon* RobotMap::shooterRightBack;
+//CANTalon* RobotMap::shooterRightFront;
+//CANTalon* RobotMap::shooterLeftBack;
+
+std::shared_ptr<CANTalon> RobotMap::shooterMotor1;
+std::shared_ptr<CANTalon> RobotMap::shooterMotor2;
 
 SpeedController* RobotMap::feeder;
 AnalogInput* RobotMap::feederSensor;
+
+CANTalon* RobotMap::indexMotor;
+CANTalon* RobotMap::pickup;
 
 CANTalon* RobotMap::armMotor;
 
@@ -60,24 +66,24 @@ AHRS* RobotMap::imu = nullptr;
 #define pdriveF 0.0
 #define POTMIN 0.0
 #define POTMAX 5.0
-#define STEERPOW 0.6
+#define STEERPOW 1.0
 #define TOLERANCE 0.1
 #define PERIOD .02
 #define RATIO 1
 
 #define FLD 1
 #define FLP 2
-#define FLS 2
+#define FLS 5
 
-#define FRD 3
+#define FRD 2
 #define FRP 5
-#define FRS 4
+#define FRS 6
 
-#define RLD 5
+#define RLD 3
 #define RLP 3
-#define RLS 6
+#define RLS 7
 
-#define RRD 7
+#define RRD 4
 #define RRP 4
 #define RRS 8
 
@@ -190,10 +196,13 @@ void RobotMap::Initialize() {
 
 	i2c = new I2C((I2C::Port)1, 0x04);
 
-    shooterLeftFront = new CANTalon(12);
-    shooterLeftBack = new CANTalon(10);
-    shooterRightFront = new CANTalon(11);
-    shooterRightBack = new CANTalon(9);
+    //shooterLeftFront = new CANTalon(11);
+    //shooterLeftBack = new CANTalon(30);
+    //shooterRightFront = new CANTalon(12);
+    //shooterRightBack = new CANTalon(29);
+
+    shooterMotor1 = std::make_unique<CANTalon>(11);
+    shooterMotor2 = std::make_unique<CANTalon>(12);
 
 	feeder = new Talon(0);
 	feederSensor = new AnalogInput(0);
@@ -203,6 +212,8 @@ void RobotMap::Initialize() {
 
 	armMotor = new CANTalon(6);
 
+	pickup = new CANTalon(10);
+	indexMotor = new CANTalon(9);
 	winchMotor = new CANTalon(5);
 	winchPot = new AnalogInput(1);
 	shooterWinch = new PIDController(1.5, 0.1, 0.1, 0.0, winchPot, winchMotor);

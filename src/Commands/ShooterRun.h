@@ -4,9 +4,9 @@
 
 // ==========================================================================
 
-class StowArm : public frc::Command {
+class ShooterRun : public frc::Command {
 public:
-	StowArm();
+	ShooterRun();
 
 	void Initialize();
 	void Execute();

@@ -1,12 +1,18 @@
 #pragma once
 
-#include <Commands/CommandGroup.h>
+#include <Commands/Command.h>
 
 // ==========================================================================
 
-class LowShot : public frc::CommandGroup {
+class ShooterFaster : public frc::Command {
 public:
-	LowShot();
+	ShooterFaster();
+
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
 };
 
 // ==========================================================================

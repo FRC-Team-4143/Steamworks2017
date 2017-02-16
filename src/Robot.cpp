@@ -2,7 +2,6 @@
 #include "Commands/BackupToCenter.h"
 #include "Commands/DriveDistance.h"
 #include "Commands/DriveTilVision.h"
-#include "Commands/Feed.h"
 #include "Commands/ScriptArm.h"
 #include "Commands/ScriptCamDrive.h"
 #include "Commands/ScriptCommand.h"
@@ -11,7 +10,6 @@
 #include "Commands/ScriptGyroDrive.h"
 #include "Commands/ScriptSleep.h"
 #include "Commands/SetWinchPosition.h"
-#include "Commands/ShootCycle.h"
 #include "Commands/WaitForVision.h"
 #include "Commands/ZeroYaw.h"
 #include "Modules/CommandListParser.h"
@@ -19,13 +17,17 @@
 #include "Modules/ScriptCommandFactory.h"
 
 OI* Robot::oi;
-Shooter* Robot::shooter = nullptr;
+//Shooter* Robot::shooter = nullptr;
+Pickup* Robot::pickup = nullptr;
+Indexer* Robot::indexer = nullptr;
 ArmSub* Robot::armSub = nullptr;
 GyroSub* Robot::gyroSub = nullptr;
 DriveTrain* Robot::driveTrain = nullptr;
 std::shared_ptr<BasicCameraSub> Robot::basicCameraSub;
 WinchSub* Robot::winchSub = nullptr;
 VisionBridgeSub* Robot::visionBridge = nullptr;
+const bool SHOOTER_AS_MASTER_SLAVE = true;
+std::shared_ptr<Shooter> Robot::shooter;
 
 void Robot::RobotInit() {
 	Preferences::GetInstance();
@@ -45,7 +47,9 @@ void Robot::RobotInit() {
 
 	gyroSub = new GyroSub();
 	driveTrain = new DriveTrain();
-	shooter = new Shooter();
+	//shooter = new Shooter();
+	pickup = new Pickup();
+	indexer = new Indexer();
 	armSub = new ArmSub();
 	basicCameraSub.reset(new BasicCameraSub("cam0"));
 	winchSub = new WinchSub();
@@ -53,6 +57,16 @@ void Robot::RobotInit() {
 	visionBridge = new VisionBridgeSub();
 	driveTrain->SetWheelbase(24, 21.5, 24);
 	driveTrain->loadWheelOffsets();
+
+	shooter.reset(new Shooter());
+		shooter->AddMaster(RobotMap::shooterMotor1, false);
+		if (SHOOTER_AS_MASTER_SLAVE) {
+			shooter->AddSlave(RobotMap::shooterMotor2, false, RobotMap::shooterMotor1);
+		}
+		else {
+			shooter->AddMaster(RobotMap::shooterMotor2, false);
+		}
+		shooter->EnableReporting();
 }
 
 void Robot::RobotPeriodic() {
@@ -116,6 +130,7 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 	Scheduler::GetInstance()->Run();
+
 	// armSub->readPos();
 	winchSub->ReportPosition();
 	driveTrain->updateDistanceEncoders();
@@ -125,6 +140,21 @@ void Robot::TeleopPeriodic() {
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
 	SmartDashboard::PutNumber("Vision Distance", Robot::visionBridge->GetDistance());
+
+	SmartDashboard::PutNumber("JoystickYAxis", oi->GetJoystickY2());
+	SmartDashboard::PutNumber("JoystickXAxis", oi->GetJoystickX2());
+
+	SmartDashboard::PutBoolean("Button2", oi->GetButton2());
+	SmartDashboard::PutBoolean("Button3", oi->GetButton3());
+	SmartDashboard::PutBoolean("Button4", oi->GetButton4());
+	SmartDashboard::PutBoolean("Button5", oi->GetButton5());
+	SmartDashboard::PutBoolean("Trigger", oi->GetButtonTrig());
+
+	SmartDashboard::PutBoolean("ButtonA", oi->GetButtonA());
+
+
+
+
 }
 
 void Robot::TestPeriodic() {
@@ -179,7 +209,7 @@ void Robot::ScriptInit() {
 		// if (0 == timeout) timeout = 4;
 		fCreateCommand(command, 0);
 	}));
-
+/*
 	parser.AddCommand(CommandParseInfo(
 			"Shoot", {"SH", "sh"},
 			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
@@ -189,7 +219,7 @@ void Robot::ScriptInit() {
 		// if (0 == timeout) timeout = 4;
 		fCreateCommand(command, 0);
 	}));
-
+*/
 	parser.AddCommand(CommandParseInfo(
 			"Sleep", {"S", "s"},
 			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
@@ -253,15 +283,6 @@ void Robot::ScriptInit() {
 		auto timeout = parameters[3];
 		auto preferredSide = parameters[4];
 		Command *command = new ScriptCamDrive("DriveCam", x, y, maxspeed, timeout, preferredSide);
-		fCreateCommand(command, 0);
-	}));
-
-	parser.AddCommand(CommandParseInfo(
-			"Feed", {"F", "f"},
-			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
-		parameters.resize(1);
-		auto timeout = parameters[0];
-		Command *command = new Feed(timeout);
 		fCreateCommand(command, 0);
 	}));
 

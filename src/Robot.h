@@ -14,6 +14,10 @@
 #include "Subsystems/Shooter.h"
 #include "Subsystems/VisionBridgeSub.h"
 #include "Subsystems/WinchSub.h"
+#include "Subsystems/Indexer.h"
+#include "Subsystems/Pickup.h"
+
+
 
 class Robot : public IterativeRobot {
 public:
@@ -24,7 +28,9 @@ public:
 	static DriveTrain *driveTrain;
 	static ArmSub *armSub;
 	static GyroSub *gyroSub;
-	static Shooter *shooter;
+	static std::shared_ptr<Shooter> shooter;
+	static Indexer *indexer;
+	static Pickup *pickup;
 	static std::shared_ptr<BasicCameraSub> basicCameraSub;
 	static WinchSub *winchSub;
 	static VisionBridgeSub *visionBridge;
