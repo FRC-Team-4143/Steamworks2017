@@ -40,8 +40,8 @@ public:
     //static CANTalon *shooterRightFront;
     //static CANTalon *shooterRightBack;
 
-    static std::shared_ptr<CANTalon> shooterMotor1;
-    static std::shared_ptr<CANTalon> shooterMotor2;
+    static CANTalon* shooterMotor1;
+    static CANTalon* shooterMotor2;
 
 	static SpeedController* feeder;
 	static AnalogInput* feederSensor;

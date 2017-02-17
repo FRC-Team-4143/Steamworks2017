@@ -6,7 +6,7 @@
 
 class Indexer : public Subsystem {
 
-	CANTalon *indexMotor;
+
 
 private:
 	// It's desirable that everything possible under private except
@@ -17,7 +17,9 @@ public:
 	void InitDefaultCommand();
 	void SpinCW();
 	void SpinCCW();
+	void SpinBall();
 	void Stop();
+	CANTalon *indexMotor;
 };
 
 #endif  // Indexer_H

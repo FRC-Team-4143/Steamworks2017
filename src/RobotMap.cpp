@@ -32,8 +32,8 @@ SerialPort* RobotMap::serialPort = nullptr;
 //CANTalon* RobotMap::shooterRightFront;
 //CANTalon* RobotMap::shooterLeftBack;
 
-std::shared_ptr<CANTalon> RobotMap::shooterMotor1;
-std::shared_ptr<CANTalon> RobotMap::shooterMotor2;
+CANTalon* RobotMap::shooterMotor1;
+CANTalon* RobotMap::shooterMotor2;
 
 SpeedController* RobotMap::feeder;
 AnalogInput* RobotMap::feederSensor;
@@ -201,8 +201,8 @@ void RobotMap::Initialize() {
     //shooterRightFront = new CANTalon(12);
     //shooterRightBack = new CANTalon(29);
 
-    shooterMotor1 = std::make_unique<CANTalon>(11);
-    shooterMotor2 = std::make_unique<CANTalon>(12);
+    shooterMotor1 = new CANTalon(11);
+    shooterMotor2 = new CANTalon(12);
 
 	feeder = new Talon(0);
 	feederSensor = new AnalogInput(0);

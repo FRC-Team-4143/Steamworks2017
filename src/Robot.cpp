@@ -27,7 +27,7 @@ std::shared_ptr<BasicCameraSub> Robot::basicCameraSub;
 WinchSub* Robot::winchSub = nullptr;
 VisionBridgeSub* Robot::visionBridge = nullptr;
 const bool SHOOTER_AS_MASTER_SLAVE = true;
-std::shared_ptr<Shooter> Robot::shooter;
+Shooter* Robot::shooter = nullptr;
 
 void Robot::RobotInit() {
 	Preferences::GetInstance();
@@ -58,15 +58,8 @@ void Robot::RobotInit() {
 	driveTrain->SetWheelbase(24, 21.5, 24);
 	driveTrain->loadWheelOffsets();
 
-	shooter.reset(new Shooter());
-		shooter->AddMaster(RobotMap::shooterMotor1, false);
-		if (SHOOTER_AS_MASTER_SLAVE) {
-			shooter->AddSlave(RobotMap::shooterMotor2, false, RobotMap::shooterMotor1);
-		}
-		else {
-			shooter->AddMaster(RobotMap::shooterMotor2, false);
-		}
-		shooter->EnableReporting();
+	shooter = new Shooter();
+
 }
 
 void Robot::RobotPeriodic() {
@@ -86,6 +79,11 @@ void Robot::DisabledPeriodic() {
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
 	SmartDashboard::PutNumber("Vision Distance", Robot::visionBridge->GetDistance());
+
+	SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
+	SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
+	SmartDashboard::PutNumber("Target Shooter Speed", shooter->targetShooterSpeed);
+	SmartDashboard::PutNumber("Indexer Position", indexer->indexMotor->GetEncPosition());
 }
 
 void Robot::AutonomousInit() {
@@ -118,7 +116,8 @@ void Robot::AutonomousPeriodic() {
 }
 
 void Robot::TeleopInit() {
-	driveTrain->enableSteeringPID();
+	//driveTrain->enableSteeringPID(); //ENABLE THIS
+
 	// This makes sure that the autonomous stops running when
 	// teleop starts running. If you want the autonomous to
 	// continue until interrupted by another command, remove
@@ -140,6 +139,11 @@ void Robot::TeleopPeriodic() {
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
 	SmartDashboard::PutNumber("Vision Distance", Robot::visionBridge->GetDistance());
+
+	SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
+	SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
+	SmartDashboard::PutNumber("Target Shooter Speed", shooter->targetShooterSpeed);
+	SmartDashboard::PutNumber("Indexer Position", indexer->indexMotor->GetEncPosition());
 
 	SmartDashboard::PutNumber("JoystickYAxis", oi->GetJoystickY2());
 	SmartDashboard::PutNumber("JoystickXAxis", oi->GetJoystickX2());

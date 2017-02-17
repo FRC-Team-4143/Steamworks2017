@@ -11,7 +11,7 @@ void SpinIndexerCW::Initialize() {
 
 	Robot::indexer->SpinCW();
 
-	RobotMap::i2c->Write(0, 0);
+	RobotMap::i2c->Write(5, 0);
 }
 
 // Called repeatedly when this Command is scheduled to run

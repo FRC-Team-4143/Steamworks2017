@@ -28,7 +28,7 @@ public:
 	static DriveTrain *driveTrain;
 	static ArmSub *armSub;
 	static GyroSub *gyroSub;
-	static std::shared_ptr<Shooter> shooter;
+	static Shooter *shooter;
 	static Indexer *indexer;
 	static Pickup *pickup;
 	static std::shared_ptr<BasicCameraSub> basicCameraSub;

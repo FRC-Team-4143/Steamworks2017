@@ -24,6 +24,7 @@
 #include <Commands/ShooterRun.h>
 #include <Commands/ShooterFaster.h>
 #include <Commands/ShooterSlower.h>
+#include <Commands/OneBall.h>
 #include "Robot.h"
 
 const uint32_t JOYSTICK_LX_AXIS = 0;
@@ -52,7 +53,7 @@ const uint32_t JOYSTICK_BUTTON_4 = 4;
 const uint32_t JOYSTICK_BUTTON_5 = 5;
 const uint32_t JOYSTICK_BUTTON_6 = 6;
 const uint32_t JOYSTICK_BUTTON_7 = 7;
-
+const uint32_t JOYSTICK_BUTTON_10 = 10;
 
 
 // ==========================================================================
@@ -73,6 +74,7 @@ OI::OI() {
 	//arcade = new ArcadeDriveMode();
 	climb = new Climb();
 	climbReverse = new ClimbReverse();
+	oneBall = new OneBall();
 
 	auto cameraEnableCmd = new BasicCameraEnableCmd(Robot::basicCameraSub);
 
@@ -86,12 +88,13 @@ OI::OI() {
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_RB))->WhileHeld(pickupIn);
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_LB))->WhileHeld(pickupOut);
 
-	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_6))->ToggleWhenPressed(spinIndexerCW);
-	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_7))->ToggleWhenPressed(spinIndexerCCW);
+	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_6))->WhileHeld(spinIndexerCW);
+	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_10))->WhileHeld(spinIndexerCCW);
+	//(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_7))->WhenPressed(oneBall);
 
 	auto cmdShooterRun = new ShooterRun();
 	auto shooterRunButton = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_TRIG);
-	shooterRunButton->ToggleWhenPressed(cmdShooterRun);
+	shooterRunButton->WhileHeld(cmdShooterRun);
 
 	auto cmdShooterSlower = new ShooterSlower();
 	auto shooterSlowerButton = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_4);
