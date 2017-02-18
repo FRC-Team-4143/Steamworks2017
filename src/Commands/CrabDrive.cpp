@@ -29,7 +29,7 @@ void CrabDrive::Execute() {
 		z = Robot::oi->GetJoystickZ();
 	}
 
-	//Robot::driveTrain->Crab(z, -y, x, true); //ENABLE THIS
+	Robot::driveTrain->Crab(z, -y, x, true); //ENABLE THIS
 }
 
 // ==========================================================================

@@ -9,6 +9,8 @@ class RobotMap {
 public:
 	static bool SpeedControl;
 
+	static PowerDistributionPanel* pdp;
+
 	static PIDController* driveTrainFrontLeft;
 	static CANTalon* driveTrainFrontLeftDrive;
 	static AnalogChannelVolt* driveTrainFrontLeftPos;

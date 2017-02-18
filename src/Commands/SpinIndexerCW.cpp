@@ -9,14 +9,14 @@ SpinIndexerCW::SpinIndexerCW() {
 // Called just before this Command runs the first time
 void SpinIndexerCW::Initialize() {
 
-	Robot::indexer->SpinCW();
+
 
 	RobotMap::i2c->Write(5, 0);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void SpinIndexerCW::Execute() {
-
+	Robot::indexer->SpinCW();
 
 }
 
@@ -29,6 +29,9 @@ bool SpinIndexerCW::IsFinished() {
 void SpinIndexerCW::End() {
 
 	Robot::indexer->Stop();
+
+	RobotMap::i2c->Write(6, 0);
+
 }
 
 // Called when another command which requires one or more of the same

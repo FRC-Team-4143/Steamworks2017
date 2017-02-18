@@ -25,6 +25,7 @@
 #include <Commands/ShooterFaster.h>
 #include <Commands/ShooterSlower.h>
 #include <Commands/OneBall.h>
+#include <Commands/TestJamShooter.h>
 #include "Robot.h"
 
 const uint32_t JOYSTICK_LX_AXIS = 0;
@@ -90,7 +91,7 @@ OI::OI() {
 
 	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_6))->WhileHeld(spinIndexerCW);
 	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_10))->WhileHeld(spinIndexerCCW);
-	//(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_7))->WhenPressed(oneBall);
+	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_7))->WhenPressed(oneBall);
 
 	auto cmdShooterRun = new ShooterRun();
 	auto shooterRunButton = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_TRIG);
@@ -122,6 +123,7 @@ OI::OI() {
 
 	SmartDashboard::PutData("Update Positions", new UpdatePositions());
 	SmartDashboard::PutData("Validate Script", new ScriptValidate());
+	SmartDashboard::PutData("JAM SHOOTER", new TestJamShooter());
 }
 
 bool OI::GetButton2() {

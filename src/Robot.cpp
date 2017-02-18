@@ -70,6 +70,10 @@ void Robot::DisabledInit() {
 
 void Robot::DisabledPeriodic() {
 	Scheduler::GetInstance()->Run();
+
+	SmartDashboard::PutNumber("GetEncPosition", indexer->indexMotor->GetEncPosition());
+	SmartDashboard::PutNumber("GetPosition", indexer->indexMotor->GetPosition());
+
 	// armSub->readPos();
 	winchSub->ReportPosition();
 	driveTrain->updateDistanceEncoders();
@@ -116,7 +120,7 @@ void Robot::AutonomousPeriodic() {
 }
 
 void Robot::TeleopInit() {
-	//driveTrain->enableSteeringPID(); //ENABLE THIS
+	driveTrain->enableSteeringPID(); //ENABLE THIS
 
 	// This makes sure that the autonomous stops running when
 	// teleop starts running. If you want the autonomous to
@@ -129,6 +133,12 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 	Scheduler::GetInstance()->Run();
+
+	SmartDashboard::PutBoolean("Indexer Jammed", indexer->indexJammed);
+	SmartDashboard::PutNumber("Index Timer", indexer->timer->Get());
+	indexer->readPDP();
+	SmartDashboard::PutNumber("GetEncPosition", indexer->indexMotor->GetEncPosition());
+	SmartDashboard::PutNumber("GetPosition", indexer->indexMotor->GetPosition());
 
 	// armSub->readPos();
 	winchSub->ReportPosition();

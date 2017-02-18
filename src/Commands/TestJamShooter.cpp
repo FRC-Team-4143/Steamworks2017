@@ -1,47 +1,38 @@
-#include <Commands/ShooterRun.h>
+#include "Commands/TestJamShooter.h"
 #include "Robot.h"
 
-//const int SHOOTER_RPM = 4000;
-//const int SHOOTER_RPM_TOLERANCE = 50;
-
 // ==========================================================================
 
-ShooterRun::ShooterRun() {
-	Requires(Robot::shooter);
+TestJamShooter::TestJamShooter() {
 }
 
 // ==========================================================================
 
-void ShooterRun::Initialize() {
-
+void TestJamShooter::Initialize() {
+	Robot::indexer->testJamShooter();
 }
 
 // ==========================================================================
 
-void ShooterRun::Execute() {
-	Robot::shooter->shootFront();
-
-	RobotMap::i2c->Write(0, 0);
+void TestJamShooter::Execute() {
 
 }
 
 // ==========================================================================
 
-bool ShooterRun::IsFinished() {
-	return false;
+bool TestJamShooter::IsFinished() {
+	return true;
 }
 
 // ==========================================================================
 
-void ShooterRun::End() {
-	Robot::shooter->stopFront();
-
-	RobotMap::i2c->Write(6, 0);
+void TestJamShooter::End() {
+	Robot::indexer->testJamShooter();
 }
 
 // ==========================================================================
 
-void ShooterRun::Interrupted() {
+void TestJamShooter::Interrupted() {
 	End();
 }
 

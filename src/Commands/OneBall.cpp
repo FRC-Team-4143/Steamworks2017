@@ -4,6 +4,7 @@
 OneBall::OneBall() {
 	// Use Requires() here to declare subsystem dependencies
 	Requires(Robot::indexer);
+	SetTimeout(1);
 
 }
 
@@ -20,7 +21,7 @@ void OneBall::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool OneBall::IsFinished() {
-	return false;
+	return IsTimedOut();
 }
 
 // Called once after isFinished returns true
