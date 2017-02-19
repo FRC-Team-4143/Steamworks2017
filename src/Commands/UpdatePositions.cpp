@@ -17,7 +17,6 @@ void UpdatePositions::Initialize() {
 // ==========================================================================
 
 void UpdatePositions::Execute() {
-	Robot::armSub->DisplayPosition();
 	Robot::winchSub->ReportPosition();
 	Robot::driveTrain->updateDistanceEncoders();
 	SmartDashboard::PutNumber("feeder sensor", RobotMap::feederSensor->GetAverageVoltage());

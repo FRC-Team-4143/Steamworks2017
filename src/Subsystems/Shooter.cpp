@@ -90,7 +90,12 @@ void Shooter::IncreaseTargetRpm(){
 }
 
 void Shooter::DecreaseTargetRpm(){
-	targetShooterSpeed -= 100;
+	if (targetShooterSpeed - 100 >= 0){
+		targetShooterSpeed -= 100;
+	} else {
+		targetShooterSpeed = 0;
+	}
+
 }
 
 double Shooter::getVelocity() { return shooterMotor1->GetSpeed(); }

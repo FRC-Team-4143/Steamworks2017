@@ -7,7 +7,6 @@
 #include "Commands/AutonomousCommand.h"
 #include "OI.h"
 #include "RobotMap.h"
-#include "Subsystems/ArmSub.h"
 #include "Subsystems/BasicCameraSub.h"
 #include "Subsystems/DriveTrain.h"
 #include "Subsystems/GyroSub.h"
@@ -26,7 +25,6 @@ public:
 
 	static OI *oi;
 	static DriveTrain *driveTrain;
-	static ArmSub *armSub;
 	static GyroSub *gyroSub;
 	static Shooter *shooter;
 	static Indexer *indexer;

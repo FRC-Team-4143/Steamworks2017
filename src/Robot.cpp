@@ -2,7 +2,6 @@
 #include "Commands/BackupToCenter.h"
 #include "Commands/DriveDistance.h"
 #include "Commands/DriveTilVision.h"
-#include "Commands/ScriptArm.h"
 #include "Commands/ScriptCamDrive.h"
 #include "Commands/ScriptCommand.h"
 #include "Commands/ScriptDrive.h"
@@ -20,7 +19,6 @@ OI* Robot::oi;
 //Shooter* Robot::shooter = nullptr;
 Pickup* Robot::pickup = nullptr;
 Indexer* Robot::indexer = nullptr;
-ArmSub* Robot::armSub = nullptr;
 GyroSub* Robot::gyroSub = nullptr;
 DriveTrain* Robot::driveTrain = nullptr;
 std::shared_ptr<BasicCameraSub> Robot::basicCameraSub;
@@ -50,7 +48,6 @@ void Robot::RobotInit() {
 	//shooter = new Shooter();
 	pickup = new Pickup();
 	indexer = new Indexer();
-	armSub = new ArmSub();
 	basicCameraSub.reset(new BasicCameraSub("cam0"));
 	winchSub = new WinchSub();
 	oi = new OI();
@@ -77,6 +74,7 @@ void Robot::DisabledPeriodic() {
 	// armSub->readPos();
 	winchSub->ReportPosition();
 	driveTrain->updateDistanceEncoders();
+	driveTrain->Dashboard();
 	SmartDashboard::PutNumber("feeder sensor", RobotMap::feederSensor->GetAverageVoltage());
 	SmartDashboard::PutBoolean("Shooter Raised", Robot::winchSub->ShooterIsRaised());
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
@@ -133,7 +131,7 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 	Scheduler::GetInstance()->Run();
-
+	driveTrain->Dashboard();
 	SmartDashboard::PutBoolean("Indexer Jammed", indexer->indexJammed);
 	SmartDashboard::PutNumber("Index Timer", indexer->timer->Get());
 	indexer->readPDP();
@@ -240,15 +238,6 @@ void Robot::ScriptInit() {
 		parameters.resize(1);
 		auto timeout = parameters[0];
 		Command *command = new ScriptSleep("Sleep", timeout);
-		fCreateCommand(command, 0);
-	}));
-
-	parser.AddCommand(CommandParseInfo(
-			"Arm", {"A", "a"},
-			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
-		parameters.resize(1);
-		auto pos = parameters[0];
-		Command *command = new ScriptArm(pos);
 		fCreateCommand(command, 0);
 	}));
 

@@ -5,24 +5,24 @@ bool RobotMap::SpeedControl = 0;
 
 PowerDistributionPanel* RobotMap::pdp = nullptr;
 
-PIDController*     RobotMap::driveTrainFrontLeft = nullptr;
+//PIDController*     RobotMap::driveTrainFrontLeft = nullptr;
 CANTalon*          RobotMap::driveTrainFrontLeftDrive = nullptr;
-AnalogChannelVolt* RobotMap::driveTrainFrontLeftPos = nullptr;
+//AnalogChannelVolt* RobotMap::driveTrainFrontLeftPos = nullptr;
 CANTalon*          RobotMap::driveTrainFrontLeftSteer = nullptr;
 
-PIDController*     RobotMap::driveTrainFrontRight = nullptr;
+//PIDController*     RobotMap::driveTrainFrontRight = nullptr;
 CANTalon*          RobotMap::driveTrainFrontRightDrive = nullptr;
-AnalogChannelVolt* RobotMap::driveTrainFrontRightPos = nullptr;
+//AnalogChannelVolt* RobotMap::driveTrainFrontRightPos = nullptr;
 CANTalon*          RobotMap::driveTrainFrontRightSteer = nullptr;
 
-PIDController*     RobotMap::driveTrainRearLeft = nullptr;
+//PIDController*     RobotMap::driveTrainRearLeft = nullptr;
 CANTalon*          RobotMap::driveTrainRearLeftDrive = nullptr;
-AnalogChannelVolt* RobotMap::driveTrainRearLeftPos = nullptr;
+//AnalogChannelVolt* RobotMap::driveTrainRearLeftPos = nullptr;
 CANTalon*          RobotMap::driveTrainRearLeftSteer = nullptr;
 
-PIDController*     RobotMap::driveTrainRearRight = nullptr;
+//PIDController*     RobotMap::driveTrainRearRight = nullptr;
 CANTalon*          RobotMap::driveTrainRearRightDrive = nullptr;
-AnalogChannelVolt* RobotMap::driveTrainRearRightPos = nullptr;
+//AnalogChannelVolt* RobotMap::driveTrainRearRightPos = nullptr;
 CANTalon*          RobotMap::driveTrainRearRightSteer = nullptr;
 
 I2C* RobotMap::i2c = nullptr;
@@ -42,8 +42,6 @@ AnalogInput* RobotMap::feederSensor;
 
 CANTalon* RobotMap::indexMotor;
 CANTalon* RobotMap::pickup;
-
-CANTalon* RobotMap::armMotor;
 
 CANTalon* RobotMap::winchMotor;
 AnalogInput* RobotMap::winchPot;
@@ -99,6 +97,7 @@ void RobotMap::Initialize() {
 	////////////////////////////////////
 	////Front Left Wheel////////////////
 	////////////////////////////////////
+	//Drive Motor
 	driveTrainFrontLeftDrive = new CANTalon(FLD);
 	driveTrainFrontLeftDrive->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
 	driveTrainFrontLeftDrive->ConfigPeakOutputVoltage(12.0, -12.0);
@@ -113,18 +112,26 @@ void RobotMap::Initialize() {
 	driveTrainFrontLeftDrive->SetIzone(pdriveIZone);
 	driveTrainFrontLeftDrive->SetD(pdriveD);
 	driveTrainFrontLeftDrive->SetF(pdriveF);
+	//Steering Motor
 	driveTrainFrontLeftSteer = new CANTalon(FLS);
-	//driveTrainFrontLeftSteer->SetClosedLoopOutputDirection(true);
+	driveTrainFrontLeftSteer->SetControlMode(CANTalon::kPosition);
 	driveTrainFrontLeftSteer->SetFeedbackDevice(CANTalon::CtreMagEncoder_Absolute);
-	driveTrainFrontLeftPos = new AnalogChannelVolt(FLP, true, RATIO, driveTrainFrontLeftSteer);
-	driveTrainFrontLeft = new PIDController(P, I, D, F, driveTrainFrontLeftPos, driveTrainFrontLeftSteer, PERIOD);
-	driveTrainFrontLeft->SetContinuous(CONTINUOUS);
-	driveTrainFrontLeft->SetAbsoluteTolerance(TOLERANCE);
-	driveTrainFrontLeft->SetOutputRange(-STEERPOW, STEERPOW);
+	driveTrainFrontLeftSteer->SetP(P);
+	driveTrainFrontLeftSteer->SetI(I);
+	driveTrainFrontLeftSteer->SetD(D);
+	driveTrainFrontLeftSteer->SetF(F);
+	driveTrainFrontLeftSteer->ConfigNominalOutputVoltage(0.0, 0.0);
+	driveTrainFrontLeftSteer->ConfigPeakOutputVoltage(12.0*STEERPOW, -12.0*STEERPOW);
+	//driveTrainFrontLeftPos = new AnalogChannelVolt(FLP, true, RATIO, driveTrainFrontLeftSteer);
+	//driveTrainFrontLeft = new PIDController(P, I, D, F, driveTrainFrontLeftPos, driveTrainFrontLeftSteer, PERIOD);
+	//driveTrainFrontLeft->SetContinuous(CONTINUOUS);
+	//driveTrainFrontLeft->SetAbsoluteTolerance(TOLERANCE);
+	//driveTrainFrontLeft->SetOutputRange(-STEERPOW, STEERPOW);
 
 	////////////////////////////////////
 	////Front Right Wheel///////////////
 	////////////////////////////////////
+	//Driving Motor
 	driveTrainFrontRightDrive = new CANTalon(FRD);
 	driveTrainFrontRightDrive->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
 	driveTrainFrontRightDrive->ConfigPeakOutputVoltage(12.0, -12.0);
@@ -139,18 +146,26 @@ void RobotMap::Initialize() {
 	driveTrainFrontRightDrive->SetIzone(pdriveIZone);
 	driveTrainFrontRightDrive->SetD(pdriveD);
 	driveTrainFrontRightDrive->SetF(pdriveF);
+	//Steering Motor
 	driveTrainFrontRightSteer = new CANTalon(FRS);
-	//driveTrainFrontRightSteer->SetClosedLoopOutputDirection(true);
+	driveTrainFrontRightSteer->SetControlMode(CANTalon::kPosition);
 	driveTrainFrontRightSteer->SetFeedbackDevice(CANTalon::CtreMagEncoder_Absolute);
-	driveTrainFrontRightPos = new AnalogChannelVolt(FRP, true, RATIO, driveTrainFrontRightSteer);
-	driveTrainFrontRight = new PIDController(P, I, D, F, driveTrainFrontRightPos, driveTrainFrontRightSteer, PERIOD);
-	driveTrainFrontRight->SetContinuous(CONTINUOUS);
-	driveTrainFrontRight->SetAbsoluteTolerance(TOLERANCE);
-	driveTrainFrontRight->SetOutputRange(-STEERPOW, STEERPOW);
+	driveTrainFrontRightSteer->SetP(P);
+	driveTrainFrontRightSteer->SetI(I);
+	driveTrainFrontRightSteer->SetD(D);
+	driveTrainFrontRightSteer->SetF(F);
+	driveTrainFrontRightSteer->ConfigNominalOutputVoltage(0.0, 0.0);
+	driveTrainFrontRightSteer->ConfigPeakOutputVoltage(12.0*STEERPOW, -12.0*STEERPOW);
+	//driveTrainFrontRightPos = new AnalogChannelVolt(FRP, true, RATIO, driveTrainFrontRightSteer);
+	//driveTrainFrontRight = new PIDController(P, I, D, F, driveTrainFrontRightPos, driveTrainFrontRightSteer, PERIOD);
+	//driveTrainFrontRight->SetContinuous(CONTINUOUS);
+	//driveTrainFrontRight->SetAbsoluteTolerance(TOLERANCE);
+	//driveTrainFrontRight->SetOutputRange(-STEERPOW, STEERPOW);
 
 	////////////////////////////////////
 	////Rear Left Wheel/////////////////
 	////////////////////////////////////
+	//Driving Motor
 	driveTrainRearLeftDrive = new CANTalon(RLD);
 	driveTrainRearLeftDrive->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
 	driveTrainRearLeftDrive->ConfigPeakOutputVoltage(12.0, -12.0);
@@ -165,18 +180,26 @@ void RobotMap::Initialize() {
 	driveTrainRearLeftDrive->SetIzone(pdriveIZone);
 	driveTrainRearLeftDrive->SetD(pdriveD);
 	driveTrainRearLeftDrive->SetF(pdriveF);
+	//Steering Motor
 	driveTrainRearLeftSteer = new CANTalon(RLS);
-	//driveTrainRearLeftSteer->SetClosedLoopOutputDirection(true);
+	driveTrainRearLeftSteer->SetControlMode(CANTalon::kPosition);
 	driveTrainRearLeftSteer->SetFeedbackDevice(CANTalon::CtreMagEncoder_Absolute);
-	driveTrainRearLeftPos = new AnalogChannelVolt(RLP, true, RATIO, driveTrainRearLeftSteer);
-	driveTrainRearLeft = new PIDController(P, I, D, F, driveTrainRearLeftPos, driveTrainRearLeftSteer, PERIOD);
-	driveTrainRearLeft->SetContinuous(CONTINUOUS);
-	driveTrainRearLeft->SetAbsoluteTolerance(TOLERANCE);
-	driveTrainRearLeft->SetOutputRange(-STEERPOW, STEERPOW);
+	driveTrainRearLeftSteer->SetP(P);
+	driveTrainRearLeftSteer->SetI(I);
+	driveTrainRearLeftSteer->SetD(D);
+	driveTrainRearLeftSteer->SetF(F);
+	driveTrainRearLeftSteer->ConfigNominalOutputVoltage(0.0, 0.0);
+	driveTrainRearLeftSteer->ConfigPeakOutputVoltage(12.0*STEERPOW, -12.0*STEERPOW);
+	//driveTrainRearLeftPos = new AnalogChannelVolt(RLP, true, RATIO, driveTrainRearLeftSteer);
+	//driveTrainRearLeft = new PIDController(P, I, D, F, driveTrainRearLeftPos, driveTrainRearLeftSteer, PERIOD);
+	//driveTrainRearLeft->SetContinuous(CONTINUOUS);
+	//driveTrainRearLeft->SetAbsoluteTolerance(TOLERANCE);
+	//driveTrainRearLeft->SetOutputRange(-STEERPOW, STEERPOW);
 
 	////////////////////////////////////
 	////Rear Right Wheel////////////////
 	////////////////////////////////////
+	//Driving Motor
 	driveTrainRearRightDrive = new CANTalon(RRD);
 	driveTrainRearRightDrive->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
 	driveTrainRearRightDrive->ConfigPeakOutputVoltage(12.0, -12.0);
@@ -191,15 +214,22 @@ void RobotMap::Initialize() {
 	driveTrainRearRightDrive->SetIzone(pdriveIZone);
 	driveTrainRearRightDrive->SetD(pdriveD);
 	driveTrainRearRightDrive->SetF(pdriveF);
+	//Steering Motor
 	driveTrainRearRightSteer = new CANTalon(RRS);
-	//driveTrainRearRightSteer->SetClosedLoopOutputDirection(true);
+	driveTrainRearRightSteer->SetControlMode(CANTalon::kPosition);
 	driveTrainRearRightSteer->SetFeedbackDevice(CANTalon::CtreMagEncoder_Absolute);
-	driveTrainRearRightPos = new AnalogChannelVolt(RRP, true, RATIO, driveTrainRearRightSteer);
-	driveTrainRearRight = new PIDController(P, I, D, F, driveTrainRearRightPos, driveTrainRearRightSteer, PERIOD);
-	driveTrainRearRight->SetContinuous(CONTINUOUS);
-	driveTrainRearRight->SetAbsoluteTolerance(TOLERANCE);
-	driveTrainRearRight->SetInputRange(POTMIN, POTMAX);
-	driveTrainRearRight->SetOutputRange(-STEERPOW, STEERPOW);
+	driveTrainRearRightSteer->SetP(P);
+	driveTrainRearRightSteer->SetI(I);
+	driveTrainRearRightSteer->SetD(D);
+	driveTrainRearRightSteer->SetF(F);
+	driveTrainRearRightSteer->ConfigNominalOutputVoltage(0.0, 0.0);
+	driveTrainRearRightSteer->ConfigPeakOutputVoltage(12.0*STEERPOW, -12.0*STEERPOW);
+	//driveTrainRearRightPos = new AnalogChannelVolt(RRP, true, RATIO, driveTrainRearRightSteer);
+	//driveTrainRearRight = new PIDController(P, I, D, F, driveTrainRearRightPos, driveTrainRearRightSteer, PERIOD);
+	//driveTrainRearRight->SetContinuous(CONTINUOUS);
+	//driveTrainRearRight->SetAbsoluteTolerance(TOLERANCE);
+	//driveTrainRearRight->SetInputRange(POTMIN, POTMAX);
+	//driveTrainRearRight->SetOutputRange(-STEERPOW, STEERPOW);
 
 	i2c = new I2C((I2C::Port)1, 0x04);
 
@@ -216,8 +246,6 @@ void RobotMap::Initialize() {
 	feederSensor->SetAverageBits(2);
 	feederSensor->SetOversampleBits(4);
 	feederSensor->SetSampleRate(1000);
-
-	armMotor = new CANTalon(6);
 
 	pickup = new CANTalon(10);
 	indexMotor = new CANTalon(9);

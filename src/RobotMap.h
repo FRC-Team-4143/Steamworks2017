@@ -11,24 +11,24 @@ public:
 
 	static PowerDistributionPanel* pdp;
 
-	static PIDController* driveTrainFrontLeft;
+	//static PIDController* driveTrainFrontLeft;
 	static CANTalon* driveTrainFrontLeftDrive;
-	static AnalogChannelVolt* driveTrainFrontLeftPos;
+	//static AnalogChannelVolt* driveTrainFrontLeftPos;
 	static CANTalon* driveTrainFrontLeftSteer;
 
-	static PIDController* driveTrainFrontRight;
+	//static PIDController* driveTrainFrontRight;
 	static CANTalon* driveTrainFrontRightDrive;
-	static AnalogChannelVolt* driveTrainFrontRightPos;
+	//static AnalogChannelVolt* driveTrainFrontRightPos;
 	static CANTalon* driveTrainFrontRightSteer;
 
-	static PIDController* driveTrainRearLeft;
+	//static PIDController* driveTrainRearLeft;
 	static CANTalon* driveTrainRearLeftDrive;
-	static AnalogChannelVolt* driveTrainRearLeftPos;
+	//static AnalogChannelVolt* driveTrainRearLeftPos;
 	static CANTalon* driveTrainRearLeftSteer;
 
-	static PIDController* driveTrainRearRight;
+	//static PIDController* driveTrainRearRight;
 	static CANTalon* driveTrainRearRightDrive;
-	static AnalogChannelVolt* driveTrainRearRightPos;
+	//static AnalogChannelVolt* driveTrainRearRightPos;
 	static CANTalon* driveTrainRearRightSteer;
 
 	static I2C* i2c;
@@ -47,8 +47,6 @@ public:
 
 	static SpeedController* feeder;
 	static AnalogInput* feederSensor;
-
-	static CANTalon* armMotor;
 
 	static CANTalon* pickup;
 	static CANTalon* indexMotor;
