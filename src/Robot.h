@@ -14,6 +14,7 @@
 #include "Subsystems/VisionBridgeSub.h"
 #include "Subsystems/Indexer.h"
 #include "Subsystems/Pickup.h"
+#include "Subsystems/Climber.h"
 
 
 
@@ -30,6 +31,7 @@ public:
 	static Pickup *pickup;
 	static std::shared_ptr<BasicCameraSub> basicCameraSub;
 	static VisionBridgeSub *visionBridge;
+	static Climber *climber;
 
 	virtual void RobotInit();
 	virtual void RobotPeriodic();

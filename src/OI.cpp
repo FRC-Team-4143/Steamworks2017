@@ -22,6 +22,8 @@
 #include <Commands/ShooterSlower.h>
 #include <Commands/OneBall.h>
 #include <Commands/TestJamShooter.h>
+#include "Commands/Climb.h"
+#include "Commands/ReverseClimb.h"
 #include "Robot.h"
 
 const uint32_t JOYSTICK_LX_AXIS = 0;
@@ -67,6 +69,8 @@ OI::OI() {
 	fieldCentric = new FieldCentric();
 	//arcade = new ArcadeDriveMode();
 	oneBall = new OneBall();
+	climb = new Climb();
+	reverseClimb = new ReverseClimb();
 
 	auto cameraEnableCmd = new BasicCameraEnableCmd(Robot::basicCameraSub);
 
@@ -76,6 +80,9 @@ OI::OI() {
 	//->WhileHeld(shootCycle);
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_RIGHT))->WhileHeld(gyroCrab);
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_LEFT))->WhileHeld(fieldCentric);
+
+	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_START))->WhileHeld(climb);
+	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_BACK))->WhileHeld(reverseClimb);
 
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_RB))->WhileHeld(pickupIn);
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_LB))->WhileHeld(pickupOut);

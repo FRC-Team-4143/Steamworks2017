@@ -24,6 +24,8 @@ public:
 
 	static I2C* i2c;
 
+	static CANTalon* climbingMotor;
+
 	static AHRS* imu;
 
 	static SerialPort* serialPort;

@@ -37,6 +37,8 @@ public:
 	Command* gyroCrab;
 	Command* fieldCentric;
 	Command* oneBall;
+	Command* climb;
+	Command* reverseClimb;
 
 	Joystick* GetDriverJoystick() { return driverJoystick; }
 	Joystick* GetDriverJoystick2() { return driverJoystick2; }

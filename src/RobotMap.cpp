@@ -19,6 +19,8 @@ CANTalon*          RobotMap::driveTrainRearRightSteer = nullptr;
 
 I2C* RobotMap::i2c = nullptr;
 
+CANTalon* RobotMap::climbingMotor = nullptr;
+
 SerialPort* RobotMap::serialPort = nullptr;
 
 CANTalon* RobotMap::shooterMotor1;
@@ -191,6 +193,8 @@ void RobotMap::Initialize() {
 	driveTrainRearRightSteer->ConfigPeakOutputVoltage(12.0*STEERPOW, -12.0*STEERPOW);
 
 	i2c = new I2C((I2C::Port)1, 0x04);
+
+	climbingMotor = new CANTalon(13);
 
     shooterMotor1 = new CANTalon(11);
     shooterMotor2 = new CANTalon(12);

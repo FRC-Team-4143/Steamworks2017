@@ -23,6 +23,7 @@ std::shared_ptr<BasicCameraSub> Robot::basicCameraSub;
 VisionBridgeSub* Robot::visionBridge = nullptr;
 const bool SHOOTER_AS_MASTER_SLAVE = true;
 Shooter* Robot::shooter = nullptr;
+Climber* Robot::climber = nullptr;
 
 void Robot::RobotInit() {
 	Preferences::GetInstance();
@@ -47,6 +48,7 @@ void Robot::RobotInit() {
 	basicCameraSub.reset(new BasicCameraSub("cam0"));
 	oi = new OI();
 	visionBridge = new VisionBridgeSub();
+	climber = new Climber();
 	driveTrain->SetWheelbase(26.8, 26.8, 22.8);
 	driveTrain->loadWheelOffsets();
 
