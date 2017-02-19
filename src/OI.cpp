@@ -4,16 +4,12 @@
 #include "Commands/ArcadeDriveMode.h"
 #include "Commands/AutonomousCommand.h"
 #include "Commands/BasicCameraEnableCmd.h"
-#include "Commands/Climb.h"
-#include "Commands/ClimbReverse.h"
 #include "Commands/FieldCentric.h"
 #include "Commands/GyroCrab.h"
 #include "Commands/PositionDrive.h"
-#include "Commands/ResetWinch.h"
 #include "Commands/ScriptCamDrive.h"
 #include "Commands/ScriptValidate.h"
 #include "Commands/SetWheelOffsets.h"
-#include "Commands/SetWinchPosition.h"
 #include "Commands/UnwindWheels.h"
 #include "Commands/UpdatePositions.h"
 #include "Commands/ZeroYaw.h"
@@ -67,14 +63,9 @@ OI::OI() {
 	driverJoystick = new Joystick(0);
 	driverJoystick2 = new Joystick(1);
 	unwindWheels = new UnwindWheels();
-	winchSet1 = new SetWinchPosition(0, false, 1.5); // starting
-	winchSet2 = new SetWinchPosition(1, false, 2.5); // raised
-	winchSet3 = new SetWinchPosition(2, false, 1.5); // lowered
 	gyroCrab = new GyroCrab();
 	fieldCentric = new FieldCentric();
 	//arcade = new ArcadeDriveMode();
-	climb = new Climb();
-	climbReverse = new ClimbReverse();
 	oneBall = new OneBall();
 
 	auto cameraEnableCmd = new BasicCameraEnableCmd(Robot::basicCameraSub);

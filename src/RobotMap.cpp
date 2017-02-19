@@ -5,47 +5,27 @@ bool RobotMap::SpeedControl = 0;
 
 PowerDistributionPanel* RobotMap::pdp = nullptr;
 
-//PIDController*     RobotMap::driveTrainFrontLeft = nullptr;
 CANTalon*          RobotMap::driveTrainFrontLeftDrive = nullptr;
-//AnalogChannelVolt* RobotMap::driveTrainFrontLeftPos = nullptr;
 CANTalon*          RobotMap::driveTrainFrontLeftSteer = nullptr;
 
-//PIDController*     RobotMap::driveTrainFrontRight = nullptr;
 CANTalon*          RobotMap::driveTrainFrontRightDrive = nullptr;
-//AnalogChannelVolt* RobotMap::driveTrainFrontRightPos = nullptr;
 CANTalon*          RobotMap::driveTrainFrontRightSteer = nullptr;
 
-//PIDController*     RobotMap::driveTrainRearLeft = nullptr;
 CANTalon*          RobotMap::driveTrainRearLeftDrive = nullptr;
-//AnalogChannelVolt* RobotMap::driveTrainRearLeftPos = nullptr;
 CANTalon*          RobotMap::driveTrainRearLeftSteer = nullptr;
 
-//PIDController*     RobotMap::driveTrainRearRight = nullptr;
 CANTalon*          RobotMap::driveTrainRearRightDrive = nullptr;
-//AnalogChannelVolt* RobotMap::driveTrainRearRightPos = nullptr;
 CANTalon*          RobotMap::driveTrainRearRightSteer = nullptr;
 
 I2C* RobotMap::i2c = nullptr;
 
 SerialPort* RobotMap::serialPort = nullptr;
 
-//CANTalon* RobotMap::shooterLeftFront;
-//CANTalon* RobotMap::shooterRightBack;
-//CANTalon* RobotMap::shooterRightFront;
-//CANTalon* RobotMap::shooterLeftBack;
-
 CANTalon* RobotMap::shooterMotor1;
 CANTalon* RobotMap::shooterMotor2;
 
-SpeedController* RobotMap::feeder;
-AnalogInput* RobotMap::feederSensor;
-
 CANTalon* RobotMap::indexMotor;
 CANTalon* RobotMap::pickup;
-
-CANTalon* RobotMap::winchMotor;
-AnalogInput* RobotMap::winchPot;
-PIDController* RobotMap::shooterWinch;
 
 AHRS* RobotMap::imu = nullptr;
 
@@ -122,11 +102,6 @@ void RobotMap::Initialize() {
 	driveTrainFrontLeftSteer->SetF(F);
 	driveTrainFrontLeftSteer->ConfigNominalOutputVoltage(0.0, 0.0);
 	driveTrainFrontLeftSteer->ConfigPeakOutputVoltage(12.0*STEERPOW, -12.0*STEERPOW);
-	//driveTrainFrontLeftPos = new AnalogChannelVolt(FLP, true, RATIO, driveTrainFrontLeftSteer);
-	//driveTrainFrontLeft = new PIDController(P, I, D, F, driveTrainFrontLeftPos, driveTrainFrontLeftSteer, PERIOD);
-	//driveTrainFrontLeft->SetContinuous(CONTINUOUS);
-	//driveTrainFrontLeft->SetAbsoluteTolerance(TOLERANCE);
-	//driveTrainFrontLeft->SetOutputRange(-STEERPOW, STEERPOW);
 
 	////////////////////////////////////
 	////Front Right Wheel///////////////
@@ -156,11 +131,6 @@ void RobotMap::Initialize() {
 	driveTrainFrontRightSteer->SetF(F);
 	driveTrainFrontRightSteer->ConfigNominalOutputVoltage(0.0, 0.0);
 	driveTrainFrontRightSteer->ConfigPeakOutputVoltage(12.0*STEERPOW, -12.0*STEERPOW);
-	//driveTrainFrontRightPos = new AnalogChannelVolt(FRP, true, RATIO, driveTrainFrontRightSteer);
-	//driveTrainFrontRight = new PIDController(P, I, D, F, driveTrainFrontRightPos, driveTrainFrontRightSteer, PERIOD);
-	//driveTrainFrontRight->SetContinuous(CONTINUOUS);
-	//driveTrainFrontRight->SetAbsoluteTolerance(TOLERANCE);
-	//driveTrainFrontRight->SetOutputRange(-STEERPOW, STEERPOW);
 
 	////////////////////////////////////
 	////Rear Left Wheel/////////////////
@@ -190,11 +160,6 @@ void RobotMap::Initialize() {
 	driveTrainRearLeftSteer->SetF(F);
 	driveTrainRearLeftSteer->ConfigNominalOutputVoltage(0.0, 0.0);
 	driveTrainRearLeftSteer->ConfigPeakOutputVoltage(12.0*STEERPOW, -12.0*STEERPOW);
-	//driveTrainRearLeftPos = new AnalogChannelVolt(RLP, true, RATIO, driveTrainRearLeftSteer);
-	//driveTrainRearLeft = new PIDController(P, I, D, F, driveTrainRearLeftPos, driveTrainRearLeftSteer, PERIOD);
-	//driveTrainRearLeft->SetContinuous(CONTINUOUS);
-	//driveTrainRearLeft->SetAbsoluteTolerance(TOLERANCE);
-	//driveTrainRearLeft->SetOutputRange(-STEERPOW, STEERPOW);
 
 	////////////////////////////////////
 	////Rear Right Wheel////////////////
@@ -224,34 +189,12 @@ void RobotMap::Initialize() {
 	driveTrainRearRightSteer->SetF(F);
 	driveTrainRearRightSteer->ConfigNominalOutputVoltage(0.0, 0.0);
 	driveTrainRearRightSteer->ConfigPeakOutputVoltage(12.0*STEERPOW, -12.0*STEERPOW);
-	//driveTrainRearRightPos = new AnalogChannelVolt(RRP, true, RATIO, driveTrainRearRightSteer);
-	//driveTrainRearRight = new PIDController(P, I, D, F, driveTrainRearRightPos, driveTrainRearRightSteer, PERIOD);
-	//driveTrainRearRight->SetContinuous(CONTINUOUS);
-	//driveTrainRearRight->SetAbsoluteTolerance(TOLERANCE);
-	//driveTrainRearRight->SetInputRange(POTMIN, POTMAX);
-	//driveTrainRearRight->SetOutputRange(-STEERPOW, STEERPOW);
 
 	i2c = new I2C((I2C::Port)1, 0x04);
-
-    //shooterLeftFront = new CANTalon(11);
-    //shooterLeftBack = new CANTalon(30);
-    //shooterRightFront = new CANTalon(12);
-    //shooterRightBack = new CANTalon(29);
 
     shooterMotor1 = new CANTalon(11);
     shooterMotor2 = new CANTalon(12);
 
-	feeder = new Talon(0);
-	feederSensor = new AnalogInput(0);
-	feederSensor->SetAverageBits(2);
-	feederSensor->SetOversampleBits(4);
-	feederSensor->SetSampleRate(1000);
-
 	pickup = new CANTalon(10);
 	indexMotor = new CANTalon(9);
-	winchMotor = new CANTalon(5);
-	winchPot = new AnalogInput(1);
-	shooterWinch = new PIDController(1.5, 0.1, 0.1, 0.0, winchPot, winchMotor);
-	shooterWinch->SetOutputRange(-0.5, 0.5);
-	shooterWinch->SetAbsoluteTolerance(0.015);
 }

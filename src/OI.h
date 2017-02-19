@@ -33,12 +33,7 @@ public:
 	Command* pickupIn;
 	Command* pickupOut;
 	Command* unwindWheels;
-	Command* winchSet1;
-	Command* winchSet2;
-	Command* winchSet3;
 	//Command* arcade;
-	Command* climb;
-	Command* climbReverse;
 	Command* gyroCrab;
 	Command* fieldCentric;
 	Command* oneBall;

@@ -12,7 +12,6 @@
 #include "Subsystems/GyroSub.h"
 #include "Subsystems/Shooter.h"
 #include "Subsystems/VisionBridgeSub.h"
-#include "Subsystems/WinchSub.h"
 #include "Subsystems/Indexer.h"
 #include "Subsystems/Pickup.h"
 
@@ -30,7 +29,6 @@ public:
 	static Indexer *indexer;
 	static Pickup *pickup;
 	static std::shared_ptr<BasicCameraSub> basicCameraSub;
-	static WinchSub *winchSub;
 	static VisionBridgeSub *visionBridge;
 
 	virtual void RobotInit();

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <Commands/Subsystem.h>
-#include "Modules/AnalogChannelVolt.h"
 #include "Subsystems/GyroSub.h"
+#include "CANTalon.h"
 
 // ==========================================================================
 
@@ -37,24 +37,16 @@ private:
 	double RLValue; // Current value measured from rear left drive encoder
 	double RRValue; // Current value measured from rear right drive encoder
 
-	//PIDController* frontLeft;			// PID object for front left steering motor
 	CANTalon* frontLeftDrive;			// Speed controller for front left drive motor
-	//AnalogChannelVolt* frontLeftPos;	// Encoder for front left steering motor
 	CANTalon* frontLeftSteer;			// Speed controller for front left steering motor
 
-	//PIDController* frontRight;			// PID object for front right steering motor
 	CANTalon* frontRightDrive;			// Speed controller for front right drive motor
-	//AnalogChannelVolt* frontRightPos;	// Encoder for front right steering motor
 	CANTalon* frontRightSteer;			// Speed controller for front right steering motor
 
-	//PIDController* rearLeft;			// PID object for rear left steering motor
 	CANTalon* rearLeftDrive;			// Speed controller for rear left drive motor
-	//AnalogChannelVolt* rearLeftPos;		// Encoder for rear left steering motor
 	CANTalon* rearLeftSteer;			// Speed controller for rear left steering motor
 
-	//PIDController* rearRight;			// PID object for rear right steering motor
 	CANTalon* rearRightDrive;			// Speed controller for rear right drive motor
-	//AnalogChannelVolt* rearRightPos;	// Encoder for rear right steering motor
 	CANTalon* rearRightSteer;			// Speed controller for rear right steering motor
 
 	double CorrectSteerSetpoint(double setpoint);
