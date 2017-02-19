@@ -195,14 +195,14 @@ void DriveTrain::GyroCrab(float desiredangle, float y, float x, bool operatorCon
 
 void DriveTrain::Crab(float twist, float y, float x, bool operatorControl) {
 	// stop PID loop if wires wrap.
-	if (unwinding || abs(frontRightPos->GetTurns()) > MAXTURNS ||
+	/*if (unwinding || abs(frontRightPos->GetTurns()) > MAXTURNS ||
 			abs(rearRightPos->GetTurns()) > MAXTURNS ||
 			abs(frontLeftPos->GetTurns()) > MAXTURNS ||
 			abs(rearLeftPos->GetTurns()) > MAXTURNS) {
 		SetDriveSpeed(0, 0, 0, 0);
 		return;
 	}
-
+*/
 	// this stores the direction of joystick when all axis last crossed into the
 	// deadzone and keeps the wheels pointed that direction
 	// this .1 should be kept the same as the deadzone in oi.cpp
@@ -335,10 +335,14 @@ double DriveTrain::CorrectSteerSetpoint(double setpoint) {
 // ==========================================================================
 
 void DriveTrain::SetSteerSetpoint(float FLSetPoint, float FRSetPoint, float RLSetPoint, float RRSetPoint) {
+	FLSetPoint = -FLSetPoint;
+	FRSetPoint = -FRSetPoint;
+	RLSetPoint = -RLSetPoint;
+	RRSetPoint = -RRSetPoint;
 	//////////////////////////////////
 	// Front Left Wheel
 	//////////////////////////////////
-	if (frontLeftPos->GetTurns() > SOFTTURNLIMIT) {
+/*	if (frontLeftPos->GetTurns() > SOFTTURNLIMIT) {
 		if (CorrectSteerSetpoint(FLSetPoint + FLOffset - frontLeftPos->GetAngle()) > EncoderConstants::HALF_TURN) {
 			frontLeft->SetSetpoint(CorrectSteerSetpoint(FLSetPoint + FLOffset));
 			FLInv = 1;
@@ -358,7 +362,7 @@ void DriveTrain::SetSteerSetpoint(float FLSetPoint, float FRSetPoint, float RLSe
 			FLInv = -1;
 		}
 	}
-	else {
+	else {*/
 		// Default rotation logic
 		if (fabs(FLSetPoint + FLOffset - frontLeftPos->GetAngle()) < EncoderConstants::QUARTER_TURN ||
 				fabs(FLSetPoint + FLOffset - frontLeftPos->GetAngle()) > EncoderConstants::THREEQUARTER_TURN) {
@@ -369,12 +373,12 @@ void DriveTrain::SetSteerSetpoint(float FLSetPoint, float FRSetPoint, float RLSe
 			frontLeft->SetSetpoint(CorrectSteerSetpoint(FLSetPoint + FLOffset - EncoderConstants::HALF_TURN));
 			FLInv = -1;
 		}
-	}
+	//}
 
 	//////////////////////////////////
 	// Front Right Wheel
 	//////////////////////////////////
-	if (frontRightPos->GetTurns() > SOFTTURNLIMIT) {
+	/*if (frontRightPos->GetTurns() > SOFTTURNLIMIT) {
 		if (CorrectSteerSetpoint(FRSetPoint + FROffset - frontRightPos->GetAngle()) > EncoderConstants::HALF_TURN) {
 			frontRight->SetSetpoint(CorrectSteerSetpoint(FRSetPoint + FROffset));
 			FRInv = 1;
@@ -394,7 +398,7 @@ void DriveTrain::SetSteerSetpoint(float FLSetPoint, float FRSetPoint, float RLSe
 			FRInv = -1;
 		}
 	}
-	else {
+	else {*/
 		// default rotation logic
 		if (fabs(FRSetPoint + FROffset - frontRightPos->GetAngle()) < EncoderConstants::QUARTER_TURN ||
 				fabs(FRSetPoint + FROffset - frontRightPos->GetAngle()) > EncoderConstants::THREEQUARTER_TURN) {
@@ -405,12 +409,12 @@ void DriveTrain::SetSteerSetpoint(float FLSetPoint, float FRSetPoint, float RLSe
 			frontRight->SetSetpoint(CorrectSteerSetpoint(FRSetPoint + FROffset - EncoderConstants::HALF_TURN));
 			FRInv = -1;
 		}
-	}
+	//}
 
 	//////////////////////////////////
 	// Rear Left Wheel
 	//////////////////////////////////
-	if (rearLeftPos->GetTurns() > SOFTTURNLIMIT) {
+	/*if (rearLeftPos->GetTurns() > SOFTTURNLIMIT) {
 		if (CorrectSteerSetpoint(RLSetPoint + RLOffset - rearLeftPos->GetAngle()) > EncoderConstants::HALF_TURN) {
 			rearLeft->SetSetpoint(CorrectSteerSetpoint(RLSetPoint + RLOffset));
 			RLInv = 1;
@@ -430,7 +434,7 @@ void DriveTrain::SetSteerSetpoint(float FLSetPoint, float FRSetPoint, float RLSe
 			RLInv = -1;
 		}
 	}
-	else {
+	else {*/
 		// default rotation logic
 		if (fabs(RLSetPoint + RLOffset - rearLeftPos->GetAngle()) < EncoderConstants::QUARTER_TURN ||
 				fabs(RLSetPoint + RLOffset - rearLeftPos->GetAngle()) > EncoderConstants::THREEQUARTER_TURN) {
@@ -441,12 +445,12 @@ void DriveTrain::SetSteerSetpoint(float FLSetPoint, float FRSetPoint, float RLSe
 			rearLeft->SetSetpoint(CorrectSteerSetpoint(RLSetPoint + RLOffset - EncoderConstants::HALF_TURN));
 			RLInv = -1;
 		}
-	}
+	//}
 
 	//////////////////////////////////
 	// Rear Right Wheel
 	//////////////////////////////////
-	if (rearRightPos->GetTurns() > SOFTTURNLIMIT) {
+	/*if (rearRightPos->GetTurns() > SOFTTURNLIMIT) {
 		if (CorrectSteerSetpoint(RRSetPoint + RROffset - rearRightPos->GetAngle()) > EncoderConstants::HALF_TURN) {
 			rearRight->SetSetpoint(CorrectSteerSetpoint(RRSetPoint + RROffset));
 			RRInv = 1;
@@ -466,7 +470,7 @@ void DriveTrain::SetSteerSetpoint(float FLSetPoint, float FRSetPoint, float RLSe
 			RRInv = -1;
 		}
 	}
-	else {
+	else {*/
 		// default rotation logic
 		if (fabs(RRSetPoint + RROffset - rearRightPos->GetAngle()) < EncoderConstants::QUARTER_TURN ||
 				fabs(RRSetPoint + RROffset - rearRightPos->GetAngle()) > EncoderConstants::THREEQUARTER_TURN) {
@@ -477,7 +481,7 @@ void DriveTrain::SetSteerSetpoint(float FLSetPoint, float FRSetPoint, float RLSe
 			rearRight->SetSetpoint(CorrectSteerSetpoint(RRSetPoint + RROffset - EncoderConstants::HALF_TURN));
 			RRInv = -1;
 		}
-	}
+	//}
 }
 
 // ==========================================================================

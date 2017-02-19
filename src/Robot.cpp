@@ -55,7 +55,7 @@ void Robot::RobotInit() {
 	winchSub = new WinchSub();
 	oi = new OI();
 	visionBridge = new VisionBridgeSub();
-	driveTrain->SetWheelbase(24, 21.5, 24);
+	driveTrain->SetWheelbase(26.8, 26.8, 22.8);
 	driveTrain->loadWheelOffsets();
 
 	shooter = new Shooter();

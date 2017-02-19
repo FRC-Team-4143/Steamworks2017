@@ -29,8 +29,8 @@ void Indexer::SpinCW() {
 SmartDashboard::PutBoolean("Indexer Jammed", indexJammed);
 	if (indexJammed){
 		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
-		indexMotor->Set(-0.7);
-		if (timer->Get() > 1){
+		indexMotor->Set(-0.5);
+		if (timer->Get() > .2){
 			indexJammed = false;
 			timer->Stop();
 		}
@@ -52,8 +52,8 @@ void Indexer::SpinCCW() {
 	SmartDashboard::PutBoolean("Indexer Jammed", indexJammed);
 	if (indexJammed){
 		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
-		indexMotor->Set(0.7);
-		if (timer->Get() > 1){
+		indexMotor->Set(0.5);
+		if (timer->Get() > .2){
 			indexJammed = false;
 			timer->Stop();
 		}
