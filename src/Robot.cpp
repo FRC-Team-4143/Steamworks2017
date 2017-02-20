@@ -17,6 +17,7 @@
 OI* Robot::oi;
 Pickup* Robot::pickup = nullptr;
 Indexer* Robot::indexer = nullptr;
+Turret* Robot::turret = nullptr;
 GyroSub* Robot::gyroSub = nullptr;
 DriveTrain* Robot::driveTrain = nullptr;
 std::shared_ptr<BasicCameraSub> Robot::basicCameraSub;
@@ -45,6 +46,7 @@ void Robot::RobotInit() {
 	driveTrain = new DriveTrain();
 	pickup = new Pickup();
 	indexer = new Indexer();
+	turret = new Turret();
 	basicCameraSub.reset(new BasicCameraSub("cam0"));
 	oi = new OI();
 	visionBridge = new VisionBridgeSub();
@@ -118,7 +120,6 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 	Scheduler::GetInstance()->Run();
-	driveTrain->Dashboard();
 	SmartDashboard::PutBoolean("Indexer Jammed", indexer->indexJammed);
 	SmartDashboard::PutNumber("Index Timer", indexer->timer->Get());
 	indexer->readPDP();

@@ -35,6 +35,7 @@ public:
 
 	static CANTalon* pickup;
 	static CANTalon* indexMotor;
+	static CANTalon* turretMotor;
 
 	static void Initialize();
 };

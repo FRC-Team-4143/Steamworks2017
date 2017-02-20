@@ -24,8 +24,8 @@ public:
 	bool GetButtonA();
 	bool GetButtonTrig();
 	bool GetButton2();
-	bool GetButton3();
-	bool GetButton4();
+	bool GetButton6();
+	bool GetButton10();
 	bool GetButton5();
 
 	Command* spinIndexerCW;

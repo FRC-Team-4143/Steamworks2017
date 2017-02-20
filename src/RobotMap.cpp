@@ -26,6 +26,7 @@ SerialPort* RobotMap::serialPort = nullptr;
 CANTalon* RobotMap::shooterMotor1;
 CANTalon* RobotMap::shooterMotor2;
 
+CANTalon* RobotMap::turretMotor;
 CANTalon* RobotMap::indexMotor;
 CANTalon* RobotMap::pickup;
 
@@ -200,5 +201,6 @@ void RobotMap::Initialize() {
     shooterMotor2 = new CANTalon(12);
 
 	pickup = new CANTalon(10);
-	indexMotor = new CANTalon(9);
+	indexMotor = new CANTalon(14);
+	turretMotor = new CANTalon(9);
 }

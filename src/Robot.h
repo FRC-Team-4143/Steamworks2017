@@ -13,6 +13,7 @@
 #include "Subsystems/Shooter.h"
 #include "Subsystems/VisionBridgeSub.h"
 #include "Subsystems/Indexer.h"
+#include "Subsystems/Turret.h"
 #include "Subsystems/Pickup.h"
 #include "Subsystems/Climber.h"
 
@@ -28,6 +29,7 @@ public:
 	static GyroSub *gyroSub;
 	static Shooter *shooter;
 	static Indexer *indexer;
+	static Turret *turret;
 	static Pickup *pickup;
 	static std::shared_ptr<BasicCameraSub> basicCameraSub;
 	static VisionBridgeSub *visionBridge;

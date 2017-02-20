@@ -55,6 +55,7 @@ const uint32_t JOYSTICK_BUTTON_7 = 7;
 const uint32_t JOYSTICK_BUTTON_10 = 10;
 
 
+
 // ==========================================================================
 
 OI::OI() {
@@ -122,6 +123,7 @@ OI::OI() {
 	SmartDashboard::PutData("Update Positions", new UpdatePositions());
 	SmartDashboard::PutData("Validate Script", new ScriptValidate());
 	SmartDashboard::PutData("JAM SHOOTER", new TestJamShooter());
+
 }
 
 bool OI::GetButton2() {
@@ -131,16 +133,16 @@ bool OI::GetButton2() {
 
 //==========================================================================
 
-bool OI::GetButton3() {
-	auto value = GetDriverJoystick2()->GetRawButton(JOYSTICK_BUTTON_3);
+bool OI::GetButton6() {
+	auto value = GetDriverJoystick2()->GetRawButton(JOYSTICK_BUTTON_6);
 	return (value);
 }
 
 //==========================================================================
 
 
-bool OI::GetButton4() {
-  auto value = GetDriverJoystick2()->GetRawButton(JOYSTICK_BUTTON_4);
+bool OI::GetButton10() {
+  auto value = GetDriverJoystick2()->GetRawButton(JOYSTICK_BUTTON_10);
   return (value);
 }
 

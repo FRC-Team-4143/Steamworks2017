@@ -22,12 +22,17 @@ public:
 	bool IsJammed();
 	void testJamShooter();
 	void readPDP();
+	void setSpeed(double speed);
 
 	CANTalon *indexMotor;
 	PowerDistributionPanel *pdp;
 
 	Timer *timer;
 	bool indexJammed;
+	double reverseTime;
+	double jamPosition;
+	bool loadingOne;
+
 };
 
 #endif  // Indexer_H

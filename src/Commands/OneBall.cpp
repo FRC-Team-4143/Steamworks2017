@@ -12,6 +12,7 @@ OneBall::OneBall() {
 void OneBall::Initialize() {
 
 	Robot::indexer->SpinBall();
+	Robot::indexer->loadingOne = true;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -27,6 +28,7 @@ bool OneBall::IsFinished() {
 // Called once after isFinished returns true
 void OneBall::End() {
 	Robot::indexer->Stop();
+	Robot::indexer->loadingOne = false;
 }
 
 // Called when another command which requires one or more of the same
