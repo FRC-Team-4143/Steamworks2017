@@ -10,8 +10,8 @@ SpinIndexerCW::SpinIndexerCW() {
 void SpinIndexerCW::Initialize() {
 
 
-
-	RobotMap::i2c->Write(5, 0);
+	RobotMap::i2c->Write(11, 0);
+	//RobotMap::i2c->Write(5, 0);
 }
 
 // Called repeatedly when this Command is scheduled to run

@@ -201,6 +201,6 @@ void RobotMap::Initialize() {
     shooterMotor2 = new CANTalon(12);
 
 	pickup = new CANTalon(10);
-	indexMotor = new CANTalon(14);
+	indexMotor = new CANTalon(14);//14
 	turretMotor = new CANTalon(9);
 }

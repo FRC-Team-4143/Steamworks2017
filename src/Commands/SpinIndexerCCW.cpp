@@ -12,8 +12,8 @@ SpinIndexerCCW::SpinIndexerCCW() {
 void SpinIndexerCCW::Initialize() {
 
 
-
-	RobotMap::i2c->Write(9, 0);
+	RobotMap::i2c->Write(11, 0);
+	//RobotMap::i2c->Write(9, 0);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -31,7 +31,7 @@ void SpinIndexerCCW::End() {
 
 	Robot::indexer->Stop();
 
-	RobotMap::i2c->Write(6, 0);
+
 }
 
 // Called when another command which requires one or more of the same

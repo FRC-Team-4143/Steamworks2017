@@ -122,6 +122,7 @@ void Robot::TeleopPeriodic() {
 	Scheduler::GetInstance()->Run();
 	SmartDashboard::PutBoolean("Indexer Jammed", indexer->indexJammed);
 	SmartDashboard::PutNumber("Index Timer", indexer->timer->Get());
+	SmartDashboard::PutNumber("Reverse Time", indexer->reverseTime);
 	indexer->readPDP();
 
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
