@@ -1,4 +1,4 @@
-#include "RobotMap.h"
+ #include "RobotMap.h"
 #include <LiveWindow/LiveWindow.h>
 
 bool RobotMap::SpeedControl = 0;
@@ -195,12 +195,12 @@ void RobotMap::Initialize() {
 
 	i2c = new I2C((I2C::Port)1, 0x04);
 
-	climbingMotor = new CANTalon(13);
+	climbingMotor = new CANTalon(13); //13
 
-    shooterMotor1 = new CANTalon(11);
-    shooterMotor2 = new CANTalon(12);
+    shooterMotor1 = new CANTalon(11); //11
+    shooterMotor2 = new CANTalon(12); //12
 
-	pickup = new CANTalon(10);
-	indexMotor = new CANTalon(14);//14
-	turretMotor = new CANTalon(9);
+	pickup = new CANTalon(10); //10
+	indexMotor = new CANTalon(14); //14
+	turretMotor = new CANTalon(9); //9
 }

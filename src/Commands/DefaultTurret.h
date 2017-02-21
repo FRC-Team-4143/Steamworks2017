@@ -1,5 +1,4 @@
-#ifndef DefaultTurret_H
-#define DefaultTurret_H
+#pragma once
 
 #include "Commands/Command.h"
 
@@ -12,5 +11,3 @@ public:
 	void End();
 	void Interrupted();
 };
-
-#endif  // DefaultTurret_H

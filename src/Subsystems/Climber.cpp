@@ -15,14 +15,14 @@ void Climber::InitDefaultCommand() {
 void Climber::climb() {
 
 	climbingMotor->SetControlMode(CANSpeedController::kPercentVbus);
-	climbingMotor->Set(0.25);
+	climbingMotor->Set(1);
 
 }
 
 void Climber::reverseClimb() {
 
 	climbingMotor->SetControlMode(CANSpeedController::kPercentVbus);
-	climbingMotor->Set(-0.25);
+	climbingMotor->Set(-1);
 
 }
 

@@ -1,13 +1,16 @@
-#pragma once
+#ifndef FuelLight_H
+#define FuelLight_H
 
 #include "Commands/Command.h"
 
-class SpinIndexerCCW : public frc::Command {
+class FuelLight : public frc::Command {
 public:
-	SpinIndexerCCW();
+	FuelLight();
 	void Initialize();
 	void Execute();
 	bool IsFinished();
 	void End();
 	void Interrupted();
 };
+
+#endif  // FuelLight_H

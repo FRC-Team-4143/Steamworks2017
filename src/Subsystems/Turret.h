@@ -1,5 +1,4 @@
-#ifndef Turret_H
-#define Turret_H
+#pragma once
 
 #include "CANTalon.h"
 
@@ -19,6 +18,3 @@ public:
 	CANTalon *indexMotor;
 	CANTalon *turretMotor;
 };
-
-
-#endif  // Turret_H

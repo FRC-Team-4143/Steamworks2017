@@ -1,5 +1,4 @@
-#ifndef Indexer_H
-#define Indexer_H
+#pragma once
 
 #include <Commands/Subsystem.h>
 #include <CANTalon.h>
@@ -34,5 +33,3 @@ public:
 	bool loadingOne;
 
 };
-
-#endif  // Indexer_H

@@ -28,8 +28,11 @@ public:
 	bool GetButton10();
 	bool GetButton5();
 
+
 	Command* spinIndexerCW;
 	Command* spinIndexerCCW;
+	Command* gearLight;
+	Command* fuelLight;
 	Command* pickupIn;
 	Command* pickupOut;
 	Command* unwindWheels;
@@ -38,7 +41,7 @@ public:
 	Command* fieldCentric;
 	Command* oneBall;
 	Command* climb;
-	Command* reverseClimb;
+	//Command* reverseClimb;
 
 	Joystick* GetDriverJoystick() { return driverJoystick; }
 	Joystick* GetDriverJoystick2() { return driverJoystick2; }

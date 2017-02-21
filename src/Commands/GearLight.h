@@ -1,13 +1,16 @@
-#pragma once
+#ifndef GearLight_H
+#define GearLight_H
 
 #include "Commands/Command.h"
 
-class SpinIndexerCCW : public frc::Command {
+class GearLight : public frc::Command {
 public:
-	SpinIndexerCCW();
+	GearLight();
 	void Initialize();
 	void Execute();
 	bool IsFinished();
 	void End();
 	void Interrupted();
 };
+
+#endif  // GearLight_H

@@ -1,5 +1,4 @@
-#ifndef SpinIndexerCW_H
-#define SpinIndexerCW_H
+#pragma once
 
 #include "Commands/Command.h"
 
@@ -12,5 +11,3 @@ public:
 	void End();
 	void Interrupted();
 };
-
-#endif  // SpinIndexerCW_H

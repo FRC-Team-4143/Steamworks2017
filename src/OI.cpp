@@ -24,6 +24,8 @@
 #include <Commands/TestJamShooter.h>
 #include "Commands/Climb.h"
 #include "Commands/ReverseClimb.h"
+#include "Commands/GearLight.h"
+#include "Commands/FuelLight.h"
 #include "Robot.h"
 
 const uint32_t JOYSTICK_LX_AXIS = 0;
@@ -54,13 +56,13 @@ const uint32_t JOYSTICK_BUTTON_6 = 6;
 const uint32_t JOYSTICK_BUTTON_7 = 7;
 const uint32_t JOYSTICK_BUTTON_10 = 10;
 
-
-
 // ==========================================================================
 
 OI::OI() {
 	spinIndexerCW = new SpinIndexerCW();
 	spinIndexerCCW = new SpinIndexerCCW();
+	gearLight = new GearLight();
+	fuelLight = new FuelLight();
 	pickupIn = new PickupIn();
 	pickupOut = new PickupOut();
 	driverJoystick = new Joystick(0);
@@ -71,7 +73,7 @@ OI::OI() {
 	//arcade = new ArcadeDriveMode();
 	oneBall = new OneBall();
 	climb = new Climb();
-	reverseClimb = new ReverseClimb();
+	//reverseClimb = new ReverseClimb();
 
 	auto cameraEnableCmd = new BasicCameraEnableCmd(Robot::basicCameraSub);
 
@@ -83,10 +85,13 @@ OI::OI() {
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_LEFT))->WhileHeld(fieldCentric);
 
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_START))->WhileHeld(climb);
-	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_BACK))->WhileHeld(reverseClimb);
+	//(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_BACK))->WhileHeld(reverseClimb);
 
-	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_RB))->WhileHeld(pickupIn);
-	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_LB))->WhileHeld(pickupOut);
+	//(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_RB))->WhileHeld(pickupIn);
+	//(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_LB))->WhileHeld(pickupOut);
+
+	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_Y))->ToggleWhenPressed(gearLight);
+	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_A))->ToggleWhenPressed(fuelLight);
 
 	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_6))->WhileHeld(spinIndexerCW);
 	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_10))->WhileHeld(spinIndexerCCW);

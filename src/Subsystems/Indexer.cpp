@@ -10,7 +10,6 @@ Indexer::Indexer() :
 	timer = new Timer();
 	timer->Start();
 
-
 	loadingOne = false;
 	jamPosition = 0;
 	reverseTime = 0;
@@ -36,26 +35,26 @@ void Indexer::InitDefaultCommand() {
 }
 
 void Indexer::SpinCW() {
-	/*SmartDashboard::PutBoolean("Indexer Jammed", indexJammed);
+	SmartDashboard::PutBoolean("Indexer Jammed", indexJammed);
+
+
 	if (indexJammed) {
 		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
 		indexMotor->Set(0.5);
-		if (reverseTime == 0.4)
+		if (reverseTime >= 0.39)
 			RobotMap::i2c->Write(12, 0);
 		if (timer->Get() > reverseTime) {
 			indexJammed = false;
 		}
-	} else {*/
+	} else {
 		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
 		indexMotor->Set(-SmartDashboard::GetNumber("Indexer Speed", 0.65));
-		/*if (IsJammed()) {
+		if (IsJammed()) {
 			if (reverseTime == 0) {
-
 				RobotMap::i2c->Write(13, 0);
 				reverseTime += .1;
 				jamPosition = indexMotor->GetPosition();
 			}
-
 			reverseTime += .1;
 			indexJammed = true;
 			timer->Reset();
@@ -63,32 +62,29 @@ void Indexer::SpinCW() {
 	}
 
 	if (indexMotor->GetPosition() < jamPosition - 2) {
-
 		reverseTime = 0;
-
-	}*/
+	}
 }
 
 void Indexer::SpinCCW() {
 	SmartDashboard::PutBoolean("Indexer Jammed", indexJammed);
-	/*if (indexJammed) {
+	if (indexJammed) {
 		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
 		indexMotor->Set(-0.5);
-		if (reverseTime == 0.4)
+		if (reverseTime <= 0.39)
 			RobotMap::i2c->Write(12, 0);
 		if (timer->Get() > .2) {
 			indexJammed = false;
 		}
-	} else {*/
+	} else {
 		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
 		indexMotor->Set(SmartDashboard::GetNumber("Indexer Speed", 0.65));
-		/*if (IsJammed()) {
+		if (IsJammed()) {
 			if (reverseTime == 0) {
 				RobotMap::i2c->Write(13, 0);
 				reverseTime += .1;
 				jamPosition = indexMotor->GetPosition();
 			}
-
 			reverseTime += .1;
 			indexJammed = true;
 			timer->Reset();
@@ -96,11 +92,8 @@ void Indexer::SpinCCW() {
 	}
 
 	if (indexMotor->GetPosition() > jamPosition + 2) {
-
 		reverseTime = 0;
-
 	}
-*/
 }
 void Indexer::SpinBall() {
 
@@ -115,12 +108,10 @@ void Indexer::Stop() {
 }
 
 bool Indexer::IsJammed() {
-
 	if (pdp->GetCurrent(14) > 10) {
 		return false;
 	}
 	return false;
-
 }
 
 void Indexer::testJamShooter() {
@@ -139,12 +130,7 @@ void Indexer::readPDP() {
 }
 
 void Indexer::setSpeed(double speed) {
-
 	if (!Robot::oi->GetButton6() && !Robot::oi->GetButton10() && !loadingOne) {
-
 		indexMotor->Set(speed);
-
 	}
 }
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
