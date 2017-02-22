@@ -26,6 +26,7 @@
 #include "Commands/ReverseClimb.h"
 #include "Commands/GearLight.h"
 #include "Commands/FuelLight.h"
+#include "Commands/ZeroReverse.h"
 #include "Robot.h"
 
 const uint32_t JOYSTICK_LX_AXIS = 0;
@@ -73,6 +74,7 @@ OI::OI() {
 	//arcade = new ArcadeDriveMode();
 	oneBall = new OneBall();
 	climb = new Climb();
+	zeroReverse = new ZeroReverse();
 	//reverseClimb = new ReverseClimb();
 
 	auto cameraEnableCmd = new BasicCameraEnableCmd(Robot::basicCameraSub);
@@ -128,7 +130,7 @@ OI::OI() {
 	SmartDashboard::PutData("Update Positions", new UpdatePositions());
 	SmartDashboard::PutData("Validate Script", new ScriptValidate());
 	SmartDashboard::PutData("JAM SHOOTER", new TestJamShooter());
-
+	SmartDashboard::PutData("Zero Reverse Timer", zeroReverse);
 }
 
 bool OI::GetButton2() {

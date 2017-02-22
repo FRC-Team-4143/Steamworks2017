@@ -1,5 +1,4 @@
-#ifndef FuelLight_H
-#define FuelLight_H
+#pragma once
 
 #include "Commands/Command.h"
 
@@ -12,5 +11,3 @@ public:
 	void End();
 	void Interrupted();
 };
-
-#endif  // FuelLight_H

@@ -1,5 +1,4 @@
-#ifndef ReverseClimb_H
-#define ReverseClimb_H
+#pragma once
 
 #include "Commands/Command.h"
 
@@ -12,5 +11,3 @@ public:
 	void End();
 	void Interrupted();
 };
-
-#endif  // Climb_H

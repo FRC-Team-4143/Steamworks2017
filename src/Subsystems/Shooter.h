@@ -1,8 +1,7 @@
-#ifndef SHOOTER_H
-#define SHOOTER_H
+#pragma once
+
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
-
 
 class Shooter: public Subsystem {
 public:
@@ -30,5 +29,3 @@ public:
     void ShootBack() {}
     void DeFeed() {}
 };
-
-#endif

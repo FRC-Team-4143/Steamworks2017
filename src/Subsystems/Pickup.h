@@ -1,16 +1,12 @@
-#ifndef Pickup_H
-#define Pickup_H
+#pragma once
 
 #include <Commands/Subsystem.h>
 #include <CANTalon.h>
 
 class Pickup : public Subsystem {
-
 	CANTalon *pickup;
 
 private:
-	// It's desirable that everything possible under private except
-	// for methods that implement subsystem capabilities
 
 public:
 	Pickup();
@@ -19,5 +15,3 @@ public:
 	void Out();
 	void Stop();
 };
-
-#endif  // Pickup_H

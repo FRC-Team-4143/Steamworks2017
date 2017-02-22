@@ -9,7 +9,6 @@ private:
 	Joystick* driverJoystick;
 	Joystick* driverJoystick2;
 
-
 public:
 	OI();
 
@@ -28,7 +27,6 @@ public:
 	bool GetButton10();
 	bool GetButton5();
 
-
 	Command* spinIndexerCW;
 	Command* spinIndexerCCW;
 	Command* gearLight;
@@ -41,6 +39,7 @@ public:
 	Command* fieldCentric;
 	Command* oneBall;
 	Command* climb;
+	Command* zeroReverse;
 	//Command* reverseClimb;
 
 	Joystick* GetDriverJoystick() { return driverJoystick; }

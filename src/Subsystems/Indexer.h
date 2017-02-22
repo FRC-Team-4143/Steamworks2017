@@ -6,10 +6,14 @@
 #include <Timer.h>
 
 class Indexer : public Subsystem {
-
 private:
-	// It's desirable that everything possible under private except
-	// for methods that implement subsystem capabilities
+	CANTalon *indexMotor;
+	PowerDistributionPanel *pdp;
+	Timer *timer;
+	bool indexJammed;
+	double reverseTime;
+	double jamPosition;
+	bool _loadingOne;
 
 public:
 	Indexer();
@@ -17,19 +21,15 @@ public:
 	void SpinCW();
 	void SpinCCW();
 	void SpinBall();
+	void SetLoadingOne(bool loadingOne);
 	void Stop();
 	bool IsJammed();
-	void testJamShooter();
-	void readPDP();
-	void setSpeed(double speed);
-
-	CANTalon *indexMotor;
-	PowerDistributionPanel *pdp;
-
-	Timer *timer;
-	bool indexJammed;
-	double reverseTime;
-	double jamPosition;
-	bool loadingOne;
-
+	void TestJamShooter();
+	void ReadPDP();
+	void SetSpeed(double speed);
+	void ZeroTimer();
+	double GetPosition() const;
+	double GetReverseTime() const;
+	double GetTimer() const;
+	bool IsIndexJammed() const;
 };

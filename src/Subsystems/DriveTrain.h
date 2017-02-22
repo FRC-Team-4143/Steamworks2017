@@ -8,7 +8,7 @@
 
 class DriveTrain : public frc::Subsystem {
 private:
-	static constexpr double pi = 3.14159265358979323846264;
+	static constexpr double pi = 3.141592653589793238462643383;
 
 	bool unwinding;
 

@@ -1,11 +1,9 @@
-#ifndef Climber_H
-#define Climber_H
+#pragma once
 
 #include <Commands/Subsystem.h>
 #include <CANTalon.h>
 
 class Climber : public Subsystem {
-
 	CANTalon *climbingMotor;
 
 private:
@@ -19,5 +17,3 @@ public:
 	void reverseClimb();
 	void stopClimb();
 };
-
-#endif  // Climber_H

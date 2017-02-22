@@ -4,12 +4,9 @@
 
 //const int RPM = 7000;
 
-
 Shooter::Shooter() : Subsystem("Shooter") {
-
    shooterMotor1 = RobotMap::shooterMotor1;
    shooterMotor2 = RobotMap::shooterMotor2;
-
 
    shooterMotor1->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
    shooterMotor2->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
@@ -22,7 +19,6 @@ Shooter::Shooter() : Subsystem("Shooter") {
    shooterMotor1->SetI(0.0);
    shooterMotor1->SetD(0.0);
    shooterMotor1->SetF(0.012);
-
 
    shooterMotor2->SetControlMode(CANSpeedController::kSpeed);
    shooterMotor2->ConfigNominalOutputVoltage(0.0, 0.0);
@@ -37,12 +33,11 @@ Shooter::Shooter() : Subsystem("Shooter") {
    targetShooterSpeed = 0;
 }
 
-void Shooter::InitDefaultCommand() { //SetDefaultCommand(new ShootDefault());
-	}
-
+void Shooter::InitDefaultCommand() {
+	//SetDefaultCommand(new ShootDefault());
+}
 
 void Shooter::shootFront() {
-
 	//shooterMotor1->SetControlMode(CANSpeedController::kPercentVbus);
 	//shooterMotor1->Set(.35);
 	//shooterMotor2->SetControlMode(CANSpeedController::kPercentVbus);
@@ -51,11 +46,9 @@ void Shooter::shootFront() {
 	shooterMotor1->Set(targetShooterSpeed);
 	shooterMotor2->SetControlMode(CANSpeedController::kSpeed);
 	shooterMotor2->Set(targetShooterSpeed);
-
 }
 
 void Shooter::shootBack() {
-
 	//shooterLeftBack->Set(-1);
 	//shooterRightBack->Set(1);
 }
@@ -79,27 +72,28 @@ void Shooter::shootDefault(float right, float left) {
 	if(right > 0.1) {
 		shootFront();
 		shootBack();
-  } else {
+	}
+	else {
 		stopFront();
 		stopBack();
-  }
+	}
 }
 
-void Shooter::IncreaseTargetRpm(){
+void Shooter::IncreaseTargetRpm() {
 	targetShooterSpeed += 100;
 }
 
-void Shooter::DecreaseTargetRpm(){
+void Shooter::DecreaseTargetRpm() {
 	if (targetShooterSpeed - 100 >= 0){
 		targetShooterSpeed -= 100;
 	} else {
 		targetShooterSpeed = 0;
 	}
-
 }
 
-double Shooter::getVelocity() { return shooterMotor1->GetSpeed(); }
+double Shooter::getVelocity() {
+	return shooterMotor1->GetSpeed();
+}
 
-
-void Shooter::readValues(){
+void Shooter::readValues() {
 }

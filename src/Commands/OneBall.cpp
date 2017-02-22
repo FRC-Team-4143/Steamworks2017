@@ -10,7 +10,7 @@ OneBall::OneBall() {
 void OneBall::Initialize() {
 	SetTimeout(1);
 	Robot::indexer->SpinBall();
-	Robot::indexer->loadingOne = true;
+	Robot::indexer->SetLoadingOne(true);
 }
 
 void OneBall::Execute() {
@@ -22,7 +22,7 @@ bool OneBall::IsFinished() {
 
 void OneBall::End() {
 	Robot::indexer->Stop();
-	Robot::indexer->loadingOne = false;
+	Robot::indexer->SetLoadingOne(false);
 }
 
 void OneBall::Interrupted() {

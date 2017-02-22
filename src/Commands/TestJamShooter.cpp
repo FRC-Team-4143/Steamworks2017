@@ -9,13 +9,12 @@ TestJamShooter::TestJamShooter() {
 // ==========================================================================
 
 void TestJamShooter::Initialize() {
-	Robot::indexer->testJamShooter();
+	Robot::indexer->TestJamShooter();
 }
 
 // ==========================================================================
 
 void TestJamShooter::Execute() {
-
 }
 
 // ==========================================================================
@@ -27,7 +26,7 @@ bool TestJamShooter::IsFinished() {
 // ==========================================================================
 
 void TestJamShooter::End() {
-	Robot::indexer->testJamShooter();
+	Robot::indexer->TestJamShooter();
 }
 
 // ==========================================================================

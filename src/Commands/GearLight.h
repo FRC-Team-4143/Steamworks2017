@@ -1,5 +1,4 @@
-#ifndef GearLight_H
-#define GearLight_H
+#pragma once
 
 #include "Commands/Command.h"
 
@@ -12,5 +11,3 @@ public:
 	void End();
 	void Interrupted();
 };
-
-#endif  // GearLight_H

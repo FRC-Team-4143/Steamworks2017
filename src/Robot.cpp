@@ -55,7 +55,6 @@ void Robot::RobotInit() {
 	driveTrain->loadWheelOffsets();
 
 	shooter = new Shooter();
-
 }
 
 void Robot::RobotPeriodic() {
@@ -76,7 +75,7 @@ void Robot::DisabledPeriodic() {
 	SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
 	SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
 	SmartDashboard::PutNumber("Target Shooter Speed", shooter->targetShooterSpeed);
-	SmartDashboard::PutNumber("Indexer Position", indexer->indexMotor->GetEncPosition());
+	SmartDashboard::PutNumber("Indexer Position", indexer->GetPosition());
 }
 
 void Robot::AutonomousInit() {
@@ -120,10 +119,10 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 	Scheduler::GetInstance()->Run();
-	SmartDashboard::PutBoolean("Indexer Jammed", indexer->indexJammed);
-	SmartDashboard::PutNumber("Index Timer", indexer->timer->Get());
-	SmartDashboard::PutNumber("Reverse Time", indexer->reverseTime);
-	indexer->readPDP();
+	SmartDashboard::PutBoolean("Indexer Jammed", indexer->IsIndexJammed());
+	SmartDashboard::PutNumber("Index Timer", indexer->GetTimer());
+	SmartDashboard::PutNumber("Reverse Time", indexer->GetReverseTime());
+	indexer->ReadPDP();
 
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
 	/*
@@ -135,8 +134,11 @@ void Robot::TeleopPeriodic() {
 	SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
 	SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
 	SmartDashboard::PutNumber("Target Shooter Speed", shooter->targetShooterSpeed);
-	SmartDashboard::PutNumber("Indexer Position", indexer->indexMotor->GetEncPosition());
-/*
+	SmartDashboard::PutNumber("Indexer Position", indexer->GetPosition());
+
+	SmartDashboard::PutNumber("JoystickXAxis", oi->GetJoystickX2());
+
+	/*
 	SmartDashboard::PutNumber("JoystickYAxis", oi->GetJoystickY2());
 	SmartDashboard::PutNumber("JoystickXAxis", oi->GetJoystickX2());
 
@@ -148,9 +150,6 @@ void Robot::TeleopPeriodic() {
 
 	SmartDashboard::PutBoolean("ButtonA", oi->GetButtonA());
 */
-
-
-
 }
 
 void Robot::TestPeriodic() {

@@ -7,10 +7,10 @@ DefaultTurret::DefaultTurret() {
 }
 
 void DefaultTurret::Initialize() {
-}
 
+}
 void DefaultTurret::Execute() {
-	Robot::turret->setSpeed(Robot::oi->GetJoystickX2());
+	Robot::turret->SetSpeed(Robot::oi->GetJoystickX2()*50);
 }
 
 bool DefaultTurret::IsFinished() {

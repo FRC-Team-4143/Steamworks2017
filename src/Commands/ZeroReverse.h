@@ -2,9 +2,9 @@
 
 #include "Commands/Command.h"
 
-class OneBall : public frc::Command {
+class ZeroReverse : public frc::Command {
 public:
-	OneBall();
+	ZeroReverse();
 	void Initialize();
 	void Execute();
 	bool IsFinished();
