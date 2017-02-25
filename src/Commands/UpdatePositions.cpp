@@ -17,10 +17,10 @@ void UpdatePositions::Initialize() {
 // ==========================================================================
 
 void UpdatePositions::Execute() {
-	Robot::driveTrain->updateDistanceEncoders();
-	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
-	SmartDashboard::PutNumber("Vision Position", Robot::visionBridge->GetPosition(0));
-	SmartDashboard::PutNumber("Vision Distance", Robot::visionBridge->GetDistance());
+	//Robot::driveTrain->updateDistanceEncoders();
+	//SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
+	//SmartDashboard::PutNumber("Vision Position", Robot::visionBridge->GetPosition(0));
+	//SmartDashboard::PutNumber("Vision Distance", Robot::visionBridge->GetDistance());
 }
 
 // ==========================================================================

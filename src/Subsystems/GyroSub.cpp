@@ -43,8 +43,8 @@ bool GyroSub::IsCalibrating() { return theGyro()->IsCalibrating(); }
 // ==========================================================================
 
 void GyroSub::ResetGyro() {
+	//theGyro()->ResetDisplacement();
 	theGyro()->ZeroYaw();
-	theGyro()->ResetDisplacement();
 }
 
 // ==========================================================================

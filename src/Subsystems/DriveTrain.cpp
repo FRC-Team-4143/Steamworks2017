@@ -184,7 +184,7 @@ void DriveTrain::FieldCentricCrab(float twist, float y, float x, bool operatorCo
 // attempts to keep robot square to the field as it drives
 
 void DriveTrain::GyroCrab(float desiredangle, float y, float x, bool operatorControl) {
-	auto robotangle = Robot::gyroSub->PIDGet();
+	auto robotangle = -Robot::gyroSub->PIDGet();
 
 	float twist = desiredangle - robotangle;
 	while (twist > 180.0)

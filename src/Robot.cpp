@@ -66,7 +66,8 @@ void Robot::DisabledInit() {
 void Robot::DisabledPeriodic() {
 	Scheduler::GetInstance()->Run();
 
-	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
+	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetAngle());
+	SmartDashboard::PutNumber("Gyro Angle Adjustment", RobotMap::imu->GetAngleAdjustment());
 	/*
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
@@ -97,7 +98,7 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {
 	Scheduler::GetInstance()->Run();
 
-	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
+	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetAngle());
 	/*
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
@@ -124,7 +125,7 @@ void Robot::TeleopPeriodic() {
 	SmartDashboard::PutNumber("Reverse Time", indexer->GetReverseTime());
 	indexer->ReadPDP();
 
-	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
+	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetAngle());
 	/*
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
