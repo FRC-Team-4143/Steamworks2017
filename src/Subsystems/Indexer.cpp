@@ -127,14 +127,15 @@ void Indexer::TestJamShooter() {
 
 void Indexer::ReadPDP() {
 	for (int i = 0; i < 16; i++) {
-		SmartDashboard::PutNumber("PDP Current " + std::to_string(i),
-				pdp->GetCurrent(i));
+		//SmartDashboard::PutNumber("PDP Current " + std::to_string(i),
+		//		pdp->GetCurrent(i));
 	}
 }
 
 void Indexer::SetSpeed(double speed) {
 	if (!Robot::oi->GetButton6() && !Robot::oi->GetButton10() && !_loadingOne) {
-		indexMotor->SetControlMode(CANTalon::kSpeed);
+		//indexMotor->SetControlMode(CANTalon::kSpeed);
+		indexMotor->SetControlMode(CANTalon::kPercentVbus);
 		indexMotor->Set(speed);
 	}
 }

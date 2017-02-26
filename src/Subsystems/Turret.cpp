@@ -13,8 +13,8 @@ void Turret::InitDefaultCommand() {
 }
 
 void Turret::SetSpeed(double speed) {
-	SmartDashboard::PutNumber("Turret Rotation", turretMotor->GetPosition());
-
+	//SmartDashboard::PutNumber("Turret Rotation", turretMotor->GetPosition());
+/*
 	if (speed > 0) {
 		if (turretMotor->GetPosition() > 3) {
 			speed = 0;
@@ -25,8 +25,8 @@ void Turret::SetSpeed(double speed) {
 			speed = 0;
 		}
 	}
-
-	turretMotor->SetControlMode(CANTalon::kSpeed);
+*/
+	turretMotor->SetControlMode(CANTalon::kPercentVbus);
 	turretMotor->Set(speed);
 	Robot::indexer->SetSpeed(speed);
 }

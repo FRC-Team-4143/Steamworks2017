@@ -73,10 +73,10 @@ void Robot::DisabledPeriodic() {
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
 	SmartDashboard::PutNumber("Vision Distance", Robot::visionBridge->GetDistance());
 	*/
-	SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
-	SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
+	//SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
+	//SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
 	SmartDashboard::PutNumber("Target Shooter Speed", shooter->targetShooterSpeed);
-	SmartDashboard::PutNumber("Indexer Position", indexer->GetPosition());
+	//SmartDashboard::PutNumber("Indexer Position", indexer->GetPosition());
 }
 
 void Robot::AutonomousInit() {
@@ -123,7 +123,7 @@ void Robot::TeleopPeriodic() {
 	SmartDashboard::PutBoolean("Indexer Jammed", indexer->IsIndexJammed());
 	SmartDashboard::PutNumber("Index Timer", indexer->GetTimer());
 	SmartDashboard::PutNumber("Reverse Time", indexer->GetReverseTime());
-	indexer->ReadPDP();
+	//indexer->ReadPDP();
 
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetAngle());
 	/*
@@ -132,10 +132,10 @@ void Robot::TeleopPeriodic() {
 	SmartDashboard::PutNumber("Vision Distance", Robot::visionBridge->GetDistance());
 	*/
 
-	SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
-	SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
+	//SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
+	//SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
 	SmartDashboard::PutNumber("Target Shooter Speed", shooter->targetShooterSpeed);
-	SmartDashboard::PutNumber("Indexer Position", indexer->GetPosition());
+	//SmartDashboard::PutNumber("Indexer Position", indexer->GetPosition());
 
 	SmartDashboard::PutNumber("JoystickXAxis", oi->GetJoystickX2());
 

@@ -74,8 +74,8 @@ void RobotMap::Initialize() {
 	// LiveWindow* lw = LiveWindow::GetInstance();
 
 	// serialPort = new SerialPort(57600, SerialPort::kOnboard);
-	imu = new AHRS(SPI::kMXP); // SPI::kOnboardCS0);//serialPort, 100);
-	//imu = new AHRS(SerialPort::kUSB);
+	//imu = new AHRS(SPI::kMXP); // SPI::kOnboardCS0);//serialPort, 100);
+	imu = new AHRS(SerialPort::kUSB);
 	pdp = new PowerDistributionPanel();
 
 	////////////////////////////////////
