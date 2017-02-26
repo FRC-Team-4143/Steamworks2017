@@ -49,11 +49,11 @@ private:
 	CANTalon* rearRightDrive;			// Speed controller for rear right drive motor
 	CANTalon* rearRightSteer;			// Speed controller for rear right steering motor
 
-	double CorrectSteerSetpoint(double setpoint, int talon);
+	double CorrectSteerSetpoint(double setpoint, CANTalon* talon);
 	void SetSteerSetpoint(float FLSetPoint, float FRSetPoint, float RLSetPoint, float RRSetPoint);
 	void SetDriveSpeed(float FLSpeed, float FRSpeed, float RLSpeed, float RRSpeed);
 	void CurrentLimit();
-	double getTalonPosition(int talon);
+	double getTalonPosition(CANTalon* talon);
 
 public:
 	DriveTrain();

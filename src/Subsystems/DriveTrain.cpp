@@ -31,7 +31,8 @@ const float driveScale = 950;
 
 // ==========================================================================
 
-DriveTrain::DriveTrain() : frc::Subsystem("DriveTrain") {
+DriveTrain::DriveTrain() :
+		frc::Subsystem("DriveTrain") {
 	LOG("DriveTrain::ctor");
 
 	unwinding = false;
@@ -86,8 +87,7 @@ void DriveTrain::EnablePIDs(bool enable) {
 		frontRightSteer->Enable();
 		rearLeftSteer->Enable();
 		rearRightSteer->Enable();
-	}
-	else {
+	} else {
 		frontLeftSteer->Disable();
 		frontRightSteer->Disable();
 		rearLeftSteer->Disable();
@@ -111,7 +111,8 @@ void DriveTrain::SetWheelbase(float w, float x, float y) {
 
 // ==========================================================================
 
-void DriveTrain::SetOffsets(double FLOff, double FROff, double RLOff, double RROff) {
+void DriveTrain::SetOffsets(double FLOff, double FROff, double RLOff,
+		double RROff) {
 	FLOffset = FLOff;
 	FROffset = FROff;
 	RLOffset = RLOff;
@@ -159,16 +160,17 @@ void DriveTrain::doneunwind() {
 // ==========================================================================
 
 void DriveTrain::PositionModeTwist(float desiredangle) {
-	frontLeftSteer->SetSetpoint(CorrectSteerSetpoint(FLOffset + 0.625, FLS));
-	frontRightSteer->SetSetpoint(CorrectSteerSetpoint(FROffset - 0.625, FRS));
-	rearLeftSteer->SetSetpoint(CorrectSteerSetpoint(RLOffset - 0.625, RLS));
-	rearRightSteer->SetSetpoint(CorrectSteerSetpoint(RROffset + 0.625, RRS));
+	frontLeftSteer->SetSetpoint(CorrectSteerSetpoint(FLOffset + 0.625, frontLeftSteer));
+	frontRightSteer->SetSetpoint(CorrectSteerSetpoint(FROffset - 0.625, frontRightSteer));
+	rearLeftSteer->SetSetpoint(CorrectSteerSetpoint(RLOffset - 0.625, rearLeftSteer));
+	rearRightSteer->SetSetpoint(CorrectSteerSetpoint(RROffset + 0.625, rearRightSteer));
 }
 
 // ==========================================================================
 // keeps controls consistent regardless of rotation of robot
 
-void DriveTrain::FieldCentricCrab(float twist, float y, float x, bool operatorControl) {
+void DriveTrain::FieldCentricCrab(float twist, float y, float x,
+		bool operatorControl) {
 	float FWD = y;
 	float STR = x;
 
@@ -183,7 +185,8 @@ void DriveTrain::FieldCentricCrab(float twist, float y, float x, bool operatorCo
 // ==========================================================================
 // attempts to keep robot square to the field as it drives
 
-void DriveTrain::GyroCrab(float desiredangle, float y, float x, bool operatorControl) {
+void DriveTrain::GyroCrab(float desiredangle, float y, float x,
+		bool operatorControl) {
 	auto robotangle = Robot::gyroSub->PIDGet();
 
 	float twist = desiredangle - robotangle;
@@ -201,28 +204,27 @@ void DriveTrain::GyroCrab(float desiredangle, float y, float x, bool operatorCon
 void DriveTrain::Crab(float twist, float y, float x, bool operatorControl) {
 	// stop PID loop if wires wrap.
 	/*if (unwinding || abs(frontRightPos->GetTurns()) > MAXTURNS ||
-			abs(rearRightPos->GetTurns()) > MAXTURNS ||
-			abs(frontLeftPos->GetTurns()) > MAXTURNS ||
-			abs(rearLeftPos->GetTurns()) > MAXTURNS) {
-		SetDriveSpeed(0, 0, 0, 0);
-		return;
-	}
-*/
+	 abs(rearRightPos->GetTurns()) > MAXTURNS ||
+	 abs(frontLeftPos->GetTurns()) > MAXTURNS ||
+	 abs(rearLeftPos->GetTurns()) > MAXTURNS) {
+	 SetDriveSpeed(0, 0, 0, 0);
+	 return;
+	 }
+	 */
 	// this stores the direction of joystick when all axis last crossed into the
 	// deadzone and keeps the wheels pointed that direction
 	// this .1 should be kept the same as the deadzone in oi.cpp
 	if (operatorControl && x == 0.0 && y == 0.0 && twist == 0.0) {
-		if (fabs(lasty) > DEAD_ZONE || fabs(lastx) > DEAD_ZONE || fabs(lasttwist) > DEAD_ZONE) {
+		if (fabs(lasty) > DEAD_ZONE || fabs(lastx) > DEAD_ZONE
+				|| fabs(lasttwist) > DEAD_ZONE) {
 			y = std::min(std::max(lasty, -DEAD_ZONE), DEAD_ZONE);
 			x = std::min(std::max(lastx, -DEAD_ZONE), DEAD_ZONE);
 			twist = std::min(std::max(lasttwist, -DEAD_ZONE), DEAD_ZONE);
-		}
-		else {
+		} else {
 			y = .05;
 			// default wheel position
 		}
-	}
-	else if (Robot::oi->GetButtonA() && !operatorControl && twist == 0.0) {
+	} else if (Robot::oi->GetButtonA() && !operatorControl && twist == 0.0) {
 		twist = 0.05;
 	}
 
@@ -255,16 +257,20 @@ void DriveTrain::Crab(float twist, float y, float x, bool operatorControl) {
 	float RRSetPoint = EncoderConstants::HALF_TURN;
 
 	if (DP != 0 || BP != 0) {
-		FLSetPoint = (EncoderConstants::HALF_TURN + EncoderConstants::HALF_TURN / pi * atan2(BP, DP));
+		FLSetPoint = (EncoderConstants::HALF_TURN
+				+ EncoderConstants::HALF_TURN / pi * atan2(BP, DP));
 	}
 	if (BP != 0 || CP != 0) {
-		FRSetPoint = (EncoderConstants::HALF_TURN + EncoderConstants::HALF_TURN / pi * atan2(BP, CP));
+		FRSetPoint = (EncoderConstants::HALF_TURN
+				+ EncoderConstants::HALF_TURN / pi * atan2(BP, CP));
 	}
 	if (AP != 0 || DP != 0) {
-		RLSetPoint = (EncoderConstants::HALF_TURN + EncoderConstants::HALF_TURN / pi * atan2(AP, DP));
+		RLSetPoint = (EncoderConstants::HALF_TURN
+				+ EncoderConstants::HALF_TURN / pi * atan2(AP, DP));
 	}
 	if (AP != 0 || CP != 0) {
-		RRSetPoint = (EncoderConstants::HALF_TURN + EncoderConstants::HALF_TURN / pi * atan2(AP, CP));
+		RRSetPoint = (EncoderConstants::HALF_TURN
+				+ EncoderConstants::HALF_TURN / pi * atan2(AP, CP));
 	}
 
 	SetSteerSetpoint(FLSetPoint, FRSetPoint, RLSetPoint, RRSetPoint);
@@ -280,7 +286,7 @@ void DriveTrain::Crab(float twist, float y, float x, bool operatorControl) {
 	RR = sqrt(pow(AP, 2) + pow(CP, 2));
 
 	// Solve for fastest wheel speed
-	double speedarray[] = {fabs(FL), fabs(FR), fabs(RL), fabs(RR)};
+	double speedarray[] = { fabs(FL), fabs(FR), fabs(RL), fabs(RR) };
 
 	int length = 4;
 	double maxspeed = speedarray[0];
@@ -301,15 +307,15 @@ void DriveTrain::Crab(float twist, float y, float x, bool operatorControl) {
 		FRRatio = FR / maxspeed;
 		RLRatio = RL / maxspeed;
 		RRRatio = RR / maxspeed;
-	}
-	else {
+	} else {
 		FLRatio = FL;
 		FRRatio = FR;
 		RLRatio = RL;
 		RRRatio = RR;
 	}
 
-	if (operatorControl && fabs(x) <= DEAD_ZONE && fabs(y) <= DEAD_ZONE && fabs(twist) <= DEAD_ZONE) {
+	if (operatorControl && fabs(x) <= DEAD_ZONE && fabs(y) <= DEAD_ZONE
+			&& fabs(twist) <= DEAD_ZONE) {
 		FLRatio = 0.0;
 		FRRatio = 0.0;
 		RLRatio = 0.0;
@@ -322,66 +328,53 @@ void DriveTrain::Crab(float twist, float y, float x, bool operatorControl) {
 
 // ==========================================================================
 
-double DriveTrain::CorrectSteerSetpoint(double setpoint, int talon) {
+double DriveTrain::CorrectSteerSetpoint(double setpoint, CANTalon* talon) {
 	if (setpoint < 0) {
-		setpoint = (setpoint + EncoderConstants::FULL_TURN);
-	}
-	else if (setpoint > EncoderConstants::FULL_TURN) {
-		setpoint = (setpoint - EncoderConstants::FULL_TURN);
-	}
-
-	float currentPosition;
-	switch(talon){
-	case FLS:
-		currentPosition = frontLeftSteer->GetPosition()*EncoderConstants::FULL_TURN;
-		break;
-	case FRS:
-		currentPosition = frontRightSteer->GetPosition()*EncoderConstants::FULL_TURN;
-		break;
-	case RLS:
-		currentPosition = rearLeftSteer->GetPosition()*EncoderConstants::FULL_TURN;
-		break;
-	case RRS:
-		currentPosition = rearRightSteer->GetPosition()*EncoderConstants::FULL_TURN;
-		break;
+		setpoint = (setpoint + EncoderConstants::FULL_TURN) / EncoderConstants::FULL_TURN;
+	} else if (setpoint > EncoderConstants::FULL_TURN) {
+		setpoint = (setpoint - EncoderConstants::FULL_TURN) / EncoderConstants::FULL_TURN;
 	}
 
-	if (setpoint < EncoderConstants::QUARTER_TURN && currentPosition - trunc(currentPosition) > EncoderConstants::THREEQUARTER_TURN){
-		return (trunc(currentPosition) + setpoint + EncoderConstants::FULL_TURN)/EncoderConstants::FULL_TURN;
-	}
-	if (setpoint > EncoderConstants::THREEQUARTER_TURN && currentPosition - trunc(currentPosition) < EncoderConstants::QUARTER_TURN){
-		return (trunc(currentPosition) + setpoint - EncoderConstants::FULL_TURN)/EncoderConstants::FULL_TURN;
-	}
-/*
-	int newSetpoint = (trunc(currentPosition)+setpoint);
+	float currentPosition = talon->GetPosition();
 
-	while (newSetpoint - currentPosition < -EncoderConstants::FULL_TURN){
-		newSetpoint -= EncoderConstants::FULL_TURN;
+	if (setpoint < 0.25 && currentPosition - trunc(currentPosition) > 0.75) {
+		return (trunc(currentPosition) + setpoint + 1);
+	} else if (setpoint > 0.75 && currentPosition - trunc(currentPosition) < 0.25) {
+		return (trunc(currentPosition) + setpoint - 1);
+	} else {
+		return trunc(currentPosition) + setpoint;
 	}
-	while (newSetpoint - currentPosition > EncoderConstants::FULL_TURN){
-		newSetpoint += EncoderConstants::FULL_TURN;
-	}
+	/*
+	 int newSetpoint = (trunc(currentPosition)+setpoint);
 
-	return newSetpoint / EncoderConstants::FULL_TURN;
+	 while (newSetpoint - currentPosition < -EncoderConstants::FULL_TURN){
+	 newSetpoint -= EncoderConstants::FULL_TURN;
+	 }
+	 while (newSetpoint - currentPosition > EncoderConstants::FULL_TURN){
+	 newSetpoint += EncoderConstants::FULL_TURN;
+	 }
+
+	 return newSetpoint / EncoderConstants::FULL_TURN;
 
 
-	if (setpoint < 0) {
-		return (setpoint + EncoderConstants::FULL_TURN)/EncoderConstants::FULL_TURN;
-	}
-	else if (setpoint > EncoderConstants::FULL_TURN) {
-		return (setpoint - EncoderConstants::FULL_TURN)/EncoderConstants::FULL_TURN;
-	}
-	else if (setpoint == EncoderConstants::FULL_TURN) {
-		return 0;
-	}
-	else {
-		return setpoint/5;
-	}*/
+	 if (setpoint < 0) {
+	 return (setpoint + EncoderConstants::FULL_TURN)/EncoderConstants::FULL_TURN;
+	 }
+	 else if (setpoint > EncoderConstants::FULL_TURN) {
+	 return (setpoint - EncoderConstants::FULL_TURN)/EncoderConstants::FULL_TURN;
+	 }
+	 else if (setpoint == EncoderConstants::FULL_TURN) {
+	 return 0;
+	 }
+	 else {
+	 return setpoint/5;
+	 }*/
 }
 
 // ==========================================================================
 
-void DriveTrain::SetSteerSetpoint(float FLSetPoint, float FRSetPoint, float RLSetPoint, float RRSetPoint) {
+void DriveTrain::SetSteerSetpoint(float FLSetPoint, float FRSetPoint,
+		float RLSetPoint, float RRSetPoint) {
 	FLSetPoint = -FLSetPoint;
 	FRSetPoint = -FRSetPoint;
 	RLSetPoint = -RLSetPoint;
@@ -389,158 +382,178 @@ void DriveTrain::SetSteerSetpoint(float FLSetPoint, float FRSetPoint, float RLSe
 	//////////////////////////////////
 	// Front Left Wheel
 	//////////////////////////////////
-/*	if (frontLeftPos->GetTurns() > SOFTTURNLIMIT) {
-		if (CorrectSteerSetpoint(FLSetPoint + FLOffset - frontLeftPos->GetAngle()) > EncoderConstants::HALF_TURN) {
-			frontLeft->SetSetpoint(CorrectSteerSetpoint(FLSetPoint + FLOffset));
-			FLInv = 1;
-		}
-		else {
-			frontLeft->SetSetpoint(CorrectSteerSetpoint(FLSetPoint + FLOffset - EncoderConstants::HALF_TURN));
-			FLInv = -1;
-		}
+	/*	if (frontLeftPos->GetTurns() > SOFTTURNLIMIT) {
+	 if (CorrectSteerSetpoint(FLSetPoint + FLOffset - frontLeftPos->GetAngle()) > EncoderConstants::HALF_TURN) {
+	 frontLeft->SetSetpoint(CorrectSteerSetpoint(FLSetPoint + FLOffset));
+	 FLInv = 1;
+	 }
+	 else {
+	 frontLeft->SetSetpoint(CorrectSteerSetpoint(FLSetPoint + FLOffset - EncoderConstants::HALF_TURN));
+	 FLInv = -1;
+	 }
+	 }
+	 else if (frontLeftPos->GetTurns() < -SOFTTURNLIMIT) {
+	 if (CorrectSteerSetpoint(FLSetPoint + FLOffset - frontLeftPos->GetAngle()) < EncoderConstants::HALF_TURN) {
+	 frontLeft->SetSetpoint(CorrectSteerSetpoint(FLSetPoint + FLOffset));
+	 FLInv = 1;
+	 }
+	 else {
+	 frontLeft->SetSetpoint(CorrectSteerSetpoint(FLSetPoint + FLOffset - EncoderConstants::HALF_TURN));
+	 FLInv = -1;
+	 }
+	 }
+	 else {*/
+	// Default rotation logic
+	if (fabs(FLSetPoint + FLOffset - getTalonPosition(frontLeftSteer))
+			< EncoderConstants::QUARTER_TURN
+			|| fabs(FLSetPoint + FLOffset - getTalonPosition(frontLeftSteer))
+					> EncoderConstants::THREEQUARTER_TURN) {
+		frontLeftSteer->SetSetpoint(
+				CorrectSteerSetpoint(FLSetPoint + FLOffset, frontLeftSteer));
+		FLInv = 1;
+	} else {
+		frontLeftSteer->SetSetpoint(
+				CorrectSteerSetpoint(
+						FLSetPoint + FLOffset - EncoderConstants::HALF_TURN,
+						frontLeftSteer));
+		FLInv = -1;
 	}
-	else if (frontLeftPos->GetTurns() < -SOFTTURNLIMIT) {
-		if (CorrectSteerSetpoint(FLSetPoint + FLOffset - frontLeftPos->GetAngle()) < EncoderConstants::HALF_TURN) {
-			frontLeft->SetSetpoint(CorrectSteerSetpoint(FLSetPoint + FLOffset));
-			FLInv = 1;
-		}
-		else {
-			frontLeft->SetSetpoint(CorrectSteerSetpoint(FLSetPoint + FLOffset - EncoderConstants::HALF_TURN));
-			FLInv = -1;
-		}
-	}
-	else {*/
-		// Default rotation logic
-		if (fabs(FLSetPoint + FLOffset - getTalonPosition(FLS)) < EncoderConstants::QUARTER_TURN ||
-				fabs(FLSetPoint + FLOffset - getTalonPosition(FLS)) > EncoderConstants::THREEQUARTER_TURN) {
-			frontLeftSteer->SetSetpoint(CorrectSteerSetpoint(FLSetPoint + FLOffset,FLS));
-			FLInv = 1;
-		}
-		else {
-			frontLeftSteer->SetSetpoint(CorrectSteerSetpoint(FLSetPoint + FLOffset - EncoderConstants::HALF_TURN, FLS));
-			FLInv = -1;
-		}
 	//}
 
 	//////////////////////////////////
 	// Front Right Wheel
 	//////////////////////////////////
 	/*if (frontRightPos->GetTurns() > SOFTTURNLIMIT) {
-		if (CorrectSteerSetpoint(FRSetPoint + FROffset - frontRightPos->GetAngle()) > EncoderConstants::HALF_TURN) {
-			frontRight->SetSetpoint(CorrectSteerSetpoint(FRSetPoint + FROffset));
-			FRInv = 1;
-		}
-		else {
-			frontRight->SetSetpoint(CorrectSteerSetpoint(FRSetPoint + FROffset - EncoderConstants::HALF_TURN));
-			FRInv = -1;
-		}
+	 if (CorrectSteerSetpoint(FRSetPoint + FROffset - frontRightPos->GetAngle()) > EncoderConstants::HALF_TURN) {
+	 frontRight->SetSetpoint(CorrectSteerSetpoint(FRSetPoint + FROffset));
+	 FRInv = 1;
+	 }
+	 else {
+	 frontRight->SetSetpoint(CorrectSteerSetpoint(FRSetPoint + FROffset - EncoderConstants::HALF_TURN));
+	 FRInv = -1;
+	 }
+	 }
+	 else if (frontRightPos->GetTurns() < -SOFTTURNLIMIT) {
+	 if (CorrectSteerSetpoint(FRSetPoint + FROffset - frontRightPos->GetAngle()) < EncoderConstants::HALF_TURN) {
+	 frontRight->SetSetpoint(CorrectSteerSetpoint(FRSetPoint + FROffset));
+	 FRInv = 1;
+	 }
+	 else {
+	 frontRight->SetSetpoint(CorrectSteerSetpoint(FRSetPoint + FROffset - EncoderConstants::HALF_TURN));
+	 FRInv = -1;
+	 }
+	 }
+	 else {*/
+	// default rotation logic
+	if (fabs(FRSetPoint + FROffset - getTalonPosition(frontRightSteer))
+			< EncoderConstants::QUARTER_TURN
+			|| fabs(FRSetPoint + FROffset - getTalonPosition(frontRightSteer))
+					> EncoderConstants::THREEQUARTER_TURN) {
+		frontRightSteer->SetSetpoint(
+				CorrectSteerSetpoint(FRSetPoint + FROffset, frontRightSteer));
+		FRInv = 1;
+	} else {
+		frontRightSteer->SetSetpoint(
+				CorrectSteerSetpoint(
+						FRSetPoint + FROffset - EncoderConstants::HALF_TURN,
+						frontRightSteer));
+		FRInv = -1;
 	}
-	else if (frontRightPos->GetTurns() < -SOFTTURNLIMIT) {
-		if (CorrectSteerSetpoint(FRSetPoint + FROffset - frontRightPos->GetAngle()) < EncoderConstants::HALF_TURN) {
-			frontRight->SetSetpoint(CorrectSteerSetpoint(FRSetPoint + FROffset));
-			FRInv = 1;
-		}
-		else {
-			frontRight->SetSetpoint(CorrectSteerSetpoint(FRSetPoint + FROffset - EncoderConstants::HALF_TURN));
-			FRInv = -1;
-		}
-	}
-	else {*/
-		// default rotation logic
-		if (fabs(FRSetPoint + FROffset - getTalonPosition(FRS)) < EncoderConstants::QUARTER_TURN ||
-				fabs(FRSetPoint + FROffset - getTalonPosition(FRS)) > EncoderConstants::THREEQUARTER_TURN) {
-			frontRightSteer->SetSetpoint(CorrectSteerSetpoint(FRSetPoint + FROffset, FRS));
-			FRInv = 1;
-		}
-		else {
-			frontRightSteer->SetSetpoint(CorrectSteerSetpoint(FRSetPoint + FROffset - EncoderConstants::HALF_TURN, FRS));
-			FRInv = -1;
-		}
 	//}
 
 	//////////////////////////////////
 	// Rear Left Wheel
 	//////////////////////////////////
 	/*if (rearLeftPos->GetTurns() > SOFTTURNLIMIT) {
-		if (CorrectSteerSetpoint(RLSetPoint + RLOffset - rearLeftPos->GetAngle()) > EncoderConstants::HALF_TURN) {
-			rearLeft->SetSetpoint(CorrectSteerSetpoint(RLSetPoint + RLOffset));
-			RLInv = 1;
-		}
-		else {
-			rearLeft->SetSetpoint(CorrectSteerSetpoint(RLSetPoint + RLOffset - EncoderConstants::HALF_TURN));
-			RLInv = -1;
-		}
+	 if (CorrectSteerSetpoint(RLSetPoint + RLOffset - rearLeftPos->GetAngle()) > EncoderConstants::HALF_TURN) {
+	 rearLeft->SetSetpoint(CorrectSteerSetpoint(RLSetPoint + RLOffset));
+	 RLInv = 1;
+	 }
+	 else {
+	 rearLeft->SetSetpoint(CorrectSteerSetpoint(RLSetPoint + RLOffset - EncoderConstants::HALF_TURN));
+	 RLInv = -1;
+	 }
+	 }
+	 else if (rearLeftPos->GetTurns() < -SOFTTURNLIMIT) {
+	 if (CorrectSteerSetpoint(RLSetPoint + RLOffset - rearLeftPos->GetAngle()) < EncoderConstants::HALF_TURN) {
+	 rearLeft->SetSetpoint(CorrectSteerSetpoint(RLSetPoint + RLOffset));
+	 RLInv = 1;
+	 }
+	 else {
+	 rearLeft->SetSetpoint(CorrectSteerSetpoint(RLSetPoint + RLOffset - EncoderConstants::HALF_TURN));
+	 RLInv = -1;
+	 }
+	 }
+	 else {*/
+	// default rotation logic
+	if (fabs(RLSetPoint + RLOffset - getTalonPosition(rearLeftSteer))
+			< EncoderConstants::QUARTER_TURN
+			|| fabs(RLSetPoint + RLOffset - getTalonPosition(rearLeftSteer))
+					> EncoderConstants::THREEQUARTER_TURN) {
+		rearLeftSteer->SetSetpoint(
+				CorrectSteerSetpoint(RLSetPoint + RLOffset, rearLeftSteer));
+		RLInv = 1;
+	} else {
+		rearLeftSteer->SetSetpoint(
+				CorrectSteerSetpoint(
+						RLSetPoint + RLOffset - EncoderConstants::HALF_TURN,
+						rearLeftSteer));
+		RLInv = -1;
 	}
-	else if (rearLeftPos->GetTurns() < -SOFTTURNLIMIT) {
-		if (CorrectSteerSetpoint(RLSetPoint + RLOffset - rearLeftPos->GetAngle()) < EncoderConstants::HALF_TURN) {
-			rearLeft->SetSetpoint(CorrectSteerSetpoint(RLSetPoint + RLOffset));
-			RLInv = 1;
-		}
-		else {
-			rearLeft->SetSetpoint(CorrectSteerSetpoint(RLSetPoint + RLOffset - EncoderConstants::HALF_TURN));
-			RLInv = -1;
-		}
-	}
-	else {*/
-		// default rotation logic
-		if (fabs(RLSetPoint + RLOffset - getTalonPosition(RLS)) < EncoderConstants::QUARTER_TURN ||
-				fabs(RLSetPoint + RLOffset - getTalonPosition(RLS)) > EncoderConstants::THREEQUARTER_TURN) {
-			rearLeftSteer->SetSetpoint(CorrectSteerSetpoint(RLSetPoint + RLOffset, RLS));
-			RLInv = 1;
-		}
-		else {
-			rearLeftSteer->SetSetpoint(CorrectSteerSetpoint(RLSetPoint + RLOffset - EncoderConstants::HALF_TURN, RLS));
-			RLInv = -1;
-		}
 	//}
 
 	//////////////////////////////////
 	// Rear Right Wheel
 	//////////////////////////////////
 	/*if (rearRightPos->GetTurns() > SOFTTURNLIMIT) {
-		if (CorrectSteerSetpoint(RRSetPoint + RROffset - rearRightPos->GetAngle()) > EncoderConstants::HALF_TURN) {
-			rearRight->SetSetpoint(CorrectSteerSetpoint(RRSetPoint + RROffset));
-			RRInv = 1;
-		}
-		else {
-			rearRight->SetSetpoint(CorrectSteerSetpoint(RRSetPoint + RROffset - EncoderConstants::HALF_TURN));
-			RRInv = -1;
-		}
+	 if (CorrectSteerSetpoint(RRSetPoint + RROffset - rearRightPos->GetAngle()) > EncoderConstants::HALF_TURN) {
+	 rearRight->SetSetpoint(CorrectSteerSetpoint(RRSetPoint + RROffset));
+	 RRInv = 1;
+	 }
+	 else {
+	 rearRight->SetSetpoint(CorrectSteerSetpoint(RRSetPoint + RROffset - EncoderConstants::HALF_TURN));
+	 RRInv = -1;
+	 }
+	 }
+	 else if (rearRightPos->GetTurns() < -SOFTTURNLIMIT) {
+	 if (CorrectSteerSetpoint(RRSetPoint + RROffset - rearRightPos->GetAngle()) < EncoderConstants::HALF_TURN) {
+	 rearRight->SetSetpoint(CorrectSteerSetpoint(RRSetPoint + RROffset));
+	 RRInv = 1;
+	 }
+	 else {
+	 rearRight->SetSetpoint(CorrectSteerSetpoint(RRSetPoint + RROffset - EncoderConstants::HALF_TURN));
+	 RRInv = -1;
+	 }
+	 }
+	 else {*/
+	// default rotation logic
+	if (fabs(RRSetPoint + RROffset - getTalonPosition(rearRightSteer))
+			< EncoderConstants::QUARTER_TURN
+			|| fabs(RRSetPoint + RROffset - getTalonPosition(rearRightSteer))
+					> EncoderConstants::THREEQUARTER_TURN) {
+		rearRightSteer->SetSetpoint(
+				CorrectSteerSetpoint(RRSetPoint + RROffset, rearRightSteer));
+		RRInv = 1;
+	} else {
+		rearRightSteer->SetSetpoint(
+				CorrectSteerSetpoint(
+						RRSetPoint + RROffset - EncoderConstants::HALF_TURN,
+						rearRightSteer));
+		RRInv = -1;
 	}
-	else if (rearRightPos->GetTurns() < -SOFTTURNLIMIT) {
-		if (CorrectSteerSetpoint(RRSetPoint + RROffset - rearRightPos->GetAngle()) < EncoderConstants::HALF_TURN) {
-			rearRight->SetSetpoint(CorrectSteerSetpoint(RRSetPoint + RROffset));
-			RRInv = 1;
-		}
-		else {
-			rearRight->SetSetpoint(CorrectSteerSetpoint(RRSetPoint + RROffset - EncoderConstants::HALF_TURN));
-			RRInv = -1;
-		}
-	}
-	else {*/
-		// default rotation logic
-		if (fabs(RRSetPoint + RROffset - getTalonPosition(RRS)) < EncoderConstants::QUARTER_TURN ||
-				fabs(RRSetPoint + RROffset - getTalonPosition(RRS)) > EncoderConstants::THREEQUARTER_TURN) {
-			rearRightSteer->SetSetpoint(CorrectSteerSetpoint(RRSetPoint + RROffset, RRS));
-			RRInv = 1;
-		}
-		else {
-			rearRightSteer->SetSetpoint(CorrectSteerSetpoint(RRSetPoint + RROffset - EncoderConstants::HALF_TURN, RRS));
-			RRInv = -1;
-		}
 	//}
 }
 
 // ==========================================================================
 
-void DriveTrain::SetDriveSpeed(float FLSpeed, float FRSpeed, float RLSpeed, float RRSpeed) {
+void DriveTrain::SetDriveSpeed(float FLSpeed, float FRSpeed, float RLSpeed,
+		float RRSpeed) {
 	if (RobotMap::SpeedControl) {
 		frontLeftDrive->Set(FLSpeed * FLInv * driveScale);
 		frontRightDrive->Set(FRSpeed * FRInv * driveScale);
 		rearLeftDrive->Set(RLSpeed * RLInv * driveScale);
 		rearRightDrive->Set(RRSpeed * RRInv * driveScale);
-	}
-	else {
+	} else {
 		frontLeftDrive->Set(FLSpeed * FLInv);
 		frontRightDrive->Set(FRSpeed * FRInv);
 		rearLeftDrive->Set(RLSpeed * RLInv);
@@ -601,16 +614,16 @@ void DriveTrain::zeroSteeringEncoders() {
 void DriveTrain::setWheelOffsets() {
 	// Get the current steering positions from the drive train.
 	/*
-	auto FLPosition = Robot::driveTrain->frontLeftPos->GetRawAngle();
-	auto FRPosition = Robot::driveTrain->frontRightPos->GetRawAngle();
-	auto RLPosition = Robot::driveTrain->rearLeftPos->GetRawAngle();
-	auto RRPosition = Robot::driveTrain->rearRightPos->GetRawAngle();
-	auto ArmPosition = Robot::armSub->GetRawPosition();
-	*/
-	auto FLPosition = getTalonPosition(FLS);
-	auto FRPosition = getTalonPosition(FRS);
-	auto RLPosition = getTalonPosition(RLS);
-	auto RRPosition = getTalonPosition(RRS);
+	 auto FLPosition = Robot::driveTrain->frontLeftPos->GetRawAngle();
+	 auto FRPosition = Robot::driveTrain->frontRightPos->GetRawAngle();
+	 auto RLPosition = Robot::driveTrain->rearLeftPos->GetRawAngle();
+	 auto RRPosition = Robot::driveTrain->rearRightPos->GetRawAngle();
+	 auto ArmPosition = Robot::armSub->GetRawPosition();
+	 */
+	auto FLPosition = getTalonPosition(frontLeftSteer);
+	auto FRPosition = getTalonPosition(frontRightSteer);
+	auto RLPosition = getTalonPosition(rearLeftSteer);
+	auto RRPosition = getTalonPosition(rearRightSteer);
 	LogSettings(FLPosition, FRPosition, RLPosition, RRPosition);
 
 	// Save the positions to Preferences.
@@ -633,10 +646,14 @@ void DriveTrain::loadWheelOffsets() {
 
 	// Load the positions from Preferences.
 	auto prefs = Preferences::GetInstance();
-	auto FLPosition = prefs->GetDouble(Constants::FL_POS_NAME, Constants::FL_POS_DEFAULT);
-	auto FRPosition = prefs->GetDouble(Constants::FR_POS_NAME, Constants::FR_POS_DEFAULT);
-	auto RLPosition = prefs->GetDouble(Constants::RL_POS_NAME, Constants::RL_POS_DEFAULT);
-	auto RRPosition = prefs->GetDouble(Constants::RR_POS_NAME, Constants::RR_POS_DEFAULT);
+	auto FLPosition = prefs->GetDouble(Constants::FL_POS_NAME,
+			Constants::FL_POS_DEFAULT);
+	auto FRPosition = prefs->GetDouble(Constants::FR_POS_NAME,
+			Constants::FR_POS_DEFAULT);
+	auto RLPosition = prefs->GetDouble(Constants::RL_POS_NAME,
+			Constants::RL_POS_DEFAULT);
+	auto RRPosition = prefs->GetDouble(Constants::RR_POS_NAME,
+			Constants::RR_POS_DEFAULT);
 
 	LogSettings(FLPosition, FRPosition, RLPosition, RRPosition);
 
@@ -655,17 +672,30 @@ void DriveTrain::LogSettings(double fl, double fr, double rl, double rr) {
 // ==========================================================================
 
 void DriveTrain::Dashboard() {
-	SmartDashboard::PutNumber("Steering Motor Encoder FL", getTalonPosition(FLS));
-	SmartDashboard::PutNumber("Steering Motor Encoder FR", getTalonPosition(FRS));
-	SmartDashboard::PutNumber("Steering Motor Encoder RL", getTalonPosition(RLS));
-	SmartDashboard::PutNumber("Steering Motor Encoder RR", getTalonPosition(RRS));
+	SmartDashboard::PutNumber("Steering Motor Encoder FL",
+			getTalonPosition(frontLeftSteer));
+	SmartDashboard::PutNumber("Steering Motor Encoder FR",
+			getTalonPosition(frontRightSteer));
+	SmartDashboard::PutNumber("Steering Motor Encoder RL",
+			getTalonPosition(rearLeftSteer));
+	SmartDashboard::PutNumber("Steering Motor Encoder RR",
+			getTalonPosition(rearRightSteer));
 
-	SmartDashboard::PutNumber("RL Raw Encoder Value", rearLeftSteer->GetPosition());
+	SmartDashboard::PutNumber("RL Raw Encoder Value",
+			rearLeftSteer->GetPosition());
 
-	SmartDashboard::PutNumber("Steering Motor Turns FR", frontRightSteer->GetPosition() - FROffset / EncoderConstants::FULL_TURN); // /5.0
-	SmartDashboard::PutNumber("Steering Motor Turns FL", frontLeftSteer->GetPosition() - FLOffset / EncoderConstants::FULL_TURN); // /5.0
-	SmartDashboard::PutNumber("Steering Motor Turns RR", rearRightSteer->GetPosition() - RROffset / EncoderConstants::FULL_TURN); // /5.0
-	SmartDashboard::PutNumber("Steering Motor Turns RL", rearLeftSteer->GetPosition() - RLOffset / EncoderConstants::FULL_TURN); // /5.0
+	SmartDashboard::PutNumber("Steering Motor Turns FR",
+			frontRightSteer->GetPosition()
+					- FROffset / EncoderConstants::FULL_TURN); // /5.0
+	SmartDashboard::PutNumber("Steering Motor Turns FL",
+			frontLeftSteer->GetPosition()
+					- FLOffset / EncoderConstants::FULL_TURN); // /5.0
+	SmartDashboard::PutNumber("Steering Motor Turns RR",
+			rearRightSteer->GetPosition()
+					- RROffset / EncoderConstants::FULL_TURN); // /5.0
+	SmartDashboard::PutNumber("Steering Motor Turns RL",
+			rearLeftSteer->GetPosition()
+					- RLOffset / EncoderConstants::FULL_TURN); // /5.0
 
 	SmartDashboard::PutNumber("FR Setpoint", frontRightSteer->GetSetpoint());
 	SmartDashboard::PutNumber("FL Setpoint", frontLeftSteer->GetSetpoint());
@@ -689,10 +719,10 @@ void DriveTrain::CrabInit() {
 // ==========================================================================
 
 void DriveTrain::SetWheelsStraight() {
-	frontLeftSteer->SetSetpoint(CorrectSteerSetpoint(FLOffset, FLS));
-	frontRightSteer->SetSetpoint(CorrectSteerSetpoint(FROffset, FRS));
-	rearLeftSteer->SetSetpoint(CorrectSteerSetpoint(RLOffset, RLS));
-	rearRightSteer->SetSetpoint(CorrectSteerSetpoint(RROffset, RRS));
+	frontLeftSteer->SetSetpoint(CorrectSteerSetpoint(FLOffset, frontLeftSteer));
+	frontRightSteer->SetSetpoint(CorrectSteerSetpoint(FROffset, frontRightSteer));
+	rearLeftSteer->SetSetpoint(CorrectSteerSetpoint(RLOffset, rearLeftSteer));
+	rearRightSteer->SetSetpoint(CorrectSteerSetpoint(RROffset, rearRightSteer));
 }
 
 // ==========================================================================
@@ -705,24 +735,22 @@ void DriveTrain::ArcadeDriveMode(float x, float y) {
 		if (x > 0.0) {
 			leftMotorOutput = y - x;
 			rightMotorOutput = std::max(y, x);
-		}
-		else {
+		} else {
 			leftMotorOutput = std::max(y, -x);
 			rightMotorOutput = y + x;
 		}
-	}
-	else {
+	} else {
 		if (x > 0.0) {
 			leftMotorOutput = -std::max(-y, x);
 			rightMotorOutput = y + x;
-		}
-		else {
+		} else {
 			leftMotorOutput = y - x;
 			rightMotorOutput = -std::max(-y, -x);
 		}
 	}
 
-	SetDriveSpeed(leftMotorOutput, rightMotorOutput, leftMotorOutput, rightMotorOutput);
+	SetDriveSpeed(leftMotorOutput, rightMotorOutput, leftMotorOutput,
+			rightMotorOutput);
 }
 
 // ==========================================================================
@@ -782,22 +810,6 @@ void DriveTrain::enableSteeringPID() {
 
 // ==========================================================================
 
-double DriveTrain::getTalonPosition(int talon){
-	switch (talon){
-		case 0:
-			return (frontLeftSteer->GetPosition() - trunc(frontLeftSteer->GetPosition()))*EncoderConstants::FULL_TURN;
-			break;
-		case 1:
-			return (frontRightSteer->GetPosition() - trunc(frontRightSteer->GetPosition()))*EncoderConstants::FULL_TURN;
-			break;
-		case 2:
-			return (rearLeftSteer->GetPosition() - trunc(rearLeftSteer->GetPosition()))*EncoderConstants::FULL_TURN;
-			break;
-		case 3:
-			return (rearRightSteer->GetPosition() - trunc(rearRightSteer->GetPosition()))*EncoderConstants::FULL_TURN;
-			break;
-		default:
-			return 0;
-			break;
-	}
+double DriveTrain::getTalonPosition(CANTalon* talon) {
+	return (talon->GetPosition() - trunc(talon->GetPosition()))*EncoderConstants::FULL_TURN;
 }
