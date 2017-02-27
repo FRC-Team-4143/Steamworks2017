@@ -23,10 +23,10 @@ private:
 	double RROffset; // Rear right wheel position
 
 	// Inversion Variables
-	int FLInv; // Direction of front left drive motor
-	int FRInv; // Direction of front right drive motor
-	int RLInv; // Direction of right left drive motor
-	int RRInv; // Direction of right rear drive motor
+	double FLInv; // Direction of front left drive motor
+	double FRInv; // Direction of front right drive motor
+	double RLInv; // Direction of right left drive motor
+	double RRInv; // Direction of right rear drive motor
 
 	float lastx;
 	float lasty;
@@ -50,7 +50,8 @@ private:
 	CANTalon* rearRightSteer;			// Speed controller for rear right steering motor
 
 	double CorrectSteerSetpoint(double setpoint, CANTalon* talon);
-	void SetSteerSetpoint(float FLSetPoint, float FRSetPoint, float RLSetPoint, float RRSetPoint);
+	void SetSteer(float FLSetPoint, float FRSetPoint, float RLSetPoint, float RRSetPoint);
+	void SetSteerSetpoint(float setpoint, CANTalon* talon, int *inverse);
 	void SetDriveSpeed(float FLSpeed, float FRSpeed, float RLSpeed, float RRSpeed);
 	void CurrentLimit();
 	double getTalonPosition(CANTalon* talon);

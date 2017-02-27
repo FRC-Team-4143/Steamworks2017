@@ -273,7 +273,7 @@ void DriveTrain::Crab(float twist, float y, float x, bool operatorControl) {
 				+ EncoderConstants::HALF_TURN / pi * atan2(AP, CP));
 	}
 
-	SetSteerSetpoint(FLSetPoint, FRSetPoint, RLSetPoint, RRSetPoint);
+	SetSteer(FLSetPoint, FRSetPoint, RLSetPoint, RRSetPoint);
 
 	double FL; // FL, distance from Front Left Wheel to the center of rotation
 	double FR; // FR, distance from Front Right Wheel to the center of rotation
@@ -373,12 +373,57 @@ double DriveTrain::CorrectSteerSetpoint(double setpoint, CANTalon* talon) {
 
 // ==========================================================================
 
-void DriveTrain::SetSteerSetpoint(float FLSetPoint, float FRSetPoint,
+//REMINDER: add the offset before this function
+void setSteerSetpoint(float setpoint, CANTalon* talon, double *inverse){
+	float currentPosition = talon->GetPosition();
+	int turns = trunc(currentPosition);
+	int currentAngle = currentPosition - turns;
+
+	currentPosition *= EncoderConstants::FULL_TURN;
+	turns *= EncoderConstants::FULL_TURN;
+	currentAngle *= EncoderConstants::FULL_TURN;
+
+	float angleOptions[6];
+	angleOptions[0] = turns - EncoderConstants::FULL_TURN + setpoint;
+	angleOptions[1] = turns - EncoderConstants::FULL_TURN + setpoint + EncoderConstants::HALF_TURN;
+	angleOptions[2] = turns + setpoint;
+	angleOptions[3] = turns + setpoint + EncoderConstants::HALF_TURN;
+	angleOptions[4] = turns + EncoderConstants::FULL_TURN + setpoint;
+	angleOptions[5] = turns + EncoderConstants::FULL_TURN + setpoint + EncoderConstants::HALF_TURN;
+
+	float minMove = fabs(currentPosition - angleOptions[0]);
+	int minI = 0;
+	for (int i = 1; i < 6; i++){
+		if (fabs(currentPosition - angleOptions[i]) < minMove){
+			minMove = fabs(currentPosition - angleOptions[i]);
+			minI = i;
+		}
+	}
+	talon->SetSetpoint(angleOptions[minI]/EncoderConstants::FULL_TURN);
+
+
+	*inverse = cos((minMove / EncoderConstants::FULL_TURN) * 2 * 3.141);
+	if (minI % 2)
+		*inverse *= -1;
+	else
+		*inverse *= 1;
+
+}
+
+void DriveTrain::SetSteer(float FLSetPoint, float FRSetPoint,
 		float RLSetPoint, float RRSetPoint) {
 	FLSetPoint = -FLSetPoint;
 	FRSetPoint = -FRSetPoint;
 	RLSetPoint = -RLSetPoint;
 	RRSetPoint = -RRSetPoint;
+
+	setSteerSetpoint(FLSetPoint + FLOffset, frontLeftSteer, &FLInv);
+	setSteerSetpoint(FRSetPoint + FROffset, frontRightSteer, &FRInv);
+	setSteerSetpoint(RLSetPoint + RLOffset, rearLeftSteer, &RLInv);
+	setSteerSetpoint(RRSetPoint + RROffset, rearRightSteer, &RRInv);
+
+	return;
+
 	//////////////////////////////////
 	// Front Left Wheel
 	//////////////////////////////////
@@ -564,14 +609,14 @@ void DriveTrain::SetDriveSpeed(float FLSpeed, float FRSpeed, float RLSpeed,
 // ==========================================================================
 
 void DriveTrain::Lock() {
-	SetSteerSetpoint(3.0, 1.5, 3.0, 1.5);
+	SetSteer(3.0, 1.5, 3.0, 1.5);
 	SetDriveSpeed(0, 0, 0, 0);
 }
 
 // ==========================================================================
 
 void DriveTrain::SideLock() {
-	SetSteerSetpoint(2.0, 0.75, 3.25, 4.5);
+	SetSteer(2.0, 0.75, 3.25, 4.5);
 	SetDriveSpeed(0, 0, 0, 0);
 }
 
@@ -673,29 +718,13 @@ void DriveTrain::LogSettings(double fl, double fr, double rl, double rr) {
 
 void DriveTrain::Dashboard() {
 	SmartDashboard::PutNumber("Steering Motor Encoder FL",
-			getTalonPosition(frontLeftSteer));
+			frontLeftSteer->GetPosition());
 	SmartDashboard::PutNumber("Steering Motor Encoder FR",
-			getTalonPosition(frontRightSteer));
+			frontRightSteer->GetPosition());
 	SmartDashboard::PutNumber("Steering Motor Encoder RL",
-			getTalonPosition(rearLeftSteer));
-	SmartDashboard::PutNumber("Steering Motor Encoder RR",
-			getTalonPosition(rearRightSteer));
-
-	SmartDashboard::PutNumber("RL Raw Encoder Value",
 			rearLeftSteer->GetPosition());
-
-	SmartDashboard::PutNumber("Steering Motor Turns FR",
-			frontRightSteer->GetPosition()
-					- FROffset / EncoderConstants::FULL_TURN); // /5.0
-	SmartDashboard::PutNumber("Steering Motor Turns FL",
-			frontLeftSteer->GetPosition()
-					- FLOffset / EncoderConstants::FULL_TURN); // /5.0
-	SmartDashboard::PutNumber("Steering Motor Turns RR",
-			rearRightSteer->GetPosition()
-					- RROffset / EncoderConstants::FULL_TURN); // /5.0
-	SmartDashboard::PutNumber("Steering Motor Turns RL",
-			rearLeftSteer->GetPosition()
-					- RLOffset / EncoderConstants::FULL_TURN); // /5.0
+	SmartDashboard::PutNumber("Steering Motor Encoder RR",
+			rearRightSteer->GetPosition());
 
 	SmartDashboard::PutNumber("FR Setpoint", frontRightSteer->GetSetpoint());
 	SmartDashboard::PutNumber("FL Setpoint", frontLeftSteer->GetSetpoint());

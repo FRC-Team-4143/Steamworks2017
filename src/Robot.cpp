@@ -65,7 +65,7 @@ void Robot::DisabledInit() {
 
 void Robot::DisabledPeriodic() {
 	Scheduler::GetInstance()->Run();
-
+	driveTrain->Dashboard();
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetAngle());
 	SmartDashboard::PutNumber("Gyro Angle Adjustment", RobotMap::imu->GetAngleAdjustment());
 	/*
@@ -124,7 +124,7 @@ void Robot::TeleopPeriodic() {
 	SmartDashboard::PutNumber("Index Timer", indexer->GetTimer());
 	SmartDashboard::PutNumber("Reverse Time", indexer->GetReverseTime());
 	//indexer->ReadPDP();
-
+	driveTrain->Dashboard();
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetAngle());
 	/*
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
