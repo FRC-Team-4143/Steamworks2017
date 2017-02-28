@@ -26,7 +26,7 @@ const float DEAD_ZONE = 0.1;
 const float driveScale = 950;
 // const double AVERAGE_VOLTAGE_BASE = EncoderConstants::HALF_TURN;
 
-#define GYROP .01
+#define GYROP .001
 #define GYROMAX .5
 
 // ==========================================================================
@@ -400,7 +400,6 @@ void setSteerSetpoint(float setpoint, CANTalon* talon, double *inverse){
 		}
 	}
 	talon->SetSetpoint(angleOptions[minI]/EncoderConstants::FULL_TURN);
-
 
 	*inverse = cos((minMove / EncoderConstants::FULL_TURN) * 2 * 3.141);
 	if (minI % 2)

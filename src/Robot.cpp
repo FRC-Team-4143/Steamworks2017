@@ -48,13 +48,12 @@ void Robot::RobotInit() {
 	indexer = new Indexer();
 	turret = new Turret();
 	basicCameraSub.reset(new BasicCameraSub("cam0"));
-	oi = new OI();
 	visionBridge = new VisionBridgeSub();
 	climber = new Climber();
 	driveTrain->SetWheelbase(26.8, 26.8, 22.8);
 	driveTrain->loadWheelOffsets();
-
 	shooter = new Shooter();
+	oi = new OI();
 }
 
 void Robot::RobotPeriodic() {
@@ -205,17 +204,7 @@ void Robot::ScriptInit() {
 		// if (0 == timeout) timeout = 4;
 		fCreateCommand(command, 0);
 	}));
-/*
-	parser.AddCommand(CommandParseInfo(
-			"Shoot", {"SH", "sh"},
-			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
-		parameters.resize(1);
-		auto preferredSide = parameters[0];
-		Command *command = new ShootCycle(preferredSide);
-		// if (0 == timeout) timeout = 4;
-		fCreateCommand(command, 0);
-	}));
-*/
+
 	parser.AddCommand(CommandParseInfo(
 			"Sleep", {"S", "s"},
 			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
