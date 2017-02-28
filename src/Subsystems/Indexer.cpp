@@ -94,6 +94,27 @@ void Indexer::SpinCCW() {
 	}
 }
 
+//USED FOR AUTONOMOUS//
+void Indexer::SpinCW(float speed){
+	if (indexJammed){
+		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
+		indexMotor->Set(0.5);
+		if (timer->Get() > reverseTime)
+			indexJammed = false;
+	} else {
+		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
+		indexMotor->Set(-speed);
+		if (IsJammed()) {
+			RobotMap::i2c->Write(13, 0);
+			reverseTime = .3;
+			indexJammed = true;
+			timer->Reset();
+		}
+	}
+
+}
+//////////////////////
+
 void Indexer::SpinBall() {
 	indexMotor->SetControlMode(CANSpeedController::kPosition);
 	indexMotor->SetPosition(0.0);

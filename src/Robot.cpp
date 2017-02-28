@@ -10,6 +10,7 @@
 #include "Commands/ScriptSleep.h"
 #include "Commands/WaitForVision.h"
 #include "Commands/ZeroYaw.h"
+#include "Commands/ScriptShoot.h"
 #include "Modules/CommandListParser.h"
 #include "Modules/Logger.h"
 #include "Modules/ScriptCommandFactory.h"
@@ -260,6 +261,15 @@ void Robot::ScriptInit() {
 		auto z = parameters[2];
 		auto timeout = parameters[3];
 		Command *command = new ScriptFieldCentricCrab(z, y, x, timeout);
+		// if (0 == timeout) timeout = 4;
+		fCreateCommand(command, 0);
+	}));
+
+	parser.AddCommand(CommandParseInfo(
+			"ScriptShoot", {"SH", "sh"},
+			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
+		parameters.resize(4);
+		Command *command = new ScriptShoot();
 		// if (0 == timeout) timeout = 4;
 		fCreateCommand(command, 0);
 	}));

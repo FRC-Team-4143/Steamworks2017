@@ -19,6 +19,7 @@ public:
 	Indexer();
 	void InitDefaultCommand();
 	void SpinCW();
+	void SpinCW(float speed);
 	void SpinCCW();
 	void SpinBall();
 	void SetLoadingOne(bool loadingOne);
