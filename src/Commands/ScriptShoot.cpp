@@ -3,9 +3,9 @@
 #include "ScriptStopShooter.h"
 #include "ScriptIndex.h"
 
-ScriptShoot::ScriptShoot() {
+ScriptShoot::ScriptShoot(int speed, float timeout) {
 	//Aim
-	AddSequential(new ScriptStartShooter(5000));
-	AddSequential(new ScriptIndex(0.65, 15));
+	AddSequential(new ScriptStartShooter(speed));
+	AddSequential(new ScriptIndex(0.65, timeout));
 	AddSequential(new ScriptStopShooter());
 }

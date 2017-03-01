@@ -5,7 +5,7 @@
 
 class ScriptShoot : public CommandGroup {
 public:
-	ScriptShoot();
+	ScriptShoot(int speed, float timeout);
 };
 
 #endif  // ScriptShoot_H

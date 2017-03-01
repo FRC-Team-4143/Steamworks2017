@@ -38,28 +38,19 @@ void Indexer::SpinCW() {
 	if (indexJammed) {
 		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
 		indexMotor->Set(0.5);
-		if (reverseTime >= 0.39)
-			RobotMap::i2c->Write(12, 0);
 		if (timer->Get() > reverseTime) {
 			indexJammed = false;
+			reverseTime = 0;
 		}
 	} else {
 		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
 		indexMotor->Set(-SmartDashboard::GetNumber("Indexer Speed", 0.65));
 		if (IsJammed()) {
-			if (reverseTime == 0) {
-				RobotMap::i2c->Write(13, 0);
-				reverseTime += .1;
-				jamPosition = indexMotor->GetPosition();
-			}
-			reverseTime += .1;
+			RobotMap::i2c->Write(13, 0);
+			reverseTime = .3;
 			indexJammed = true;
 			timer->Reset();
 		}
-	}
-
-	if (indexMotor->GetPosition() < (jamPosition - 2)) {
-		reverseTime = 0;
 	}
 }
 
@@ -68,29 +59,20 @@ void Indexer::SpinCCW() {
 	if (indexJammed) {
 		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
 		indexMotor->Set(-0.5);
-		if (reverseTime <= 0.39)
-			RobotMap::i2c->Write(12, 0);
-		if (timer->Get() > .2) {
+		if (timer->Get() > reverseTime) {
 			indexJammed = false;
+			reverseTime = 0;
 		}
 	}
 	else {
 		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
 		indexMotor->Set(SmartDashboard::GetNumber("Indexer Speed", 0.65));
 		if (IsJammed()) {
-			if (reverseTime == 0) {
-				RobotMap::i2c->Write(13, 0);
-				reverseTime += .1;
-				jamPosition = indexMotor->GetPosition();
-			}
-			reverseTime += .1;
+			RobotMap::i2c->Write(13, 0);
+			reverseTime = .3;
 			indexJammed = true;
 			timer->Reset();
 		}
-	}
-
-	if (indexMotor->GetPosition() > (jamPosition + 2)) {
-		reverseTime = 0;
 	}
 }
 
@@ -132,8 +114,8 @@ void Indexer::Stop() {
 }
 
 bool Indexer::IsJammed() {
-	if (pdp->GetCurrent(14) > 10) {
-		return false;
+	if (pdp->GetCurrent(9) > 20) {
+		return true;
 	}
 	return false;
 }
@@ -148,8 +130,8 @@ void Indexer::TestJamShooter() {
 
 void Indexer::ReadPDP() {
 	for (int i = 0; i < 16; i++) {
-		//SmartDashboard::PutNumber("PDP Current " + std::to_string(i),
-		//		pdp->GetCurrent(i));
+		SmartDashboard::PutNumber("PDP Current " + std::to_string(i),
+				pdp->GetCurrent(i));
 	}
 }
 

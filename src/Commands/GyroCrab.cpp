@@ -9,6 +9,7 @@ GyroCrab::GyroCrab()
 	LOG(GetName() + "::ctor");
 
 	Requires(Robot::driveTrain);
+	flag = false;
 }
 
 // ==========================================================================
@@ -18,6 +19,7 @@ void GyroCrab::Initialize() {
 	_angle /= 90;
 	_angle = floor(_angle + .5); // round
 	_angle *= 90;
+
 }
 
 // ==========================================================================
@@ -25,6 +27,15 @@ void GyroCrab::Initialize() {
 void GyroCrab::Execute() {
 	auto x = Robot::oi->GetJoystickX();
 	auto y = Robot::oi->GetJoystickY();
+	if (Robot::oi->GetRightTrigger() > 0.5 && !flag){
+		flag = true;
+		_angle += 45;
+	} else if (Robot::oi->GetLeftTrigger() > 0.5 && !flag){
+		flag = true;
+		_angle -= 45;
+	} else if (!(Robot::oi->GetRightTrigger() > 0.5) && !(Robot::oi->GetLeftTrigger() > 0.5)){
+		flag = false;
+	}
 	Robot::driveTrain->GyroCrab(_angle, -y, x, true);
 }
 

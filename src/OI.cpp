@@ -83,8 +83,8 @@ OI::OI() {
 
 	//(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_A))->WhileHeld(climb);
 	//->WhileHeld(shootCycle);
-	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_RIGHT))->WhileHeld(gyroCrab);
-	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_LEFT))->WhileHeld(fieldCentric);
+	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_LB))->WhileHeld(gyroCrab);
+	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_RB))->WhileHeld(fieldCentric);
 
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_START))->WhileHeld(climb);
 	//(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_BACK))->WhileHeld(reverseClimb);

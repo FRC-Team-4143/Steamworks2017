@@ -65,9 +65,10 @@ void Robot::DisabledInit() {
 
 void Robot::DisabledPeriodic() {
 	Scheduler::GetInstance()->Run();
-	driveTrain->Dashboard();
-	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetAngle());
-	SmartDashboard::PutNumber("Gyro Angle Adjustment", RobotMap::imu->GetAngleAdjustment());
+	//driveTrain->Dashboard();
+	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
+	indexer->ReadPDP();
+	//SmartDashboard::PutNumber("Gyro Angle Adjustment", RobotMap::imu->GetAngleAdjustment());
 	/*
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
@@ -98,7 +99,7 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {
 	Scheduler::GetInstance()->Run();
 
-	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetAngle());
+	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
 	/*
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
@@ -123,17 +124,17 @@ void Robot::TeleopPeriodic() {
 	SmartDashboard::PutBoolean("Indexer Jammed", indexer->IsIndexJammed());
 	SmartDashboard::PutNumber("Index Timer", indexer->GetTimer());
 	SmartDashboard::PutNumber("Reverse Time", indexer->GetReverseTime());
-	//indexer->ReadPDP();
-	driveTrain->Dashboard();
-	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetAngle());
+	indexer->ReadPDP();
+	//driveTrain->Dashboard();
+	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
 	/*
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
 	SmartDashboard::PutNumber("Vision Distance", Robot::visionBridge->GetDistance());
 	*/
 
-	//SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
-	//SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
+	SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
+	SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
 	SmartDashboard::PutNumber("Target Shooter Speed", shooter->targetShooterSpeed);
 	//SmartDashboard::PutNumber("Indexer Position", indexer->GetPosition());
 
@@ -268,8 +269,10 @@ void Robot::ScriptInit() {
 	parser.AddCommand(CommandParseInfo(
 			"ScriptShoot", {"SH", "sh"},
 			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
-		parameters.resize(4);
-		Command *command = new ScriptShoot();
+		parameters.resize(2);
+		auto speed = parameters[0];
+		auto timeout = parameters[1];
+		Command *command = new ScriptShoot(speed, timeout);
 		// if (0 == timeout) timeout = 4;
 		fCreateCommand(command, 0);
 	}));
