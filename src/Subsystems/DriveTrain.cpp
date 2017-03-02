@@ -26,8 +26,8 @@ const float DEAD_ZONE = 0.1;
 const float driveScale = 950;
 // const double AVERAGE_VOLTAGE_BASE = EncoderConstants::HALF_TURN;
 
-#define GYROP .001
-#define GYROMAX .5
+#define GYROP .01
+#define GYROMAX 1.0
 
 // ==========================================================================
 
@@ -69,6 +69,9 @@ DriveTrain::DriveTrain() :
 
 	rearRightDrive = RobotMap::driveTrainRearRightDrive;
 	rearRightSteer = RobotMap::driveTrainRearRightSteer;
+
+	lidar = RobotMap::lidar;
+	lidarDistance = 0;
 }
 
 // ==========================================================================
@@ -85,6 +88,13 @@ void DriveTrain::EnablePIDs(bool enable) {
 		rearLeftSteer->Disable();
 		rearRightSteer->Disable();
 	}
+}
+
+// ==========================================================================
+
+void DriveTrain::readLidar() {
+	lidar->ReadOnly(4, (unsigned char*)&lidarDistance);
+	SmartDashboard::PutNumber("lidar distance", lidarDistance);
 }
 
 // ==========================================================================
@@ -152,6 +162,21 @@ void DriveTrain::GyroCrab(float desiredangle, float y, float x,
 
 	twist = std::min(GYROMAX, std::max(-GYROMAX, twist * GYROP));
 	Crab(twist, y, x, operatorControl);
+}
+
+// ==========================================================================
+
+void DriveTrain::GyroRotate(float desiredangle, double power) {
+	auto robotangle = Robot::gyroSub->PIDGet();
+
+	float twist = desiredangle - robotangle;
+	while (twist > 180.0)
+		twist -= 360.0;
+	while (twist < -180.0)
+		twist += 360.0;
+
+	twist = std::min(power, std::max(-power, twist * (0.2/10)));
+	Crab(twist, 0, 0, false);
 }
 
 // ==========================================================================

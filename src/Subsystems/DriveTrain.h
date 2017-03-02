@@ -49,6 +49,8 @@ private:
 	CANTalon* rearRightDrive;			// Speed controller for rear right drive motor
 	CANTalon* rearRightSteer;			// Speed controller for rear right steering motor
 
+	I2C* lidar;
+
 	double CorrectSteerSetpoint(double setpoint, CANTalon* talon);
 	void SetSteer(float FLSetPoint, float FRSetPoint, float RLSetPoint, float RRSetPoint);
 	void SetSteerSetpoint(float setpoint, CANTalon* talon, int *inverse);
@@ -59,6 +61,8 @@ private:
 public:
 	DriveTrain();
 
+	void readLidar();
+	unsigned long lidarDistance;
 	void EnablePIDs(bool enable);
 
 	void SetWheelbase(float w, float x, float y); // sets dimensions of drive train
@@ -71,6 +75,7 @@ public:
 	bool unwind();     // float y, float x); //unwinds all wheels
 	void doneunwind(); // called when unwinding is finished
 	void GyroCrab(float desiredangle, float y, float x, bool operatorControl); // drive using gyro values
+	void GyroRotate(float desiredangle, double power);
 	void FieldCentricCrab(float twist, float y, float x, bool operatorControl); // drive at 90 degree angle to field
 	void PositionModeTwist(float desiredangle);
 	void updateDistanceEncoders(); // updates the values of drive train variables with distance encoder values

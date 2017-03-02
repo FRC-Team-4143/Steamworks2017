@@ -23,6 +23,7 @@ public:
 	static CANTalon* driveTrainRearRightSteer;
 
 	static I2C* i2c;
+	static I2C* lidar;
 
 	static CANTalon* climbingMotor;
 

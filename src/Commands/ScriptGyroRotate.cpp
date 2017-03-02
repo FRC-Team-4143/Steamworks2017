@@ -1,13 +1,13 @@
-#include "Commands/ScriptGyroDrive.h"
+#include "Commands/ScriptGyroRotate.h"
 #include "Modules/Logger.h"
 #include "Robot.h"
 
 // ==========================================================================
 
-ScriptGyroDrive::ScriptGyroDrive(std::string name, float x, float y, float z, float seconds)
-: frc::Command(name), _x(x), _y(y), _z(z), _seconds(seconds) {
+ScriptGyroRotate::ScriptGyroRotate(std::string name, float desiredangle, double power, float seconds)
+: frc::Command(name), _desiredangle(desiredangle), _power(power), _seconds(seconds) {
 	char szParams[64];
-	sprintf(szParams, "(%f, %f, %f, %f)", x, y, z, seconds);
+	sprintf(szParams, "(%f, %d, %f)", desiredangle, power, seconds);
 	LOG(GetName() + "::ctor" + szParams);
 
 	Requires(Robot::driveTrain);
@@ -15,7 +15,7 @@ ScriptGyroDrive::ScriptGyroDrive(std::string name, float x, float y, float z, fl
 
 // ==========================================================================
 
-void ScriptGyroDrive::Initialize() {
+void ScriptGyroRotate::Initialize() {
 	LOG(GetName() + "::Initialize");
 	SetTimeout(_seconds);
 	//Robot::driveTrain->enableSpeedControl();
@@ -23,31 +23,31 @@ void ScriptGyroDrive::Initialize() {
 
 // ==========================================================================
 
-void ScriptGyroDrive::Execute() {
-	Robot::driveTrain->GyroCrab(_z, _x, _y, false);
+void ScriptGyroRotate::Execute() {
+	Robot::driveTrain->GyroRotate(_desiredangle, _power);
 }
 
 // ==========================================================================
 
-bool ScriptGyroDrive::IsFinished() { return IsTimedOut(); }
+bool ScriptGyroRotate::IsFinished() { return IsTimedOut(); }
 
 // ==========================================================================
 
-void ScriptGyroDrive::End() {
+void ScriptGyroRotate::End() {
 	LOG(GetName() + "::End");
 	_Cleanup();
 }
 
 // ==========================================================================
 
-void ScriptGyroDrive::Interrupted() {
+void ScriptGyroRotate::Interrupted() {
 	LOG(GetName() + "::Interrupted");
 	_Cleanup();
 }
 
 // ==========================================================================
 
-void ScriptGyroDrive::_Cleanup() {
+void ScriptGyroRotate::_Cleanup() {
 	Robot::driveTrain->Crab(0, 0, 0, false);
 	//Robot::driveTrain->disableSpeedControl();
 }

@@ -11,6 +11,8 @@
 #include "Commands/WaitForVision.h"
 #include "Commands/ZeroYaw.h"
 #include "Commands/ScriptShoot.h"
+#include "Commands/DriveTilLidar.h"
+#include "Commands/ScriptGyroRotate.h"
 #include "Modules/CommandListParser.h"
 #include "Modules/Logger.h"
 #include "Modules/ScriptCommandFactory.h"
@@ -23,7 +25,6 @@ GyroSub* Robot::gyroSub = nullptr;
 DriveTrain* Robot::driveTrain = nullptr;
 std::shared_ptr<BasicCameraSub> Robot::basicCameraSub;
 VisionBridgeSub* Robot::visionBridge = nullptr;
-const bool SHOOTER_AS_MASTER_SLAVE = true;
 Shooter* Robot::shooter = nullptr;
 Climber* Robot::climber = nullptr;
 
@@ -69,11 +70,16 @@ void Robot::DisabledPeriodic() {
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
 	indexer->ReadPDP();
 	//SmartDashboard::PutNumber("Gyro Angle Adjustment", RobotMap::imu->GetAngleAdjustment());
-	/*
+
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
 	SmartDashboard::PutNumber("Vision Distance", Robot::visionBridge->GetDistance());
-	*/
+
+
+	driveTrain->readLidar();
+
+
+
 	//SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
 	//SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
 	SmartDashboard::PutNumber("Target Shooter Speed", shooter->targetShooterSpeed);
@@ -100,6 +106,8 @@ void Robot::AutonomousPeriodic() {
 	Scheduler::GetInstance()->Run();
 
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
+
+	driveTrain->readLidar();
 	/*
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
@@ -132,6 +140,9 @@ void Robot::TeleopPeriodic() {
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
 	SmartDashboard::PutNumber("Vision Distance", Robot::visionBridge->GetDistance());
 	*/
+
+	driveTrain->readLidar();
+
 
 	SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
 	SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
@@ -229,6 +240,17 @@ void Robot::ScriptInit() {
 	}));
 
 	parser.AddCommand(CommandParseInfo(
+			"GyroRotate", {"GR", "gr"},
+			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
+		parameters.resize(3);
+		auto power = parameters[0];
+		auto desiredAngle = parameters[1];
+		auto timeout = parameters[2];
+		Command *command = new ScriptGyroRotate("GyroRotate", desiredAngle, power, timeout);
+		fCreateCommand(command, 0);
+	}));
+
+	parser.AddCommand(CommandParseInfo(
 			"DriveDistance", {"DD", "dd"},
 			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
 		parameters.resize(4);
@@ -273,6 +295,20 @@ void Robot::ScriptInit() {
 		auto speed = parameters[0];
 		auto timeout = parameters[1];
 		Command *command = new ScriptShoot(speed, timeout);
+		// if (0 == timeout) timeout = 4;
+		fCreateCommand(command, 0);
+	}));
+
+	parser.AddCommand(CommandParseInfo(
+			"DriveTilLidar", {"DL", "dl"},
+			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
+		parameters.resize(5);
+		auto target = parameters[0];
+		auto y = parameters[1];
+		auto x = parameters[2];
+		auto z = parameters[3];
+		auto timeout = parameters[4];
+		Command *command = new DriveTilLidar(target, y, x, z, timeout);
 		// if (0 == timeout) timeout = 4;
 		fCreateCommand(command, 0);
 	}));

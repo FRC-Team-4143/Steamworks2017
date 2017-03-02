@@ -18,6 +18,7 @@ CANTalon*          RobotMap::driveTrainRearRightDrive = nullptr;
 CANTalon*          RobotMap::driveTrainRearRightSteer = nullptr;
 
 I2C* RobotMap::i2c = nullptr;
+I2C* RobotMap::lidar = nullptr;
 
 CANTalon* RobotMap::climbingMotor = nullptr;
 
@@ -74,8 +75,8 @@ void RobotMap::Initialize() {
 	// LiveWindow* lw = LiveWindow::GetInstance();
 
 	// serialPort = new SerialPort(57600, SerialPort::kOnboard);
-	//imu = new AHRS(SPI::kMXP); // SPI::kOnboardCS0);//serialPort, 100);
-	imu = new AHRS(SerialPort::kUSB);
+	imu = new AHRS(SPI::kMXP); // SPI::kOnboardCS0);//serialPort, 100);
+	//imu = new AHRS(SerialPort::kUSB);
 	pdp = new PowerDistributionPanel();
 
 	////////////////////////////////////
@@ -194,7 +195,8 @@ void RobotMap::Initialize() {
 	driveTrainRearRightSteer->ConfigNominalOutputVoltage(0.0, 0.0);
 	driveTrainRearRightSteer->ConfigPeakOutputVoltage(12.0*STEERPOW, -12.0*STEERPOW);
 
-	i2c = new I2C((I2C::Port)1, 0x04);
+	i2c = new I2C(I2C::Port::kMXP, 0x04);
+	lidar = new I2C(I2C::Port::kOnboard, 0x05);
 
 	climbingMotor = new CANTalon(13); //13
 
