@@ -3,7 +3,6 @@
 
 SpinIndexerCCW::SpinIndexerCCW() {
 	// Use Requires() here to declare subsystem dependencies
-	Requires(Robot::turret);
 	Requires(Robot::indexer);
 }
 

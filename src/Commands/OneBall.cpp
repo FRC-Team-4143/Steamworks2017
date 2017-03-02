@@ -4,7 +4,7 @@
 OneBall::OneBall() {
 	// Use Requires() here to declare subsystem dependencies
 	Requires(Robot::indexer);
-	Requires(Robot::turret);
+
 }
 
 void OneBall::Initialize() {

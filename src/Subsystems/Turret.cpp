@@ -5,7 +5,8 @@
 
 Turret::Turret() : Subsystem("Turret") {
 	turretMotor = RobotMap::turretMotor;
-	//indexMotor = RobotMap::indexMotor;
+
+		SmartDashboard::PutNumber("Turret Max Speed",0);
 }
 
 void Turret::InitDefaultCommand() {
@@ -28,7 +29,7 @@ void Turret::SetSpeed(double speed) {
 */
 	turretMotor->SetControlMode(CANTalon::kPercentVbus);
 	turretMotor->Set(speed);
-	Robot::indexer->SetSpeed(speed);
+
 }
 
 void Turret::Stop() {

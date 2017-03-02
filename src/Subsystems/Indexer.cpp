@@ -1,6 +1,7 @@
 #include "Indexer.h"
 #include "RobotMap.h"
 #include "Robot.h"
+#include "../Commands/DefaultIndexer.h"
 
 Indexer::Indexer() : Subsystem("Indexer") {
 	indexMotor = RobotMap::indexMotor;
@@ -13,6 +14,7 @@ Indexer::Indexer() : Subsystem("Indexer") {
 	reverseTime = 0;
 	indexJammed = false;
 
+	/*
 	indexMotor->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
 	indexMotor->SetControlMode(CANSpeedController::kPosition);
 	indexMotor->ConfigNominalOutputVoltage(0.0, 0.0);
@@ -23,13 +25,14 @@ Indexer::Indexer() : Subsystem("Indexer") {
 	indexMotor->SetI(0.0);
 	indexMotor->SetD(0.05);
 	indexMotor->SetF(0.0);
-
+*/
 	SmartDashboard::PutNumber("Indexer Speed",0.65);
 }
 
 void Indexer::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	// SetDefaultCommand(new MySpecialCommand());
+	 SetDefaultCommand(new DefaultIndexer());
+
 }
 
 void Indexer::SpinCW() {
@@ -114,7 +117,7 @@ void Indexer::Stop() {
 }
 
 bool Indexer::IsJammed() {
-	if (pdp->GetCurrent(9) > 20) {
+	if (pdp->GetCurrent(9) > 15) {
 		return true;
 	}
 	return false;

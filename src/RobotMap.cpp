@@ -204,6 +204,25 @@ void RobotMap::Initialize() {
     shooterMotor2 = new CANTalon(12); //12
 
 	pickup = new CANTalon(10); //10
+
 	indexMotor = new CANTalon(14); //14
+	indexMotor->SetControlMode(CANTalon::kSpeed);
+	indexMotor->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
+	indexMotor->SetP(P);
+	indexMotor->SetI(0);
+	indexMotor->SetD(0);
+	indexMotor->SetF(0.02827);
+	indexMotor->ConfigNominalOutputVoltage(0.0, 0.0);
+	indexMotor->ConfigPeakOutputVoltage(12.0, -12.0);
+
 	turretMotor = new CANTalon(9); //9
+	turretMotor->SetControlMode(CANTalon::kSpeed);
+	turretMotor->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
+	turretMotor->SetP(P);
+	turretMotor->SetI(0);
+	turretMotor->SetD(0);
+	turretMotor->SetF(0.02827);
+	turretMotor->ConfigNominalOutputVoltage(0.0, 0.0);
+	turretMotor->ConfigPeakOutputVoltage(12.0, -12.0);
+
 }

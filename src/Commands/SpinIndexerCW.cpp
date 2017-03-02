@@ -2,7 +2,6 @@
 #include "Robot.h"
 
 SpinIndexerCW::SpinIndexerCW() {
-	Requires(Robot::turret);
 	Requires(Robot::indexer);
 }
 

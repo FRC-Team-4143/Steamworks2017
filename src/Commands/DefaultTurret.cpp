@@ -3,14 +3,14 @@
 
 DefaultTurret::DefaultTurret() {
 	Requires(Robot::turret);
-	Requires(Robot::indexer);
+
 }
 
 void DefaultTurret::Initialize() {
 
 }
 void DefaultTurret::Execute() {
-	Robot::turret->SetSpeed(Robot::oi->GetJoystickX2());//*50);
+	Robot::turret->SetSpeed(-Robot::oi->GetJoystickX2()*SmartDashboard::GetNumber("Turret Max Speed",0));//*50);
 }
 
 bool DefaultTurret::IsFinished() {
