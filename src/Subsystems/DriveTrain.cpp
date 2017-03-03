@@ -717,7 +717,7 @@ void DriveTrain::SetSteer(float FLSetPoint, float FRSetPoint,
 	//////////////////////////////////
 	// Front Left Wheel
 	//////////////////////////////////
-	/*	if (frontLeftPos->GetTurns() > SOFTTURNLIMIT) {
+		if (frontLeftPos->GetTurns() > SOFTTURNLIMIT) {
 	 if (CorrectSteerSetpoint(FLSetPoint + FLOffset - frontLeftPos->GetAngle()) > EncoderConstants::HALF_TURN) {
 	 frontLeft->SetSetpoint(CorrectSteerSetpoint(FLSetPoint + FLOffset));
 	 FLInv = 1;
@@ -758,7 +758,7 @@ void DriveTrain::SetSteer(float FLSetPoint, float FRSetPoint,
 	//////////////////////////////////
 	// Front Right Wheel
 	//////////////////////////////////
-	/*if (frontRightPos->GetTurns() > SOFTTURNLIMIT) {
+	if (frontRightPos->GetTurns() > SOFTTURNLIMIT) {
 	 if (CorrectSteerSetpoint(FRSetPoint + FROffset - frontRightPos->GetAngle()) > EncoderConstants::HALF_TURN) {
 	 frontRight->SetSetpoint(CorrectSteerSetpoint(FRSetPoint + FROffset));
 	 FRInv = 1;
@@ -799,7 +799,7 @@ void DriveTrain::SetSteer(float FLSetPoint, float FRSetPoint,
 	//////////////////////////////////
 	// Rear Left Wheel
 	//////////////////////////////////
-	/*if (rearLeftPos->GetTurns() > SOFTTURNLIMIT) {
+	if (rearLeftPos->GetTurns() > SOFTTURNLIMIT) {
 	 if (CorrectSteerSetpoint(RLSetPoint + RLOffset - rearLeftPos->GetAngle()) > EncoderConstants::HALF_TURN) {
 	 rearLeft->SetSetpoint(CorrectSteerSetpoint(RLSetPoint + RLOffset));
 	 RLInv = 1;
@@ -840,7 +840,7 @@ void DriveTrain::SetSteer(float FLSetPoint, float FRSetPoint,
 	//////////////////////////////////
 	// Rear Right Wheel
 	//////////////////////////////////
-	/*if (rearRightPos->GetTurns() > SOFTTURNLIMIT) {
+	if (rearRightPos->GetTurns() > SOFTTURNLIMIT) {
 	 if (CorrectSteerSetpoint(RRSetPoint + RROffset - rearRightPos->GetAngle()) > EncoderConstants::HALF_TURN) {
 	 rearRight->SetSetpoint(CorrectSteerSetpoint(RRSetPoint + RROffset));
 	 RRInv = 1;

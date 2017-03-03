@@ -26,14 +26,16 @@ VisionBridgeSub::VisionBridgeSub(uint16_t listeningPort)
 :	frc::Subsystem("VisionBridgeSub"),
 	_mutex(),
 	_listeningPort(listeningPort),
-	_positionLeft(0), _positionRight(0),
-	_position(0),
-	_distance(0),
-	_distanceZeroCounter(0),
+	_gearPosition(0),
+	_gearDistance(0),
+	_boilerPosition(0),
+	_boilerDistance(0),
+	_zeroCounterGearPos(0),
+	_zeroCounterGearDist(0),
+	_zeroCounterBoilerPos(0),
+	_zeroCounterBoilerDist(0),
 	_debug(false),
 	_listeningThread(&VisionBridgeSub::Listen, this),
-	_zeroCounterLeft(0),
-	_zeroCounterRight(0),
 	_autoAim(0) {
 }
 
@@ -53,20 +55,11 @@ void VisionBridgeSub::EnableDebug(bool debug) {
 // Side 0 is left
 // Side 1 is right
 
-double VisionBridgeSub::GetPosition(int side) {
+double VisionBridgeSub::GetGearPosition() {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
-	if (side == 0) {
-		if (_positionLeft != 0) {
-			_autoAim = 0;
-			return _positionLeft;
-		}
-	}
-
-	if (side == 1) {
-		if (_positionRight != 0) {
-			_autoAim = 0;
-			return _positionRight;
-		}
+	if (_gearPosition != 0) {
+		_autoAim = 0;
+		return _gearPosition;
 	}
 
 	auto gyroYaw = RobotMap::imu->GetYaw();
@@ -77,13 +70,41 @@ double VisionBridgeSub::GetPosition(int side) {
 		_autoAim = 150;
 	}
 	return _autoAim;
+
 }
 
 // ==========================================================================
 
-double VisionBridgeSub::GetDistance() {
+double VisionBridgeSub::GetGearDistance() {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
-	return _distance;
+	return _gearDistance;
+}
+
+// ==========================================================================
+
+double VisionBridgeSub::GetBoilerPosition() {
+	std::unique_lock<std::recursive_mutex> lock(_mutex);
+	if (_boilerPosition != 0) {
+		_autoAim = 0;
+		return _boilerPosition;
+	}
+
+	auto gyroYaw = RobotMap::imu->GetYaw();
+	if (gyroYaw > 90) {
+		_autoAim = -150;
+	}
+	else if (gyroYaw < -90) {
+		_autoAim = 150;
+	}
+	return _autoAim;
+
+}
+
+// ==========================================================================
+
+double VisionBridgeSub::GetBoilerDistance() {
+	std::unique_lock<std::recursive_mutex> lock(_mutex);
+	return _boilerDistance;
 }
 
 // ==========================================================================
@@ -150,14 +171,17 @@ void VisionBridgeSub::ParsePacket(char packet[]) {
 	}
 	try {
 		char* pch = std::strtok(packet, " ");
-		auto positionLeft = std::stod(pch);
-		SetPositionLeft(positionLeft);
+		auto gearPos = std::stod(pch);
+		SetGearPosition(gearPos);
 		pch = std::strtok(nullptr, " ");
-		auto distance = std::stod(pch);
-		SetDistance(distance);
+		auto gearDist = std::stod(pch);
+		SetGearDistance(gearDist);
 		pch = std::strtok(nullptr, " ");
-		auto positionRight = std::stod(pch);
-		SetPositionRight(positionRight);
+		auto boilerPosition = std::stod(pch);
+		SetBoilerPosition(boilerPosition);
+		pch = std::strtok(nullptr, " ");
+		auto boilerDist = std::stod(pch);
+		SetBoilerDistance(boilerDist);
 	}
 	catch (...) {
 	}
@@ -165,50 +189,64 @@ void VisionBridgeSub::ParsePacket(char packet[]) {
 
 // ==========================================================================
 
-void VisionBridgeSub::SetPositionLeft(double position) {
+void VisionBridgeSub::SetGearPosition(double position) {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
 	if (position != 0.0) {
-		_positionLeft = position;
-		_zeroCounterLeft = 0;
+		_gearPosition = position;
+		_zeroCounterGearPos = 0;
 	}
 	else {
-		_zeroCounterLeft++;
-		if (_zeroCounterLeft > 10) {
-			_positionLeft = position;
+		_zeroCounterGearPos++;
+		if (_zeroCounterGearPos > 10) {
+			_gearPosition = position;
 		}
 	}
 }
 
 // ==========================================================================
 
-void VisionBridgeSub::SetPositionRight(double position) {
-	std::unique_lock<std::recursive_mutex> lock(_mutex);
-	if (position != 0.0) {
-		_positionRight = position;
-		_zeroCounterRight = 0;
-	}
-	else {
-		_zeroCounterRight++;
-		if (_zeroCounterRight > 10) {
-			_positionRight = position;
-		}
-	}
-}
-
-// ==========================================================================
-
-void VisionBridgeSub::SetDistance(double distance) {
+void VisionBridgeSub::SetGearDistance(double distance) {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
 	if (distance != 0.0) {
-		_distance = distance;
-		_distanceZeroCounter = 0;
+		_gearDistance = distance;
+		_zeroCounterGearDist = 0;
 	}
 	else {
-		_distanceZeroCounter++;
-		if (_distanceZeroCounter > 10) {
-			_distance = distance;
+		_zeroCounterGearDist++;
+		if (_zeroCounterGearDist > 10) {
+			_gearDistance = distance;
 		}
 	}
 }
 
 // ==========================================================================
+void VisionBridgeSub::SetBoilerPosition(double position) {
+	std::unique_lock<std::recursive_mutex> lock(_mutex);
+	if (position != 0.0) {
+		_boilerPosition = position;
+		_zeroCounterBoilerPos = 0;
+	}
+	else {
+		_zeroCounterBoilerPos++;
+		if (_zeroCounterBoilerPos > 10) {
+			_boilerPosition = position;
+		}
+	}
+}
+
+// ==========================================================================
+
+
+void VisionBridgeSub::SetBoilerDistance(double distance) {
+	std::unique_lock<std::recursive_mutex> lock(_mutex);
+	if (distance != 0.0) {
+		_boilerDistance = distance;
+		_zeroCounterBoilerDist = 0;
+	}
+	else {
+		_zeroCounterBoilerDist++;
+		if (_zeroCounterBoilerDist > 10) {
+			_boilerDistance = distance;
+		}
+	}
+}

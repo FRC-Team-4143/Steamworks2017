@@ -1,5 +1,4 @@
 #include "Robot.h"
-#include "Commands/BackupToCenter.h"
 #include "Commands/DriveDistance.h"
 #include "Commands/DriveTilVision.h"
 #include "Commands/ScriptCamDrive.h"
@@ -71,9 +70,10 @@ void Robot::DisabledPeriodic() {
 	indexer->ReadPDP();
 	//SmartDashboard::PutNumber("Gyro Angle Adjustment", RobotMap::imu->GetAngleAdjustment());
 
-	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
-	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
-	SmartDashboard::PutNumber("Vision Distance", Robot::visionBridge->GetDistance());
+	SmartDashboard::PutNumber("Vision Gear Position", Robot::visionBridge->GetGearPosition());
+	SmartDashboard::PutNumber("Vision Gear Distance", Robot::visionBridge->GetGearDistance());
+	SmartDashboard::PutNumber("Vision Boiler Position", Robot::visionBridge->GetBoilerPosition());
+	SmartDashboard::PutNumber("Vision BoilerDistance", Robot::visionBridge->GetBoilerDistance());
 
 
 	driveTrain->readLidar();
@@ -205,15 +205,6 @@ void Robot::ScriptInit() {
 			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
 		parameters.resize(0);
 		Command *command = new WaitForVision();
-		// if (0 == timeout) timeout = 4;
-		fCreateCommand(command, 0);
-	}));
-
-	parser.AddCommand(CommandParseInfo(
-			"BackupToCenter", {"BACK", "back"},
-			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
-		parameters.resize(0);
-		Command *command = new BackupToCenter();
 		// if (0 == timeout) timeout = 4;
 		fCreateCommand(command, 0);
 	}));

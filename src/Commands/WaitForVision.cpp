@@ -19,7 +19,7 @@ void WaitForVision::Execute() {
 // ==========================================================================
 
 bool WaitForVision::IsFinished() {
-	return Robot::visionBridge->GetDistance() != 0;
+	return Robot::visionBridge->GetGearDistance() != 0;
 }
 
 // ==========================================================================

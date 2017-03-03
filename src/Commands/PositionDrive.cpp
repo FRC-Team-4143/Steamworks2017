@@ -61,7 +61,7 @@ void PositionDrive::Execute() {
 	SmartDashboard::PutBoolean("Waiting", _waiting);
 	SmartDashboard::PutNumber("Waiting counter", _waitingCounter);
 
-	auto pixels = Robot::visionBridge->GetPosition(_side) - SmartDashboard::GetNumber("vision center", 40) - _offset;
+	auto pixels = Robot::visionBridge->GetBoilerPosition() - SmartDashboard::GetNumber("vision center", 40) - _offset;
 	if (std::abs(pixels) < _tol) {
 		_counter++;
 	}

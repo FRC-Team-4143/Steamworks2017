@@ -21,29 +21,37 @@ public:
 	void EnableDebug(bool debug);
 
 	// Get the latest vision data.
-	double GetPosition(int side);
-	double GetDistance();
+	double GetGearPosition();
+	double GetGearDistance();
+	double GetBoilerPosition();
+	double GetBoilerDistance();
 
 private:
 	std::recursive_mutex _mutex;
 	uint16_t _listeningPort;
-	double _positionLeft;
-	double _positionRight;
-	double _position;
-	double _distance;
-	int _distanceZeroCounter;
+
+	double _gearPosition;
+	double _gearDistance;
+	double _boilerPosition;
+	double _boilerDistance;
+
+	int _zeroCounterGearPos;
+	int _zeroCounterGearDist;
+	int _zeroCounterBoilerPos;
+	int _zeroCounterBoilerDist;
+
 	bool _debug;
 	std::thread _listeningThread;
-	int _zeroCounterLeft;
-	int _zeroCounterRight;
+
 	double _autoAim;
 
 	void DebugOutput(std::string packet);
 	void Listen();
 	void ParsePacket(char packet[]);
-	void SetPositionLeft(double position);
-	void SetPositionRight(double position);
-	void SetDistance(double distance);
+	void SetGearPosition(double position);
+	void SetGearDistance(double distance);
+	void SetBoilerPosition(double position);
+	void SetBoilerDistance(double distance);
 };
 
 // ==========================================================================

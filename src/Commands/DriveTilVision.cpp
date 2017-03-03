@@ -23,8 +23,8 @@ void DriveTilVision::Execute() {
 // ==========================================================================
 
 bool DriveTilVision::IsFinished() {
-	return (Robot::visionBridge->GetDistance() != 0 &&
-		Robot::visionBridge->GetDistance() < 100) ||
+	return (Robot::visionBridge->GetGearDistance() != 0 &&
+		Robot::visionBridge->GetGearDistance() < 100) ||
 		IsTimedOut();
 }
 

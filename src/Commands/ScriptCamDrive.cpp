@@ -51,7 +51,7 @@ void ScriptCamDrive::Initialize() {
 // ==========================================================================
 
 void ScriptCamDrive::Execute() {
-	auto offset = Robot::visionBridge->GetPosition(_side);
+	auto offset = Robot::visionBridge->GetBoilerPosition();
 	if (std::abs(offset - _center) < _tol) {
 		_counter++;
 	} else {
