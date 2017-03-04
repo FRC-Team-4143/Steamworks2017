@@ -655,6 +655,20 @@ void DriveTrain::doneunwind() {
 
 double DriveTrain::CorrectSteerSetpoint(double setpoint, CANTalon* talon) {
 	if (setpoint < 0) {
+		return (setpoint + EncoderConstants::FULL_TURN)/EncoderConstants::FULL_TURN;
+	}
+	else if (setpoint > EncoderConstants::FULL_TURN) {
+		return (setpoint - EncoderConstants::FULL_TURN)/EncoderConstants::FULL_TURN;
+	}
+	else if (setpoint == EncoderConstants::FULL_TURN) {
+		return 0;
+	}
+	else {
+		return setpoint/EncoderConstants::FULL_TURN;
+	}
+
+	/*
+	if (setpoint < 0) {
 		setpoint = (setpoint + EncoderConstants::FULL_TURN) / EncoderConstants::FULL_TURN;
 	} else if (setpoint > EncoderConstants::FULL_TURN) {
 		setpoint = (setpoint - EncoderConstants::FULL_TURN) / EncoderConstants::FULL_TURN;
@@ -669,6 +683,7 @@ double DriveTrain::CorrectSteerSetpoint(double setpoint, CANTalon* talon) {
 	} else {
 		return trunc(currentPosition) + setpoint;
 	}
+	*/
 	/*
 	 int newSetpoint = (trunc(currentPosition)+setpoint);
 

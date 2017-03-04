@@ -171,17 +171,17 @@ void VisionBridgeSub::ParsePacket(char packet[]) {
 	}
 	try {
 		char* pch = std::strtok(packet, " ");
-		auto gearPos = std::stod(pch);
-		SetGearPosition(gearPos);
-		pch = std::strtok(nullptr, " ");
-		auto gearDist = std::stod(pch);
-		SetGearDistance(gearDist);
-		pch = std::strtok(nullptr, " ");
-		auto boilerPosition = std::stod(pch);
-		SetBoilerPosition(boilerPosition);
+		auto boilerPos = std::stod(pch);
+		SetBoilerPosition(boilerPos);
 		pch = std::strtok(nullptr, " ");
 		auto boilerDist = std::stod(pch);
 		SetBoilerDistance(boilerDist);
+		pch = std::strtok(nullptr, " ");
+		auto gearPosition = std::stod(pch);
+		SetGearPosition(gearPosition);
+		pch = std::strtok(nullptr, " ");
+		auto gearDist = std::stod(pch);
+		SetGearDistance(gearDist);
 	}
 	catch (...) {
 	}

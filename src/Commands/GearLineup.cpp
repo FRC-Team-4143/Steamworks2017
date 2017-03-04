@@ -1,22 +1,22 @@
-#include "Commands/PositionDrive.h"
+#include "Commands/GearLineup.h"
 #include "Modules/Logger.h"
 #include "Robot.h"
 
 // ==========================================================================
 
-PositionDrive::PositionDrive(int offset, int side)
-: frc::Command("PositionDrive"), _offset(offset), _side(side),
+GearLineup::GearLineup()
+: frc::Command("GearLineup"),
 	_timeoutSeconds(5),
 	_counter(0), _waiting(0), _waitingCounter(0),
 	_angle(0),
 	_p(0), _i(0), _d(0), _tol(0),
 	_center(0) {
-	Requires(Robot::turret);
+	Requires(Robot::driveTrain);
 }
 
 // ==========================================================================
 
-void PositionDrive::Initialize() {
+void GearLineup::Initialize() {
 	LOG(GetName() + "::Initialize");
 
 	_counter = 0;
@@ -37,7 +37,7 @@ void PositionDrive::Initialize() {
 
 // ==========================================================================
 
-void PositionDrive::Execute() {
+void GearLineup::Execute() {
 
 	auto flPos = RobotMap::driveTrainFrontLeftDrive->GetPosition();
 	auto frPos = RobotMap::driveTrainFrontRightDrive->GetPosition();
@@ -62,7 +62,7 @@ void PositionDrive::Execute() {
 	//SmartDashboard::PutBoolean("Waiting", _waiting);
 	//SmartDashboard::PutNumber("Waiting counter", _waitingCounter);
 
-	auto pixels = Robot::visionBridge->GetBoilerPosition() - SmartDashboard::GetNumber("vision center", 0) - _offset;
+	auto pixels = Robot::visionBridge->GetGearPosition() - SmartDashboard::GetNumber("vision center", 0);
 	if (std::abs(pixels) < _tol) {
 		_counter++;
 	}
@@ -70,12 +70,12 @@ void PositionDrive::Execute() {
 		_counter = 0;
 	}
 	pixels *= 0.1;
-	SmartDashboard::PutNumber("Pixels", pixels);
+	SmartDashboard::PutNumber("GearPixels", pixels);
 
-	SmartDashboard::PutNumber("Front Left Drive Position", flPos);
-	auto desiredAngle = SmartDashboard::GetNumber("Twist Angle", 0);
-	auto angleError = desiredAngle + pixels;
-	angleError *= (101.3 / 9.9 / 360);
+	//SmartDashboard::PutNumber("Front Left Drive Position", flPos);
+	//auto desiredAngle = SmartDashboard::GetNumber("Twist Angle", 0);
+	//auto angleError = desiredAngle + pixels;
+	//angleError *= (101.3 / 9.9 / 360);
 	/*if (!_waiting) {
 		RobotMap::driveTrainFrontLeftDrive->SetSetpoint(flPos - angleError);
 		RobotMap::driveTrainFrontRightDrive->SetSetpoint(frPos - angleError);
@@ -84,11 +84,11 @@ void PositionDrive::Execute() {
 	}*/
 	if (!_waiting) {
 		if (pixels < -_tol) {
-			Robot::turret->SetSpeed(0.1*SmartDashboard::GetNumber("Turret Max Speed",0));
+			Robot::driveTrain->Crab(0, 0, 0.25, false);
 		} else if (pixels > _tol){
-			Robot::turret->SetSpeed(-0.1*SmartDashboard::GetNumber("Turret Max Speed",0));
+			Robot::driveTrain->Crab(0, 0, -0.25, false);
 		} else {
-			Robot::turret->SetSpeed(0);
+			Robot::driveTrain->Crab(0, 0, 0, false);
 		}
 
 	}
@@ -97,33 +97,33 @@ void PositionDrive::Execute() {
 		_waiting = 0;
 	}
 
-	SmartDashboard::PutNumber("Angle Error", angleError);
+	//SmartDashboard::PutNumber("Angle Error", angleError);
 	//Robot::driveTrain->PositionModeTwist(0);
 }
 
 // ==========================================================================
 
-bool PositionDrive::IsFinished() {
+bool GearLineup::IsFinished() {
 	return IsTimedOut() || _counter > 5;
 }
 
 // ==========================================================================
 
-void PositionDrive::End() {
+void GearLineup::End() {
 	LOG(GetName() + "::End");
 	_Cleanup();
 }
 
 // ==========================================================================
 
-void PositionDrive::Interrupted() {
+void GearLineup::Interrupted() {
 	LOG(GetName() + "::Interrupted");
 	_Cleanup();
 }
 
 // ==========================================================================
 
-void PositionDrive::_Cleanup() {
+void GearLineup::_Cleanup() {
 	Robot::driveTrain->Crab(0, 0, 0, false);
 	Robot::driveTrain->disableSpeedControl();
 	_counter = 0;

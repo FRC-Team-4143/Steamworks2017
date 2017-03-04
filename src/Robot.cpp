@@ -107,6 +107,12 @@ void Robot::AutonomousPeriodic() {
 
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
 
+	SmartDashboard::PutNumber("Vision Gear Position", Robot::visionBridge->GetGearPosition());
+	SmartDashboard::PutNumber("Vision Gear Distance", Robot::visionBridge->GetGearDistance());
+	SmartDashboard::PutNumber("Vision Boiler Position", Robot::visionBridge->GetBoilerPosition());
+	SmartDashboard::PutNumber("Vision BoilerDistance", Robot::visionBridge->GetBoilerDistance());
+
+
 	driveTrain->readLidar();
 	/*
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
@@ -135,6 +141,13 @@ void Robot::TeleopPeriodic() {
 	indexer->ReadPDP();
 	//driveTrain->Dashboard();
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
+
+	SmartDashboard::PutNumber("Vision Gear Position", Robot::visionBridge->GetGearPosition());
+	SmartDashboard::PutNumber("Vision Gear Distance", Robot::visionBridge->GetGearDistance());
+	SmartDashboard::PutNumber("Vision Boiler Position", Robot::visionBridge->GetBoilerPosition());
+	SmartDashboard::PutNumber("Vision BoilerDistance", Robot::visionBridge->GetBoilerDistance());
+
+
 	/*
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));

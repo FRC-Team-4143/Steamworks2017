@@ -40,6 +40,9 @@ public:
 	Command* oneBall;
 	Command* climb;
 	Command* zeroReverse;
+	Command* positionDrive;
+	Command* autoShoot;
+	Command* gearLineup;
 	//Command* reverseClimb;
 
 	Joystick* GetDriverJoystick() { return driverJoystick; }
