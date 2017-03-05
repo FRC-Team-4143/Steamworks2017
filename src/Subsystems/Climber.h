@@ -13,7 +13,7 @@ private:
 public:
 	Climber();
 	void InitDefaultCommand();
-	void climb();
-	void reverseClimb();
+	void climb(float speed);
+	void reverseClimb(float speed);
 	void stopClimb();
 };

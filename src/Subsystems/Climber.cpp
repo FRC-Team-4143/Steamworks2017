@@ -10,14 +10,14 @@ void Climber::InitDefaultCommand() {
 	// SetDefaultCommand(new MySpecialCommand());
 }
 
-void Climber::climb() {
+void Climber::climb(float speed) {
 	climbingMotor->SetControlMode(CANSpeedController::kPercentVbus);
-	climbingMotor->Set(1);
+	climbingMotor->Set(-speed);
 }
 
-void Climber::reverseClimb() {
+void Climber::reverseClimb(float speed) {
 	climbingMotor->SetControlMode(CANSpeedController::kPercentVbus);
-	climbingMotor->Set(-1);
+	climbingMotor->Set(speed);
 }
 
 void Climber::stopClimb() {

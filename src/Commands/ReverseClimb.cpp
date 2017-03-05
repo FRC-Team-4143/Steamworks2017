@@ -7,10 +7,14 @@ ReverseClimb::ReverseClimb() {
 }
 
 void ReverseClimb::Initialize() {
-	Robot::climber->reverseClimb();
 }
 
 void ReverseClimb::Execute() {
+	if (Robot::oi->GetRightTrigger() > 0.75)
+		Robot::climber->reverseClimb(1);
+	else {
+		Robot::climber->reverseClimb(0.5);
+	}
 }
 
 bool ReverseClimb::IsFinished() {

@@ -7,10 +7,14 @@ Climb::Climb() {
 }
 
 void Climb::Initialize() {
-	Robot::climber->climb();
 }
 
 void Climb::Execute() {
+	if (Robot::oi->GetRightTrigger() > 0.75)
+		Robot::climber->climb(1);
+	else {
+		Robot::climber->climb(0.5);
+	}
 }
 
 bool Climb::IsFinished() {

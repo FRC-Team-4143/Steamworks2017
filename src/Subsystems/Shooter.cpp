@@ -30,7 +30,7 @@ Shooter::Shooter() : Subsystem("Shooter") {
    shooterMotor2->SetF(0.02827);
 
    //SmartDashboard::PutNumber("Set Shooter Speed", 7000);
-   targetShooterSpeed = 0;
+   targetShooterSpeed = 3000;
 }
 
 void Shooter::InitDefaultCommand() {
