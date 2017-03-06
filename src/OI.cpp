@@ -108,15 +108,15 @@ OI::OI() {
 	shooterRunButton->WhileHeld(cmdShooterRun);
 
 	auto cmdShooterSlower = new ShooterSlower();
-	auto shooterSlowerButton = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_BACK);
-	shooterSlowerButton->WhileHeld(cmdShooterSlower);
+	auto shooterSlowerButton = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_X);
+	shooterSlowerButton->WhenPressed(cmdShooterSlower);
 
 	//auto shooterSlowerButton2 = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_2);
 	//shooterSlowerButton2->WhenPressed(cmdShooterSlower);
 
 	auto cmdShooterFaster = new ShooterFaster();
-	auto shooterFasterButton = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_START);
-	shooterFasterButton->WhileHeld(cmdShooterFaster);
+	auto shooterFasterButton = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_B);
+	shooterFasterButton->WhenPressed(cmdShooterFaster);
 
 	//auto shooterFasterButton2 = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_3);
 	//shooterFasterButton2->WhenPressed(cmdShooterFaster);

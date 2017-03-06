@@ -26,6 +26,8 @@ std::shared_ptr<BasicCameraSub> Robot::basicCameraSub;
 VisionBridgeSub* Robot::visionBridge = nullptr;
 Shooter* Robot::shooter = nullptr;
 Climber* Robot::climber = nullptr;
+Servo* Robot::servo = nullptr;
+Servo* Robot::servo2 = nullptr;
 
 void Robot::RobotInit() {
 	Preferences::GetInstance();
@@ -35,6 +37,7 @@ void Robot::RobotInit() {
 	SmartDashboard::PutString("ScriptCommand", "S(0.5)");
 	SmartDashboard::PutString("ScriptValid", "");
 	SmartDashboard::PutNumber("Twist Angle", 0);
+	SmartDashboard::PutNumber("Servo Setpoint", 0);
 /*
 	SmartDashboard::PutNumber("vision center", 40.0);
 	SmartDashboard::PutNumber("vision P", 0.11); // 0.2
@@ -55,6 +58,9 @@ void Robot::RobotInit() {
 	driveTrain->loadWheelOffsets();
 	shooter = new Shooter();
 	oi = new OI();
+
+	servo = new Servo(0);
+	servo2 = new Servo(1);
 }
 
 void Robot::RobotPeriodic() {
@@ -75,10 +81,7 @@ void Robot::DisabledPeriodic() {
 	SmartDashboard::PutNumber("Vision Boiler Position", Robot::visionBridge->GetBoilerPosition());
 	SmartDashboard::PutNumber("Vision BoilerDistance", Robot::visionBridge->GetBoilerDistance());
 
-
 	driveTrain->readLidar();
-
-
 
 	//SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
 	//SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
@@ -123,6 +126,8 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {
 	driveTrain->enableSteeringPID(); //ENABLE THIS
+	servo->Set(.15);
+	servo2->Set(.775);
 
 	// This makes sure that the autonomous stops running when
 	// teleop starts running. If you want the autonomous to

@@ -35,6 +35,9 @@ public:
 	static VisionBridgeSub *visionBridge;
 	static Climber *climber;
 
+	static Servo *servo;
+	static Servo *servo2;
+
 	virtual void RobotInit();
 	virtual void RobotPeriodic();
 	virtual void DisabledInit();
