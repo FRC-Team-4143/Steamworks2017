@@ -25,6 +25,8 @@ public:
 	static I2C* i2c;
 	static I2C* lidar;
 
+	static AnalogInput* sonar;
+
 	static CANTalon* climbingMotor;
 
 	static AHRS* imu;

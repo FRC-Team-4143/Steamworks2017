@@ -74,6 +74,8 @@ void Robot::DisabledPeriodic() {
 	//driveTrain->Dashboard();
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
 	indexer->ReadPDP();
+
+	SmartDashboard::PutNumber("Sonar", RobotMap::sonar->GetAverageVoltage());
 	//SmartDashboard::PutNumber("Gyro Angle Adjustment", RobotMap::imu->GetAngleAdjustment());
 
 	SmartDashboard::PutNumber("Vision Gear Position", Robot::visionBridge->GetGearPosition());
@@ -109,6 +111,7 @@ void Robot::AutonomousPeriodic() {
 	Scheduler::GetInstance()->Run();
 
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
+	SmartDashboard::PutNumber("Sonar", RobotMap::sonar->GetAverageVoltage());
 
 	SmartDashboard::PutNumber("Vision Gear Position", Robot::visionBridge->GetGearPosition());
 	SmartDashboard::PutNumber("Vision Gear Distance", Robot::visionBridge->GetGearDistance());
@@ -146,6 +149,7 @@ void Robot::TeleopPeriodic() {
 	indexer->ReadPDP();
 	//driveTrain->Dashboard();
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
+	SmartDashboard::PutNumber("Sonar", RobotMap::sonar->GetAverageVoltage());
 
 	SmartDashboard::PutNumber("Vision Gear Position", Robot::visionBridge->GetGearPosition());
 	SmartDashboard::PutNumber("Vision Gear Distance", Robot::visionBridge->GetGearDistance());

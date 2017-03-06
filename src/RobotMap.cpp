@@ -20,6 +20,8 @@ CANTalon*          RobotMap::driveTrainRearRightSteer = nullptr;
 I2C* RobotMap::i2c = nullptr;
 I2C* RobotMap::lidar = nullptr;
 
+AnalogInput* RobotMap::sonar = nullptr;
+
 CANTalon* RobotMap::climbingMotor = nullptr;
 
 SerialPort* RobotMap::serialPort = nullptr;
@@ -197,6 +199,8 @@ void RobotMap::Initialize() {
 
 	i2c = new I2C(I2C::Port::kMXP, 0x04);
 	lidar = new I2C(I2C::Port::kOnboard, 0x05);
+
+	sonar = new AnalogInput(0);
 
 	climbingMotor = new CANTalon(13); //13
 

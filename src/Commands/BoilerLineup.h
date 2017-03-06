@@ -6,9 +6,9 @@
 
 // ==========================================================================
 
-class PositionDrive : public frc::Command {
+class BoilerLineup : public frc::Command {
 public:
-	PositionDrive(int offset = 0, int side = 0);
+	BoilerLineup(int offset = 0, int side = 0);
 
 	void Initialize();
 	void Execute();

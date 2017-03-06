@@ -1,11 +1,11 @@
-#include "Commands/PositionDrive.h"
+#include "BoilerLineup.h"
 #include "Modules/Logger.h"
 #include "Robot.h"
 
 // ==========================================================================
 
-PositionDrive::PositionDrive(int offset, int side)
-: frc::Command("PositionDrive"), _offset(offset), _side(side),
+BoilerLineup::BoilerLineup(int offset, int side)
+: frc::Command("BoilerLineup"), _offset(offset), _side(side),
 	_timeoutSeconds(5),
 	_counter(0), _waiting(0), _waitingCounter(0),
 	_angle(0),
@@ -16,7 +16,7 @@ PositionDrive::PositionDrive(int offset, int side)
 
 // ==========================================================================
 
-void PositionDrive::Initialize() {
+void BoilerLineup::Initialize() {
 	LOG(GetName() + "::Initialize");
 
 	_counter = 0;
@@ -37,7 +37,7 @@ void PositionDrive::Initialize() {
 
 // ==========================================================================
 
-void PositionDrive::Execute() {
+void BoilerLineup::Execute() {
 
 	auto flPos = RobotMap::driveTrainFrontLeftDrive->GetPosition();
 	auto frPos = RobotMap::driveTrainFrontRightDrive->GetPosition();
@@ -84,11 +84,14 @@ void PositionDrive::Execute() {
 	}*/
 	if (!_waiting) {
 		if (pixels < -_tol) {
-			Robot::turret->SetSpeed(0.1*SmartDashboard::GetNumber("Turret Max Speed",0));
+			Robot::turret->SetSpeed(0.1);
+			_counter = 0;
 		} else if (pixels > _tol){
-			Robot::turret->SetSpeed(-0.1*SmartDashboard::GetNumber("Turret Max Speed",0));
+			Robot::turret->SetSpeed(-0.1);
+			_counter = 0;
 		} else {
 			Robot::turret->SetSpeed(0);
+			_counter++;
 		}
 
 	}
@@ -103,27 +106,27 @@ void PositionDrive::Execute() {
 
 // ==========================================================================
 
-bool PositionDrive::IsFinished() {
+bool BoilerLineup::IsFinished() {
 	return IsTimedOut() || _counter > 5;
 }
 
 // ==========================================================================
 
-void PositionDrive::End() {
+void BoilerLineup::End() {
 	LOG(GetName() + "::End");
 	_Cleanup();
 }
 
 // ==========================================================================
 
-void PositionDrive::Interrupted() {
+void BoilerLineup::Interrupted() {
 	LOG(GetName() + "::Interrupted");
 	_Cleanup();
 }
 
 // ==========================================================================
 
-void PositionDrive::_Cleanup() {
+void BoilerLineup::_Cleanup() {
 	Robot::driveTrain->Crab(0, 0, 0, false);
 	Robot::driveTrain->disableSpeedControl();
 	_counter = 0;

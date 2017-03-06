@@ -1,3 +1,5 @@
+#include <Commands/BoilerLineup.h>
+#include <Commands/BoilerLineup.h>
 #include "OI.h"
 #include <SmartDashboard/SmartDashboard.h>
 #include "Commands/SetWheelOffsets.h"
@@ -6,7 +8,6 @@
 #include "Commands/BasicCameraEnableCmd.h"
 #include "Commands/FieldCentric.h"
 #include "Commands/GyroCrab.h"
-#include "Commands/PositionDrive.h"
 #include "Commands/ScriptCamDrive.h"
 #include "Commands/ScriptValidate.h"
 #include "Commands/SetWheelOffsets.h"
@@ -27,7 +28,6 @@
 #include "Commands/GearLight.h"
 #include "Commands/FuelLight.h"
 #include "Commands/ZeroReverse.h"
-#include "Commands/PositionDrive.h"
 #include "Commands/ScriptShoot.h"
 #include "Commands/GearLineup.h"
 #include "Robot.h"
@@ -78,7 +78,6 @@ OI::OI() {
 	oneBall = new OneBall();
 	climb = new Climb();
 	zeroReverse = new ZeroReverse();
-	positionDrive = new PositionDrive(0, 0);
 	autoShoot = new ScriptShoot(3000, 10);
 	gearLineup = new GearLineup();
 	//reverseClimb = new ReverseClimb();
