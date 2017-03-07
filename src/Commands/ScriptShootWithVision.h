@@ -1,5 +1,4 @@
-#ifndef ScriptShoot_H
-#define ScriptShoot_H
+#pragma once
 
 #include <Commands/CommandGroup.h>
 
@@ -7,5 +6,3 @@ class ScriptShootWithVision : public CommandGroup {
 public:
 	ScriptShootWithVision(int speed, float timeout);
 };
-
-#endif  // ScriptShoot_H

@@ -1,5 +1,4 @@
-#ifndef DefaultIndexer_H
-#define DefaultIndexer_H
+#pragma once
 
 #include "Commands/Command.h"
 
@@ -12,5 +11,3 @@ public:
 	void End();
 	void Interrupted();
 };
-
-#endif  // DefaultIndexer_H
