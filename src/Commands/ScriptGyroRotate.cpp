@@ -7,7 +7,7 @@
 ScriptGyroRotate::ScriptGyroRotate(std::string name, float desiredangle, double power, float seconds)
 : frc::Command(name), _desiredangle(desiredangle), _power(power), _seconds(seconds) {
 	char szParams[64];
-	sprintf(szParams, "(%f, %d, %f)", desiredangle, power, seconds);
+	sprintf(szParams, "(%f, %f, %f)", desiredangle, power, seconds);
 	LOG(GetName() + "::ctor" + szParams);
 
 	Requires(Robot::driveTrain);
