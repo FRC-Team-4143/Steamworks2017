@@ -133,8 +133,8 @@ void Indexer::TestJamShooter() {
 
 void Indexer::ReadPDP() {
 	for (int i = 0; i < 16; i++) {
-		SmartDashboard::PutNumber("PDP Current " + std::to_string(i),
-				pdp->GetCurrent(i));
+		//SmartDashboard::PutNumber("PDP Current " + std::to_string(i),
+		//		pdp->GetCurrent(i));
 	}
 }
 

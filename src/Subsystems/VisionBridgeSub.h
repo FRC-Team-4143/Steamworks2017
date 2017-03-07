@@ -30,28 +30,32 @@ private:
 	std::recursive_mutex _mutex;
 	uint16_t _listeningPort;
 
-	double _gearPosition;
-	double _gearDistance;
-	double _boilerPosition;
-	double _boilerDistance;
+	//Vision Values
+	double _gearRightX1;
+	double _gearRightY1;
+	double _gearRightX2;
+	double _gearRightY2;
 
-	int _zeroCounterGearPos;
-	int _zeroCounterGearDist;
-	int _zeroCounterBoilerPos;
-	int _zeroCounterBoilerDist;
+	double _gearLeftX1;
+	double _gearLeftY1;
+	double _gearLeftX2;
+	double _gearLeftY2;
+
+	double _boilerX1;
+	double _boilerY1;
+	double _boilerX2;
+	double _boilerY2;
 
 	bool _debug;
 	std::thread _listeningThread;
 
-	double _autoAim;
-
 	void DebugOutput(std::string packet);
 	void Listen();
 	void ParsePacket(char packet[]);
-	void SetGearPosition(double position);
-	void SetGearDistance(double distance);
-	void SetBoilerPosition(double position);
-	void SetBoilerDistance(double distance);
+	void SetValues(int cam, double x1, double y1, double x2, double y2);
+	void SetGearRight(double x1, double y1, double x2, double y2);
+	void SetGearLeft(double x1, double y1, double x2, double y2);
+	void SetBoiler(double x1, double y1, double x2, double y2);
 };
 
 // ==========================================================================

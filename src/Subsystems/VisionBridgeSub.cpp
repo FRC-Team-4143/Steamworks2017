@@ -26,17 +26,20 @@ VisionBridgeSub::VisionBridgeSub(uint16_t listeningPort)
 :	frc::Subsystem("VisionBridgeSub"),
 	_mutex(),
 	_listeningPort(listeningPort),
-	_gearPosition(0),
-	_gearDistance(0),
-	_boilerPosition(0),
-	_boilerDistance(0),
-	_zeroCounterGearPos(0),
-	_zeroCounterGearDist(0),
-	_zeroCounterBoilerPos(0),
-	_zeroCounterBoilerDist(0),
+	_gearRightX1(0),
+	_gearRightY1(0),
+	_gearRightX2(0),
+	_gearRightY2(0),
+	_gearLeftX1(0),
+	_gearLeftY1(0),
+	_gearLeftX2(0),
+	_gearLeftY2(0),
+	_boilerX1(0),
+	_boilerY1(0),
+	_boilerX2(0),
+	_boilerY2(0),
 	_debug(false),
-	_listeningThread(&VisionBridgeSub::Listen, this),
-	_autoAim(0) {
+	_listeningThread(&VisionBridgeSub::Listen, this) {
 }
 
 // ==========================================================================
@@ -57,54 +60,67 @@ void VisionBridgeSub::EnableDebug(bool debug) {
 
 double VisionBridgeSub::GetGearPosition() {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
-	if (_gearPosition != 0) {
-		_autoAim = 0;
-		return _gearPosition;
+	return (_gearRightX1 + _gearRightX2 + _gearLeftX1 + _gearLeftX2)/4;
+	/*
+	if (_gearRightX1 != 0 && _gearRightX2 != 0 && _gearLeftX1 != 0 && _gearLeftX2 != 0) {
+		return (_gearRightX1 + _gearRightX2 + _gearLeftX1 + _gearLeftX2)/4;
 	}
-
-	auto gyroYaw = RobotMap::imu->GetYaw();
-	if (gyroYaw > 90) {
-		_autoAim = -150;
+	//left camera failed
+	else if (_gearRightX1 != 0 && _gearRightX2 != 0){
+		return (_gearRightX1 + _gearRightX2)/2;
 	}
-	else if (gyroYaw < -90) {
-		_autoAim = 150;
+	//right camera failed
+	else if (_gearLeftX1 != 0 && _gearLeftX2 != 0){
+		return (_gearLeftX1 + _gearLeftX2)/2;
 	}
-	return _autoAim;
-
+	//both cameras failed
+	return 0;
+	*/
 }
 
 // ==========================================================================
 
 double VisionBridgeSub::GetGearDistance() {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
-	return _gearDistance;
+	return (_gearRightY1 + _gearRightY2 + _gearLeftY1 + _gearLeftY2)/4;
+	/*
+	//both cameras worked
+	if (_gearRightY1 != 0 && _gearRightY2 != 0 && _gearLeftY1 != 0 && _gearLeftY2 != 0) {
+		return (_gearRightY1 + _gearRightY2 + _gearLeftY1 + _gearLeftY2)/4;
+	}
+	//left camera failed
+	else if (_gearRightY1 != 0 && _gearRightY2 != 0){
+		return (_gearRightY1 + _gearRightY2)/2;
+	}
+	//right camera failed
+	else if (_gearLeftY1 != 0 && _gearLeftY2 != 0){
+		return (_gearLeftY1 + _gearLeftY2)/2;
+	}
+	//both cameras failed
+	return 0;
+	*/
 }
 
 // ==========================================================================
 
 double VisionBridgeSub::GetBoilerPosition() {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
-	if (_boilerPosition != 0) {
-		_autoAim = 0;
-		return _boilerPosition;
-	}
-
-	auto gyroYaw = RobotMap::imu->GetYaw();
-	if (gyroYaw > 90) {
-		_autoAim = -150;
-	}
-	else if (gyroYaw < -90) {
-		_autoAim = 150;
-	}
-	return _autoAim;
-
+	return _boilerX1;
+	//if (_boilerX1 != 0) return _boilerX1;
+	//else if (_boilerX2 != 0) return _boilerX2;
+	//camera failed
+	return 0;
 }
 
 // ==========================================================================
 
 double VisionBridgeSub::GetBoilerDistance() {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
-	return _boilerDistance;
+	return _boilerY1;
+	//if (_boilerY1 != 0) return _boilerY1;
+	//else if (_boilerY2 != 0) return _boilerY2;
+	//camera failed
+	return 0;
 }
 
 // ==========================================================================
@@ -170,6 +186,7 @@ void VisionBridgeSub::ParsePacket(char packet[]) {
 		DebugOutput(packet);
 	}
 	try {
+		/*
 		char* pch = std::strtok(packet, " ");
 		auto boilerPos = std::stod(pch);
 		SetBoilerPosition(boilerPos);
@@ -182,6 +199,28 @@ void VisionBridgeSub::ParsePacket(char packet[]) {
 		pch = std::strtok(nullptr, " ");
 		auto gearDist = std::stod(pch);
 		SetGearDistance(gearDist);
+		*/
+		char* pch = std::strtok(packet, " ");
+		auto x1 = std::stod(pch);
+		pch = std::strtok(nullptr, " ");
+		auto y1 = std::stod(pch);
+		pch = std::strtok(nullptr, " ");
+		auto x2 = std::stod(pch);
+		pch = std::strtok(nullptr, " ");
+		auto y2 = std::stod(pch);
+		pch = std::strtok(nullptr, " ");
+		int cam = std::stod(pch);
+
+		switch (cam){
+		case 0:
+			SetBoiler(x1, y1, x2, y2);
+			break;
+		case 1:
+			SetGearLeft(x1, y1, x2, y2);
+			break;
+		case 2:
+			SetGearRight(x1, y1, x2, y2);
+		}
 	}
 	catch (...) {
 	}
@@ -189,64 +228,65 @@ void VisionBridgeSub::ParsePacket(char packet[]) {
 
 // ==========================================================================
 
-void VisionBridgeSub::SetGearPosition(double position) {
+void VisionBridgeSub::SetGearRight(double x1, double y1, double x2, double y2) {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
-	if (position != 0.0) {
-		_gearPosition = position;
-		_zeroCounterGearPos = 0;
-	}
-	else {
-		_zeroCounterGearPos++;
-		if (_zeroCounterGearPos > 10) {
-			_gearPosition = position;
-		}
-	}
+	if (x1 != 0.0) _gearRightX1 = x1;
+	if (y1 != 0.0) _gearRightY1 = y1;
+	if (x2 != 0.0) _gearRightX2 = x2;
+	if (y2 != 0.0) _gearRightY2 = y2;
+
+	SmartDashboard::PutNumber("gearRightX1", x1);
+	SmartDashboard::PutNumber("gearRightY1", y1);
+	SmartDashboard::PutNumber("gearRightX2", x2);
+	SmartDashboard::PutNumber("gearRightY2", y2);
+	/*
+	_gearRightX1 = x1;
+	_gearRightY1 = y1;
+	_gearRightX2 = x2;
+	_gearRightY2 = y2;
+	*/
+
 }
 
 // ==========================================================================
 
-void VisionBridgeSub::SetGearDistance(double distance) {
+void VisionBridgeSub::SetGearLeft(double x1, double y1, double x2, double y2) {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
-	if (distance != 0.0) {
-		_gearDistance = distance;
-		_zeroCounterGearDist = 0;
-	}
-	else {
-		_zeroCounterGearDist++;
-		if (_zeroCounterGearDist > 10) {
-			_gearDistance = distance;
-		}
-	}
+	if (x1 != 0.0) _gearLeftX1 = x1;
+	if (y1 != 0.0) _gearLeftY1 = y1;
+	if (x2 != 0.0) _gearLeftX2 = x2;
+	if (y2 != 0.0) _gearLeftY2 = y2;
+
+	SmartDashboard::PutNumber("gearLeftX1", x1);
+	SmartDashboard::PutNumber("gearLeftY1", y1);
+	SmartDashboard::PutNumber("gearLeftX2", x2);
+	SmartDashboard::PutNumber("gearLeftY2", y2);
+	/*
+	_gearLeftX1 = x1;
+	_gearLeftY1 = y1;
+	_gearLeftX2 = x2;
+	_gearLeftY2 = y2;
+	 */
 }
 
 // ==========================================================================
-void VisionBridgeSub::SetBoilerPosition(double position) {
+void VisionBridgeSub::SetBoiler(double x1, double y1, double x2, double y2) {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
-	if (position != 0.0) {
-		_boilerPosition = position;
-		_zeroCounterBoilerPos = 0;
-	}
-	else {
-		_zeroCounterBoilerPos++;
-		if (_zeroCounterBoilerPos > 10) {
-			_boilerPosition = position;
-		}
-	}
+	if (x1 != 0.0) _boilerX1 = x1;
+	if (y1 != 0.0) _boilerY1 = y1;
+	if (x2 != 0.0) _boilerX2 = x2;
+	if (y2 != 0.0) _boilerY2 = y2;
+
+	SmartDashboard::PutNumber("BoilerX1", x1);
+	SmartDashboard::PutNumber("BoilerY1", y1);
+	SmartDashboard::PutNumber("BoilerX2", x2);
+	SmartDashboard::PutNumber("BoilerY2", y2);
+	/*
+	_boilerX1 = x1;
+	_boilerY1 = y1;
+	_boilerX2 = x2;
+	_boilerY2 = y2;
+	*/
 }
 
 // ==========================================================================
-
-
-void VisionBridgeSub::SetBoilerDistance(double distance) {
-	std::unique_lock<std::recursive_mutex> lock(_mutex);
-	if (distance != 0.0) {
-		_boilerDistance = distance;
-		_zeroCounterBoilerDist = 0;
-	}
-	else {
-		_zeroCounterBoilerDist++;
-		if (_zeroCounterBoilerDist > 10) {
-			_boilerDistance = distance;
-		}
-	}
-}
