@@ -10,8 +10,11 @@
 #include "Commands/WaitForVision.h"
 #include "Commands/ZeroYaw.h"
 #include "Commands/ScriptShoot.h"
+#include "Commands/ScriptShootWithVision.h"
 #include "Commands/DriveTilLidar.h"
+#include "Commands/DriveTilSonar.h"
 #include "Commands/ScriptGyroRotate.h"
+#include "Commands/GearLineup.h"
 #include "Modules/CommandListParser.h"
 #include "Modules/Logger.h"
 #include "Modules/ScriptCommandFactory.h"
@@ -31,6 +34,7 @@ Servo* Robot::servo2 = nullptr;
 
 void Robot::RobotInit() {
 	Preferences::GetInstance();
+
 	RobotMap::Initialize();
 
 	ScriptInit();
@@ -38,6 +42,10 @@ void Robot::RobotInit() {
 	SmartDashboard::PutString("ScriptValid", "");
 	SmartDashboard::PutNumber("Twist Angle", 0);
 	SmartDashboard::PutNumber("Servo Setpoint", 0);
+
+	SmartDashboard::PutNumber("Serial 0", 1);
+	SmartDashboard::PutNumber("Serial 1", 1);
+	SmartDashboard::PutNumber("Serial 2", 1);
 /*
 	SmartDashboard::PutNumber("vision center", 40.0);
 	SmartDashboard::PutNumber("vision P", 0.11); // 0.2
@@ -67,6 +75,13 @@ void Robot::RobotPeriodic() {
 }
 
 void Robot::DisabledInit() {
+	char mode = 1;
+	RobotMap::serialPort->Write(&mode, 1);
+	RobotMap::serialPort1->Write(&mode, 1);
+	RobotMap::serialPort2->Write(&mode, 1);
+	SmartDashboard::PutNumber("Serial 0", 1);
+	SmartDashboard::PutNumber("Serial 1", 1);
+	SmartDashboard::PutNumber("Serial 2", 1);
 }
 
 void Robot::DisabledPeriodic() {
@@ -77,6 +92,14 @@ void Robot::DisabledPeriodic() {
 
 	SmartDashboard::PutNumber("Sonar", RobotMap::sonar->GetAverageVoltage());
 	//SmartDashboard::PutNumber("Gyro Angle Adjustment", RobotMap::imu->GetAngleAdjustment());
+
+	char mode = SmartDashboard::GetNumber("Serial 0", 1);
+	RobotMap::serialPort->Write(&mode, 1);
+	char mode1 = SmartDashboard::GetNumber("Serial 1", 1);
+	RobotMap::serialPort1->Write(&mode1, 1);
+	char mode2 = SmartDashboard::GetNumber("Serial 2", 1);
+	RobotMap::serialPort2->Write(&mode2, 1);
+
 
 	SmartDashboard::PutNumber("Vision Gear Position", Robot::visionBridge->GetGearPosition());
 	SmartDashboard::PutNumber("Vision Gear Distance", Robot::visionBridge->GetGearDistance());
@@ -95,6 +118,14 @@ void Robot::AutonomousInit() {
 	printf("Match time start: %f\r\n", DriverStation::GetInstance().GetMatchTime());
 	driveTrain->enableSteeringPID();
 	RobotMap::imu->ZeroYaw();
+
+	char mode = 3;
+	RobotMap::serialPort->Write(&mode, 1);
+	RobotMap::serialPort1->Write(&mode, 1);
+	RobotMap::serialPort2->Write(&mode, 1);
+	SmartDashboard::PutNumber("Serial 0", 3);
+	SmartDashboard::PutNumber("Serial 1", 3);
+	SmartDashboard::PutNumber("Serial 2", 3);
 
 	printf("Before new ScriptCommand: %f\r\n", DriverStation::GetInstance().GetMatchTime());
 	autonomousCommand = ScriptCommandFactory::GetInstance().GetCommand().release();
@@ -131,7 +162,13 @@ void Robot::TeleopInit() {
 	driveTrain->enableSteeringPID(); //ENABLE THIS
 	servo->Set(.15);
 	servo2->Set(.775);
-
+	char mode = 3;
+	RobotMap::serialPort->Write(&mode, 1);
+	RobotMap::serialPort1->Write(&mode, 1);
+	RobotMap::serialPort2->Write(&mode, 1);
+	SmartDashboard::PutNumber("Serial 0", 3);
+	SmartDashboard::PutNumber("Serial 1", 3);
+	SmartDashboard::PutNumber("Serial 2", 3);
 	// This makes sure that the autonomous stops running when
 	// teleop starts running. If you want the autonomous to
 	// continue until interrupted by another command, remove
@@ -156,7 +193,12 @@ void Robot::TeleopPeriodic() {
 	SmartDashboard::PutNumber("Vision Boiler Position", Robot::visionBridge->GetBoilerPosition());
 	SmartDashboard::PutNumber("Vision BoilerDistance", Robot::visionBridge->GetBoilerDistance());
 
-
+	char mode = SmartDashboard::GetNumber("Serial 0", 3);
+	RobotMap::serialPort->Write(&mode, 1);
+	char mode1 = SmartDashboard::GetNumber("Serial 1", 3);
+	RobotMap::serialPort1->Write(&mode1, 1);
+	char mode2 = SmartDashboard::GetNumber("Serial 2", 3);
+	RobotMap::serialPort2->Write(&mode2, 1);
 	/*
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
@@ -165,6 +207,7 @@ void Robot::TeleopPeriodic() {
 
 	driveTrain->readLidar();
 
+	//if (ds->GetMatchTime() > 120)
 
 	SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
 	SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
@@ -200,11 +243,11 @@ void Robot::ScriptInit() {
 			"Drive", {"D", "d"},
 			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
 		parameters.resize(4);
-		auto x = parameters[0];
-		auto y = parameters[1];
+		auto y = parameters[0];
+		auto x = parameters[1];
 		auto z = parameters[2];
 		auto timeout = parameters[3];
-		Command *command = new ScriptDrive("Drive", x, y, z, timeout);
+		Command *command = new ScriptDrive("Drive", y, x, z, timeout);
 		// if (0 == timeout) timeout = 4;
 		fCreateCommand(command, 0);
 	}));
@@ -244,11 +287,11 @@ void Robot::ScriptInit() {
 			"DriveGyro", {"DG", "dg"},
 			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
 		parameters.resize(4);
-		auto x = parameters[0];
-		auto y = parameters[1];
+		auto y = parameters[0];
+		auto x = parameters[1];
 		auto desiredangle = parameters[2];
 		auto timeout = parameters[3];
-		Command *command = new ScriptGyroDrive("DriveGyro", x, y, desiredangle, timeout);
+		Command *command = new ScriptGyroDrive("DriveGyro", y, x, desiredangle, timeout);
 		fCreateCommand(command, 0);
 	}));
 
@@ -260,31 +303,6 @@ void Robot::ScriptInit() {
 		auto desiredAngle = parameters[1];
 		auto timeout = parameters[2];
 		Command *command = new ScriptGyroRotate("GyroRotate", desiredAngle, power, timeout);
-		fCreateCommand(command, 0);
-	}));
-
-	parser.AddCommand(CommandParseInfo(
-			"DriveDistance", {"DD", "dd"},
-			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
-		parameters.resize(4);
-		auto x = parameters[0];
-		auto y = parameters[1];
-		auto twist = parameters[2];
-		auto distance = parameters[3];
-		Command *command = new DriveDistance(x, y, twist, distance);
-		fCreateCommand(command, 0);
-	}));
-
-	parser.AddCommand(CommandParseInfo(
-			"DriveCam", {"DC", "dc"},
-			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
-		parameters.resize(5);
-		auto x = parameters[0];
-		auto y = parameters[1];
-		auto maxspeed = parameters[2];
-		auto timeout = parameters[3];
-		auto preferredSide = parameters[4];
-		Command *command = new ScriptCamDrive("DriveCam", x, y, maxspeed, timeout, preferredSide);
 		fCreateCommand(command, 0);
 	}));
 
@@ -313,6 +331,17 @@ void Robot::ScriptInit() {
 	}));
 
 	parser.AddCommand(CommandParseInfo(
+			"ScriptShootWithVision", {"VSH", "vsh"},
+			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
+		parameters.resize(2);
+		auto speed = parameters[0];
+		auto timeout = parameters[1];
+		Command *command = new ScriptShootWithVision(speed, timeout);
+		// if (0 == timeout) timeout = 4;
+		fCreateCommand(command, 0);
+	}));
+
+	parser.AddCommand(CommandParseInfo(
 			"DriveTilLidar", {"DL", "dl"},
 			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
 		parameters.resize(5);
@@ -322,6 +351,28 @@ void Robot::ScriptInit() {
 		auto z = parameters[3];
 		auto timeout = parameters[4];
 		Command *command = new DriveTilLidar(target, y, x, z, timeout);
+		// if (0 == timeout) timeout = 4;
+		fCreateCommand(command, 0);
+	}));
+
+	parser.AddCommand(CommandParseInfo(
+			"DriveTilSonar", {"DS", "ds"},
+			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
+		parameters.resize(4);
+		auto y = parameters[0];
+		auto x = parameters[1];
+		auto z = parameters[2];
+		auto timeout = parameters[3];
+		Command *command = new DriveTilSonar(y, x, z, timeout);
+		// if (0 == timeout) timeout = 4;
+		fCreateCommand(command, 0);
+	}));
+
+	parser.AddCommand(CommandParseInfo(
+			"GearLineup", {"GL", "gl"},
+			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
+		parameters.resize(0);
+		Command *command = new GearLineup();
 		// if (0 == timeout) timeout = 4;
 		fCreateCommand(command, 0);
 	}));

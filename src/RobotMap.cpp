@@ -25,6 +25,8 @@ AnalogInput* RobotMap::sonar = nullptr;
 CANTalon* RobotMap::climbingMotor = nullptr;
 
 SerialPort* RobotMap::serialPort = nullptr;
+SerialPort* RobotMap::serialPort1 = nullptr;
+SerialPort* RobotMap::serialPort2 = nullptr;
 
 CANTalon* RobotMap::shooterMotor1;
 CANTalon* RobotMap::shooterMotor2;
@@ -76,7 +78,10 @@ AHRS* RobotMap::imu = nullptr;
 void RobotMap::Initialize() {
 	// LiveWindow* lw = LiveWindow::GetInstance();
 
-	// serialPort = new SerialPort(57600, SerialPort::kOnboard);
+	serialPort = new SerialPort(9600, SerialPort::kUSB);
+	serialPort1 = new SerialPort(9600, SerialPort::kUSB1);
+	serialPort2 = new SerialPort(9600, SerialPort::kUSB2);
+
 	imu = new AHRS(SPI::kMXP); // SPI::kOnboardCS0);//serialPort, 100);
 	//imu = new AHRS(SerialPort::kUSB);
 	pdp = new PowerDistributionPanel();

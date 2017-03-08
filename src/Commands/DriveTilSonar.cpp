@@ -23,7 +23,7 @@ void DriveTilSonar::Execute() {
 // ==========================================================================
 
 bool DriveTilSonar::IsFinished() {
-	return (RobotMap::sonar->GetAverageVoltage() < 5) || //The 5 will definitely be different
+	return (RobotMap::sonar->GetAverageVoltage() < 0.3) || //The 5 will definitely be different
 		IsTimedOut();
 }
 

@@ -43,6 +43,8 @@ void Indexer::SpinCW() {
 		indexMotor->Set(0.5);
 		if (timer->Get() > reverseTime) {
 			indexJammed = false;
+			Robot::oi->GetDriverJoystick2()->SetRumble(Joystick::kLeftRumble, 0);
+			Robot::oi->GetDriverJoystick2()->SetRumble(Joystick::kRightRumble, 0);
 			reverseTime = 0;
 		}
 	} else {
@@ -50,6 +52,8 @@ void Indexer::SpinCW() {
 		indexMotor->Set(-SmartDashboard::GetNumber("Indexer Speed", 0.65));
 		if (IsJammed()) {
 			RobotMap::i2c->Write(13, 0);
+			Robot::oi->GetDriverJoystick2()->SetRumble(Joystick::kLeftRumble, 1);
+			Robot::oi->GetDriverJoystick2()->SetRumble(Joystick::kRightRumble, 1);
 			reverseTime = .3;
 			indexJammed = true;
 			timer->Reset();
@@ -64,6 +68,8 @@ void Indexer::SpinCCW() {
 		indexMotor->Set(-0.5);
 		if (timer->Get() > reverseTime) {
 			indexJammed = false;
+			Robot::oi->GetDriverJoystick2()->SetRumble(Joystick::kLeftRumble, 0);
+			Robot::oi->GetDriverJoystick2()->SetRumble(Joystick::kRightRumble, 0);
 			reverseTime = 0;
 		}
 	}
@@ -72,6 +78,8 @@ void Indexer::SpinCCW() {
 		indexMotor->Set(SmartDashboard::GetNumber("Indexer Speed", 0.65));
 		if (IsJammed()) {
 			RobotMap::i2c->Write(13, 0);
+			Robot::oi->GetDriverJoystick2()->SetRumble(Joystick::kLeftRumble, 1);
+			Robot::oi->GetDriverJoystick2()->SetRumble(Joystick::kRightRumble, 1);
 			reverseTime = .3;
 			indexJammed = true;
 			timer->Reset();
@@ -84,13 +92,19 @@ void Indexer::SpinCW(float speed){
 	if (indexJammed){
 		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
 		indexMotor->Set(0.5);
-		if (timer->Get() > reverseTime)
+		if (timer->Get() > reverseTime){
 			indexJammed = false;
+			Robot::oi->GetDriverJoystick2()->SetRumble(Joystick::kLeftRumble, 0);
+			Robot::oi->GetDriverJoystick2()->SetRumble(Joystick::kRightRumble, 0);
+		}
+
 	} else {
 		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
 		indexMotor->Set(-speed);
 		if (IsJammed()) {
 			RobotMap::i2c->Write(13, 0);
+			Robot::oi->GetDriverJoystick2()->SetRumble(Joystick::kLeftRumble, 1);
+			Robot::oi->GetDriverJoystick2()->SetRumble(Joystick::kRightRumble, 1);
 			reverseTime = .3;
 			indexJammed = true;
 			timer->Reset();

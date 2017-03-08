@@ -32,6 +32,8 @@ public:
 	static AHRS* imu;
 
 	static SerialPort* serialPort;
+	static SerialPort* serialPort1;
+	static SerialPort* serialPort2;
 
     static CANTalon* shooterMotor1;
     static CANTalon* shooterMotor2;

@@ -23,6 +23,7 @@ class Robot : public IterativeRobot {
 public:
 	Command *autonomousCommand;
 	LiveWindow *lw = LiveWindow::GetInstance();
+	//DriverStation * ds = DriverStation::GetInstance();
 
 	static OI *oi;
 	static DriveTrain *driveTrain;

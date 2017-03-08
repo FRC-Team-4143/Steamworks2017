@@ -38,7 +38,7 @@ void GearLineup::Initialize() {
 // ==========================================================================
 
 void GearLineup::Execute() {
-
+/*
 	auto flPos = RobotMap::driveTrainFrontLeftDrive->GetPosition();
 	auto frPos = RobotMap::driveTrainFrontRightDrive->GetPosition();
 	auto rlPos = RobotMap::driveTrainRearLeftDrive->GetPosition();
@@ -58,17 +58,11 @@ void GearLineup::Execute() {
 		_waiting = 0;
 		_waitingCounter = 0;
 	}
-
+*/
 	//SmartDashboard::PutBoolean("Waiting", _waiting);
 	//SmartDashboard::PutNumber("Waiting counter", _waitingCounter);
 
 	auto pixels = Robot::visionBridge->GetGearPosition() - SmartDashboard::GetNumber("vision center", 0);
-	if (std::abs(pixels) < _tol) {
-		_counter++;
-	}
-	else {
-		_counter = 0;
-	}
 	pixels *= 0.1;
 	SmartDashboard::PutNumber("GearPixels", pixels);
 
@@ -82,16 +76,19 @@ void GearLineup::Execute() {
 		RobotMap::driveTrainRearLeftDrive->SetSetpoint(rlPos - angleError);
 		RobotMap::driveTrainRearRightDrive->SetSetpoint(rrPos - angleError);
 	}*/
-	if (!_waiting) {
+	//if (!_waiting) {
 		if (pixels < -_tol) {
-			Robot::driveTrain->Crab(0, 0, 0.25, false);
+			Robot::driveTrain->Crab(0, 0, 0.2, false);
 		} else if (pixels > _tol){
-			Robot::driveTrain->Crab(0, 0, -0.25, false);
+			Robot::driveTrain->Crab(0, 0, -0.2, false);
 		} else {
 			Robot::driveTrain->Crab(0, 0, 0, false);
 		}
+		if (fabs(pixels) < _tol)
+			_counter++;
+		SmartDashboard::PutNumber("Autonomous Counter", _counter);
 
-	}
+	//}
 	_waiting++;
 	if (_waiting > 20) {
 		_waiting = 0;
@@ -104,7 +101,7 @@ void GearLineup::Execute() {
 // ==========================================================================
 
 bool GearLineup::IsFinished() {
-	return IsTimedOut() || _counter > 5;
+	return IsTimedOut() || _counter > 100;
 }
 
 // ==========================================================================

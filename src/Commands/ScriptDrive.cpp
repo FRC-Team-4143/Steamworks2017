@@ -4,7 +4,7 @@
 
 // ==========================================================================
 
-ScriptDrive::ScriptDrive(std::string name, float x, float y, float z, float seconds)
+ScriptDrive::ScriptDrive(std::string name, float y, float x, float z, float seconds)
 : frc::Command(name), _x(x), _y(y), _z(z), _seconds(seconds) {
 	char szParams[64];
 	sprintf(szParams, "(%f, %f, %f, %f)", x, y, z, seconds);
@@ -24,7 +24,7 @@ void ScriptDrive::Initialize() {
 // ==========================================================================
 
 void ScriptDrive::Execute() {
-	Robot::driveTrain->Crab(_z, _x, _y, false);
+	Robot::driveTrain->Crab(_z, _y, _x, false);
 }
 
 // ==========================================================================
