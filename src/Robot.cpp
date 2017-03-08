@@ -207,7 +207,14 @@ void Robot::TeleopPeriodic() {
 
 	driveTrain->readLidar();
 
-	//if (ds->GetMatchTime() > 120)
+	//make controller rumble at 30 seconds left
+	if (ds.GetMatchTime() < 30 && ds.GetMatchTime() > 28) {
+		Robot::oi->GetDriverJoystick()->SetRumble(Joystick::kLeftRumble, 1);
+		Robot::oi->GetDriverJoystick()->SetRumble(Joystick::kRightRumble, 1);
+	} else {
+		Robot::oi->GetDriverJoystick()->SetRumble(Joystick::kLeftRumble, 0);
+		Robot::oi->GetDriverJoystick()->SetRumble(Joystick::kRightRumble, 0);
+	}
 
 	SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
 	SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
