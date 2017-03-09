@@ -15,6 +15,7 @@
 #include "Commands/DriveTilSonar.h"
 #include "Commands/ScriptGyroRotate.h"
 #include "Commands/GearLineup.h"
+#include "Commands/GearLineupAndSonar.h"
 #include "Modules/CommandListParser.h"
 #include "Modules/Logger.h"
 #include "Modules/ScriptCommandFactory.h"
@@ -88,7 +89,7 @@ void Robot::DisabledPeriodic() {
 	Scheduler::GetInstance()->Run();
 	//driveTrain->Dashboard();
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
-	indexer->ReadPDP();
+	//indexer->ReadPDP();
 
 	SmartDashboard::PutNumber("Sonar", RobotMap::sonar->GetAverageVoltage());
 	//SmartDashboard::PutNumber("Gyro Angle Adjustment", RobotMap::imu->GetAngleAdjustment());
@@ -183,7 +184,7 @@ void Robot::TeleopPeriodic() {
 	SmartDashboard::PutBoolean("Indexer Jammed", indexer->IsIndexJammed());
 	SmartDashboard::PutNumber("Index Timer", indexer->GetTimer());
 	SmartDashboard::PutNumber("Reverse Time", indexer->GetReverseTime());
-	indexer->ReadPDP();
+	//indexer->ReadPDP();
 	//driveTrain->Dashboard();
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
 	SmartDashboard::PutNumber("Sonar", RobotMap::sonar->GetAverageVoltage());
@@ -380,6 +381,19 @@ void Robot::ScriptInit() {
 			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
 		parameters.resize(0);
 		Command *command = new GearLineup();
+		// if (0 == timeout) timeout = 4;
+		fCreateCommand(command, 0);
+	}));
+
+	parser.AddCommand(CommandParseInfo(
+			"GearLineupAndSonar", {"GLS", "gls"},
+			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
+		parameters.resize(4);
+		auto y = parameters[0];
+		auto x = parameters[1];
+		auto z = parameters[2];
+		auto timeout = parameters[3];
+		Command *command = new GearLineupAndSonar(y, x, z, timeout);
 		// if (0 == timeout) timeout = 4;
 		fCreateCommand(command, 0);
 	}));

@@ -6,7 +6,7 @@
 Turret::Turret() : Subsystem("Turret") {
 	turretMotor = RobotMap::turretMotor;
 
-		SmartDashboard::PutNumber("Turret Max Speed",0);
+		SmartDashboard::PutNumber("Turret Max Speed", 1);
 }
 
 void Turret::InitDefaultCommand() {
