@@ -29,10 +29,10 @@ void GyroCrab::Execute() {
 	auto y = Robot::oi->GetJoystickY();
 	if (Robot::oi->GetRightTrigger() > 0.5 && !flag){
 		flag = true;
-		_angle += 45;
+		_angle += 30;
 	} else if (Robot::oi->GetLeftTrigger() > 0.5 && !flag){
 		flag = true;
-		_angle -= 45;
+		_angle -= 30;
 	} else if (!(Robot::oi->GetRightTrigger() > 0.5) && !(Robot::oi->GetLeftTrigger() > 0.5)){
 		flag = false;
 	}
