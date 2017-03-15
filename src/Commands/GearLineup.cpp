@@ -38,45 +38,11 @@ void GearLineup::Initialize() {
 // ==========================================================================
 
 void GearLineup::Execute() {
-/*
-	auto flPos = RobotMap::driveTrainFrontLeftDrive->GetPosition();
-	auto frPos = RobotMap::driveTrainFrontRightDrive->GetPosition();
-	auto rlPos = RobotMap::driveTrainRearLeftDrive->GetPosition();
-	auto rrPos = RobotMap::driveTrainRearRightDrive->GetPosition();
-
-	if (std::fabs(flPos - RobotMap::driveTrainFrontLeftDrive->GetSetpoint()) < 0.002 ||
-			std::fabs(frPos - RobotMap::driveTrainFrontRightDrive->GetSetpoint()) < 0.002 ||
-			std::fabs(rlPos - RobotMap::driveTrainRearLeftDrive->GetSetpoint()) < 0.002 ||
-			std::fabs(rrPos - RobotMap::driveTrainRearRightDrive->GetSetpoint()) < 0.002) {
-		_waitingCounter++;
-	}
-	else {
-		_waitingCounter = 0;
-	}
-
-	if (_waitingCounter > 5) {
-		_waiting = 0;
-		_waitingCounter = 0;
-	}
-*/
-	//SmartDashboard::PutBoolean("Waiting", _waiting);
-	//SmartDashboard::PutNumber("Waiting counter", _waitingCounter);
 
 	auto pixels = Robot::visionBridge->GetGearPosition() - SmartDashboard::GetNumber("vision center", 0);
 	pixels *= 0.1;
 	SmartDashboard::PutNumber("GearPixels", pixels);
 
-	//SmartDashboard::PutNumber("Front Left Drive Position", flPos);
-	//auto desiredAngle = SmartDashboard::GetNumber("Twist Angle", 0);
-	//auto angleError = desiredAngle + pixels;
-	//angleError *= (101.3 / 9.9 / 360);
-	/*if (!_waiting) {
-		RobotMap::driveTrainFrontLeftDrive->SetSetpoint(flPos - angleError);
-		RobotMap::driveTrainFrontRightDrive->SetSetpoint(frPos - angleError);
-		RobotMap::driveTrainRearLeftDrive->SetSetpoint(rlPos - angleError);
-		RobotMap::driveTrainRearRightDrive->SetSetpoint(rrPos - angleError);
-	}*/
-	//if (!_waiting) {
 		if (pixels < -_tol) {
 			Robot::driveTrain->Crab(0, 0, 0.2, false);
 		} else if (pixels > _tol){

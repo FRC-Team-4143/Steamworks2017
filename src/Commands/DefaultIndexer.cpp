@@ -12,7 +12,10 @@ void DefaultIndexer::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void DefaultIndexer::Execute() {
-	Robot::indexer->SetSpeed(-Robot::oi->GetJoystickX2()*SmartDashboard::GetNumber("Turret Max Speed",0));//*50);
+	float speed = Robot::oi->GetLeftTrigger2() - Robot::oi->GetRightTrigger2();
+	if (fabs(speed) < 0.5)
+		speed = 0;
+	Robot::indexer->SetSpeed(speed/2);//*50);
 }
 
 // Make this return true when this Command no longer needs to run execute()

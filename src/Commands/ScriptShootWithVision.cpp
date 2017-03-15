@@ -10,3 +10,10 @@ ScriptShootWithVision::ScriptShootWithVision(float timeout) {
 	AddSequential(new ScriptIndex(0.65, timeout));
 	AddSequential(new ScriptStopShooter());
 }
+
+ScriptShootWithVision::ScriptShootWithVision(int speed, float timeout) {
+	AddSequential(new BoilerLineup(0, 0));
+	AddSequential(new ScriptStartShooter(speed), 0.5);
+	AddSequential(new ScriptIndex(0.65, timeout));
+	AddSequential(new ScriptStopShooter());
+}
