@@ -44,6 +44,7 @@ public:
 	Command* zeroReverse;
 	Command* autoShoot;
 	Command* gearLineup;
+	Command* calculateSpeed;
 	//Command* reverseClimb;
 
 	Joystick* GetDriverJoystick() { return driverJoystick; }

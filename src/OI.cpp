@@ -30,6 +30,7 @@
 #include "Commands/ZeroReverse.h"
 #include "Commands/ScriptShootWithVision.h"
 #include "Commands/GearLineup.h"
+#include "Commands/CalculateSpeed.h"
 #include "Robot.h"
 
 const uint32_t JOYSTICK_LX_AXIS = 0;
@@ -80,6 +81,7 @@ OI::OI() {
 	zeroReverse = new ZeroReverse();
 	autoShoot = new ScriptShootWithVision(10);
 	gearLineup = new GearLineup();
+	calculateSpeed = new CalculateSpeed();
 	//reverseClimb = new ReverseClimb();
 	auto cameraEnableCmd = new BasicCameraEnableCmd(Robot::basicCameraSub);
 
@@ -91,7 +93,7 @@ OI::OI() {
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_START))->WhileHeld(climb);
 
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_X))->WhileHeld(autoShoot);
-	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_B))->WhileHeld(gearLineup);
+	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_RIGHT))->WhileHeld(gearLineup);
 
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_Y))->ToggleWhenPressed(gearLight);
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_A))->ToggleWhenPressed(fuelLight);
@@ -101,6 +103,9 @@ OI::OI() {
 	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_RB))->WhileHeld(spinIndexerCW);
 	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_LB))->WhileHeld(spinIndexerCCW);
 	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_Y))->WhenPressed(oneBall);
+
+	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_START))->WhenPressed(autoShoot);
+	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_BACK))->WhenPressed(calculateSpeed);
 
 	auto cmdShooterRun = new ShooterRun();
 	auto shooterRunButton = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_A);
