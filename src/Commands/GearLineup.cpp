@@ -6,7 +6,7 @@
 
 GearLineup::GearLineup()
 : frc::Command("GearLineup"),
-	_timeoutSeconds(5),
+	_timeoutSeconds(2.5),
 	_counter(0), _waiting(0), _waitingCounter(0),
 	_angle(0),
 	_p(0), _i(0), _d(0), _tol(0),
@@ -101,7 +101,7 @@ void GearLineup::Execute() {
 // ==========================================================================
 
 bool GearLineup::IsFinished() {
-	return IsTimedOut() || _counter > 100;
+	return IsTimedOut() || _counter > 50;
 }
 
 // ==========================================================================

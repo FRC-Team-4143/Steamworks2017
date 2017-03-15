@@ -76,13 +76,13 @@ void Robot::RobotPeriodic() {
 }
 
 void Robot::DisabledInit() {
-	char mode = 1;
-	RobotMap::serialPort->Write(&mode, 1);
-	RobotMap::serialPort1->Write(&mode, 1);
-	RobotMap::serialPort2->Write(&mode, 1);
-	SmartDashboard::PutNumber("Serial 0", 1);
-	SmartDashboard::PutNumber("Serial 1", 1);
-	SmartDashboard::PutNumber("Serial 2", 1);
+	//char mode = 1;
+	//RobotMap::serialPort->Write(&mode, 1);
+	//RobotMap::serialPort1->Write(&mode, 1);
+	//RobotMap::serialPort2->Write(&mode, 1);
+	//SmartDashboard::PutNumber("Serial 0", 1);
+	//SmartDashboard::PutNumber("Serial 1", 1);
+	//SmartDashboard::PutNumber("Serial 2", 1);
 }
 
 void Robot::DisabledPeriodic() {
@@ -94,18 +94,21 @@ void Robot::DisabledPeriodic() {
 	SmartDashboard::PutNumber("Sonar", RobotMap::sonar->GetAverageVoltage());
 	//SmartDashboard::PutNumber("Gyro Angle Adjustment", RobotMap::imu->GetAngleAdjustment());
 
-	char mode = SmartDashboard::GetNumber("Serial 0", 1);
-	RobotMap::serialPort->Write(&mode, 1);
-	char mode1 = SmartDashboard::GetNumber("Serial 1", 1);
-	RobotMap::serialPort1->Write(&mode1, 1);
-	char mode2 = SmartDashboard::GetNumber("Serial 2", 1);
-	RobotMap::serialPort2->Write(&mode2, 1);
+	//char mode = SmartDashboard::GetNumber("Serial 0", 1);
+	//RobotMap::serialPort->Write(&mode, 1);
+	//char mode1 = SmartDashboard::GetNumber("Serial 1", 1);
+	//RobotMap::serialPort1->Write(&mode1, 1);
+	//char mode2 = SmartDashboard::GetNumber("Serial 2", 1);
+	//RobotMap::serialPort2->Write(&mode2, 1);
 
 
 	SmartDashboard::PutNumber("Vision Gear Position", Robot::visionBridge->GetGearPosition());
 	SmartDashboard::PutNumber("Vision Gear Distance", Robot::visionBridge->GetGearDistance());
 	SmartDashboard::PutNumber("Vision Boiler Position", Robot::visionBridge->GetBoilerPosition());
 	SmartDashboard::PutNumber("Vision BoilerDistance", Robot::visionBridge->GetBoilerDistance());
+
+	SmartDashboard::PutNumber("Turret Starting Position", turret->startingPosition);
+	SmartDashboard::PutNumber("TurretPosition", RobotMap::turretMotor->GetPosition()-turret->startingPosition);
 
 	driveTrain->readLidar();
 
@@ -120,13 +123,15 @@ void Robot::AutonomousInit() {
 	driveTrain->enableSteeringPID();
 	RobotMap::imu->ZeroYaw();
 
-	char mode = 3;
-	RobotMap::serialPort->Write(&mode, 1);
-	RobotMap::serialPort1->Write(&mode, 1);
-	RobotMap::serialPort2->Write(&mode, 1);
-	SmartDashboard::PutNumber("Serial 0", 3);
-	SmartDashboard::PutNumber("Serial 1", 3);
-	SmartDashboard::PutNumber("Serial 2", 3);
+	turret->startingPosition = RobotMap::turretMotor->GetPosition();
+
+	//char mode = 3;
+	//RobotMap::serialPort->Write(&mode, 1);
+	//RobotMap::serialPort1->Write(&mode, 1);
+	//RobotMap::serialPort2->Write(&mode, 1);
+	//SmartDashboard::PutNumber("Serial 0", 3);
+	//SmartDashboard::PutNumber("Serial 1", 3);
+	//SmartDashboard::PutNumber("Serial 2", 3);
 
 	printf("Before new ScriptCommand: %f\r\n", DriverStation::GetInstance().GetMatchTime());
 	autonomousCommand = ScriptCommandFactory::GetInstance().GetCommand().release();
@@ -150,6 +155,8 @@ void Robot::AutonomousPeriodic() {
 	SmartDashboard::PutNumber("Vision Boiler Position", Robot::visionBridge->GetBoilerPosition());
 	SmartDashboard::PutNumber("Vision BoilerDistance", Robot::visionBridge->GetBoilerDistance());
 
+	SmartDashboard::PutNumber("Turret Starting Position", turret->startingPosition);
+	SmartDashboard::PutNumber("TurretPosition", RobotMap::turretMotor->GetPosition()-turret->startingPosition);
 
 	driveTrain->readLidar();
 	/*
@@ -161,15 +168,16 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {
 	driveTrain->enableSteeringPID(); //ENABLE THIS
-	servo->Set(.15);
-	servo2->Set(.775);
-	char mode = 3;
-	RobotMap::serialPort->Write(&mode, 1);
-	RobotMap::serialPort1->Write(&mode, 1);
-	RobotMap::serialPort2->Write(&mode, 1);
-	SmartDashboard::PutNumber("Serial 0", 3);
-	SmartDashboard::PutNumber("Serial 1", 3);
-	SmartDashboard::PutNumber("Serial 2", 3);
+
+	//servo->Set(.15);
+	//servo2->Set(.775);
+	//char mode = 3;
+	//RobotMap::serialPort->Write(&mode, 1);
+	//RobotMap::serialPort1->Write(&mode, 1);
+	//RobotMap::serialPort2->Write(&mode, 1);
+	//SmartDashboard::PutNumber("Serial 0", 3);
+	//SmartDashboard::PutNumber("Serial 1", 3);
+	//SmartDashboard::PutNumber("Serial 2", 3);
 	// This makes sure that the autonomous stops running when
 	// teleop starts running. If you want the autonomous to
 	// continue until interrupted by another command, remove
@@ -189,17 +197,20 @@ void Robot::TeleopPeriodic() {
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
 	SmartDashboard::PutNumber("Sonar", RobotMap::sonar->GetAverageVoltage());
 
+	SmartDashboard::PutNumber("Turret Starting Position", turret->startingPosition);
+	SmartDashboard::PutNumber("TurretPosition", RobotMap::turretMotor->GetPosition()-turret->startingPosition);
+
 	SmartDashboard::PutNumber("Vision Gear Position", Robot::visionBridge->GetGearPosition());
 	SmartDashboard::PutNumber("Vision Gear Distance", Robot::visionBridge->GetGearDistance());
 	SmartDashboard::PutNumber("Vision Boiler Position", Robot::visionBridge->GetBoilerPosition());
 	SmartDashboard::PutNumber("Vision BoilerDistance", Robot::visionBridge->GetBoilerDistance());
 
-	char mode = SmartDashboard::GetNumber("Serial 0", 3);
-	RobotMap::serialPort->Write(&mode, 1);
-	char mode1 = SmartDashboard::GetNumber("Serial 1", 3);
-	RobotMap::serialPort1->Write(&mode1, 1);
-	char mode2 = SmartDashboard::GetNumber("Serial 2", 3);
-	RobotMap::serialPort2->Write(&mode2, 1);
+	//char mode = SmartDashboard::GetNumber("Serial 0", 3);
+	//RobotMap::serialPort->Write(&mode, 1);
+	//char mode1 = SmartDashboard::GetNumber("Serial 1", 3);
+	//RobotMap::serialPort1->Write(&mode1, 1);
+	//char mode2 = SmartDashboard::GetNumber("Serial 2", 3);
+	//RobotMap::serialPort2->Write(&mode2, 1);
 	/*
 	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
 	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));

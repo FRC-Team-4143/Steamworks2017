@@ -5,7 +5,7 @@
 // ==========================================================================
 
 ScriptGyroRotate::ScriptGyroRotate(std::string name, float desiredangle, double power, float seconds)
-: frc::Command(name), _desiredangle(desiredangle), _power(power), _seconds(seconds) {
+: frc::Command(name), _desiredangle(desiredangle), _power(power), _seconds(seconds), _counter(0) {
 	char szParams[64];
 	sprintf(szParams, "(%f, %f, %f)", desiredangle, power, seconds);
 	LOG(GetName() + "::ctor" + szParams);
@@ -25,11 +25,14 @@ void ScriptGyroRotate::Initialize() {
 
 void ScriptGyroRotate::Execute() {
 	Robot::driveTrain->GyroRotate(_desiredangle, _power);
+	if (fabs(RobotMap::imu->GetYaw() - _desiredangle) < 10){
+		_counter++;
+	}
 }
 
 // ==========================================================================
 
-bool ScriptGyroRotate::IsFinished() { return IsTimedOut(); }
+bool ScriptGyroRotate::IsFinished() { return IsTimedOut() || _counter > 50; }
 
 // ==========================================================================
 

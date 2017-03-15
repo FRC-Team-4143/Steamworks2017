@@ -13,4 +13,6 @@ public:
 	void InitDefaultCommand();
 	void SetSpeed(double speed);
 	void Stop();
+
+	float startingPosition;
 };

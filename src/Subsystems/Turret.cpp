@@ -5,8 +5,8 @@
 
 Turret::Turret() : Subsystem("Turret") {
 	turretMotor = RobotMap::turretMotor;
-
-		SmartDashboard::PutNumber("Turret Max Speed", 1);
+	startingPosition = RobotMap::turretMotor->GetPosition();
+	SmartDashboard::PutNumber("Turret Max Speed", 1);
 }
 
 void Turret::InitDefaultCommand() {
@@ -15,18 +15,14 @@ void Turret::InitDefaultCommand() {
 
 void Turret::SetSpeed(double speed) {
 	//SmartDashboard::PutNumber("Turret Rotation", turretMotor->GetPosition());
-/*
-	if (speed > 0) {
-		if (turretMotor->GetPosition() > 3) {
-			speed = 0;
-		}
+
+	if (speed > 0 && turretMotor->GetPosition() > startingPosition+2) {
+		speed = 0;
 	}
-	else if (speed < 0) {
-		if (turretMotor->GetPosition() < -3) {
-			speed = 0;
-		}
+	else if (speed < 0 && turretMotor->GetPosition() < startingPosition-3) {
+		speed = 0;
 	}
-*/
+
 	turretMotor->SetControlMode(CANTalon::kPercentVbus);
 	turretMotor->Set(speed);
 

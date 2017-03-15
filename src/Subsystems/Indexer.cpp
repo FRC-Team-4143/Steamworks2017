@@ -37,6 +37,7 @@ void Indexer::InitDefaultCommand() {
 
 void Indexer::SpinCW() {
 	SmartDashboard::PutBoolean("Indexer Jammed", indexJammed);
+	ReadPDP();
 
 	if (indexJammed) {
 		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
@@ -132,7 +133,7 @@ void Indexer::Stop() {
 
 bool Indexer::IsJammed() {
 	if (pdp->GetCurrent(9) > 15) {
-		return true;
+		return false;
 	}
 	return false;
 }
@@ -147,8 +148,8 @@ void Indexer::TestJamShooter() {
 
 void Indexer::ReadPDP() {
 	for (int i = 0; i < 16; i++) {
-		//SmartDashboard::PutNumber("PDP Current " + std::to_string(i),
-		//		pdp->GetCurrent(i));
+		SmartDashboard::PutNumber("PDP Current " + std::to_string(i),
+				pdp->GetCurrent(i));
 	}
 }
 

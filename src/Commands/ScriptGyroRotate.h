@@ -19,6 +19,7 @@ private:
 	float _desiredangle;
 	double _power;
 	float _seconds;
+	int _counter;
 
 	void _Cleanup();
 };

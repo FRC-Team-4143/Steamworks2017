@@ -28,7 +28,7 @@
 #include "Commands/GearLight.h"
 #include "Commands/FuelLight.h"
 #include "Commands/ZeroReverse.h"
-#include "Commands/ScriptShoot.h"
+#include "Commands/ScriptShootWithVision.h"
 #include "Commands/GearLineup.h"
 #include "Robot.h"
 
@@ -78,7 +78,7 @@ OI::OI() {
 	oneBall = new OneBall();
 	climb = new Climb();
 	zeroReverse = new ZeroReverse();
-	autoShoot = new ScriptShoot(3000, 10);
+	autoShoot = new ScriptShootWithVision(3000, 10);
 	gearLineup = new GearLineup();
 	//reverseClimb = new ReverseClimb();
 	auto cameraEnableCmd = new BasicCameraEnableCmd(Robot::basicCameraSub);

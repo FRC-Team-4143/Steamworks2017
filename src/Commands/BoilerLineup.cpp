@@ -84,10 +84,10 @@ void BoilerLineup::Execute() {
 	}*/
 	if (!_waiting) {
 		if (pixels < -_tol) {
-			Robot::turret->SetSpeed(0.1);
+			Robot::turret->SetSpeed(0.5);
 			_counter = 0;
 		} else if (pixels > _tol){
-			Robot::turret->SetSpeed(-0.1);
+			Robot::turret->SetSpeed(-0.5);
 			_counter = 0;
 		} else {
 			Robot::turret->SetSpeed(0);
