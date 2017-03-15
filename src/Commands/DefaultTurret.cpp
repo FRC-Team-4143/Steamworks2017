@@ -10,7 +10,10 @@ void DefaultTurret::Initialize() {
 
 }
 void DefaultTurret::Execute() {
-	Robot::turret->SetSpeed(-Robot::oi->GetJoystickX2()*SmartDashboard::GetNumber("Turret Max Speed",0));//*50);
+	float speed = Robot::oi->GetLeftTrigger2() - Robot::oi->GetRightTrigger2();
+	if (speed < 0.5)
+		speed = 0;
+	Robot::turret->SetSpeed(speed/2);//-Robot::oi->GetJoystickX2()*SmartDashboard::GetNumber("Turret Max Speed",0));//*50);
 }
 
 bool DefaultTurret::IsFinished() {

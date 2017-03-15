@@ -78,7 +78,7 @@ OI::OI() {
 	oneBall = new OneBall();
 	climb = new Climb();
 	zeroReverse = new ZeroReverse();
-	autoShoot = new ScriptShootWithVision(3000, 10);
+	autoShoot = new ScriptShootWithVision(10);
 	gearLineup = new GearLineup();
 	//reverseClimb = new ReverseClimb();
 	auto cameraEnableCmd = new BasicCameraEnableCmd(Robot::basicCameraSub);
@@ -178,6 +178,20 @@ float OI::GetRightTrigger() {
 
 float OI::GetLeftTrigger() {
 	auto value = driverJoystick->GetRawAxis(JOYSTICK_LTRIG_AXIS);
+	return (fabs(value) < JOYSTICK_DEAD_ZONE) ? 0 : value;
+}
+
+// ==========================================================================
+
+float OI::GetRightTrigger2() {
+	auto value = driverJoystick2->GetRawAxis(JOYSTICK_RTRIG_AXIS);
+	return (fabs(value) < JOYSTICK_DEAD_ZONE) ? 0 : value;
+}
+
+// ==========================================================================
+
+float OI::GetLeftTrigger2() {
+	auto value = driverJoystick2->GetRawAxis(JOYSTICK_LTRIG_AXIS);
 	return (fabs(value) < JOYSTICK_DEAD_ZONE) ? 0 : value;
 }
 

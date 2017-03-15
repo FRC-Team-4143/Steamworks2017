@@ -21,6 +21,7 @@ public:
 	void shootDefault(float right, float left);
 	double getVelocity();
 	void readValues();
+	int calculateSpeed();
     void Feed() {}
     bool IsAtShootingSpeed() { return true;}
     bool SeesBall() { return true;}

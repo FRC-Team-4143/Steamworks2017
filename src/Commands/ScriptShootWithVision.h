@@ -4,5 +4,5 @@
 
 class ScriptShootWithVision : public CommandGroup {
 public:
-	ScriptShootWithVision(int speed, float timeout);
+	ScriptShootWithVision(float timeout);
 };

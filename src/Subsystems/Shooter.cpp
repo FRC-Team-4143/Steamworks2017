@@ -1,6 +1,7 @@
 #include "CANTalon.h"
 #include "Shooter.h"
 #include "../RobotMap.h"
+#include "../Robot.h"
 
 //const int RPM = 7000;
 
@@ -96,4 +97,40 @@ double Shooter::getVelocity() {
 }
 
 void Shooter::readValues() {
+}
+
+//-128
+//2700 -113
+//-98
+//2800 -83
+//-67
+//2900 -51
+//-39
+//3000 -27
+//-15
+//3100 -4
+//8
+//3200 19
+//29
+
+int Shooter::calculateSpeed(){
+	int distance = Robot::visionBridge->GetBoilerDistance();
+	if (distance > 29)
+		targetShooterSpeed = 3300;
+	else if (distance < 29 && distance > 8)
+		targetShooterSpeed = 3200;
+	else if (distance < 8 && distance > -15)
+		targetShooterSpeed = 3100;
+	else if (distance < -15 && distance > -39)
+		targetShooterSpeed = 3000;
+	else if (distance < -39 && distance > -67)
+		targetShooterSpeed = 2900;
+	else if (distance < -67 && distance > -98)
+		targetShooterSpeed = 2800;
+	else if (distance < -98 && distance > -128)
+		targetShooterSpeed = 2700;
+	else if (distance < -128)
+		targetShooterSpeed = 2600;
+
+	return targetShooterSpeed;
 }

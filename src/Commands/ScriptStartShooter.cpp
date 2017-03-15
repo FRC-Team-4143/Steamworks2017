@@ -10,6 +10,13 @@ ScriptStartShooter::ScriptStartShooter(int speed) {
 
 // ==========================================================================
 
+ScriptStartShooter::ScriptStartShooter() {
+	Requires(Robot::shooter);
+	_speed = Robot::shooter->calculateSpeed();
+}
+
+// ==========================================================================
+
 void ScriptStartShooter::Initialize() {
 }
 

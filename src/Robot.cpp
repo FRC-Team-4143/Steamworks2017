@@ -352,10 +352,9 @@ void Robot::ScriptInit() {
 	parser.AddCommand(CommandParseInfo(
 			"ScriptShootWithVision", {"VSH", "vsh"},
 			[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
-		parameters.resize(2);
-		auto speed = parameters[0];
-		auto timeout = parameters[1];
-		Command *command = new ScriptShootWithVision(speed, timeout);
+		parameters.resize(1);
+		auto timeout = parameters[0];
+		Command *command = new ScriptShootWithVision(timeout);
 		// if (0 == timeout) timeout = 4;
 		fCreateCommand(command, 0);
 	}));
