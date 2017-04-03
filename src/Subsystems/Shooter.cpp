@@ -16,16 +16,16 @@ Shooter::Shooter() : Subsystem("Shooter") {
    shooterMotor1->ConfigNominalOutputVoltage(0.0, 0.0);
    shooterMotor1->ConfigPeakOutputVoltage(12.0, -12.0);
    shooterMotor1->SetSensorDirection(true);
-   shooterMotor1->SetP(0.08);
+   shooterMotor1->SetP(0.04);
    shooterMotor1->SetI(0.0);
    shooterMotor1->SetD(0);
-   shooterMotor1->SetF(0.02827);
+   shooterMotor1->SetF(0.028);
 
    shooterMotor2->SetControlMode(CANSpeedController::kSpeed);
    shooterMotor2->ConfigNominalOutputVoltage(0.0, 0.0);
    shooterMotor2->ConfigPeakOutputVoltage(12.0, -12.0);
    shooterMotor2->SetSensorDirection(true);
-   shooterMotor2->SetP(0.02);
+   shooterMotor2->SetP(0.04);
    shooterMotor2->SetI(0.0);
    shooterMotor2->SetD(0.0);
    shooterMotor2->SetF(0.02827);

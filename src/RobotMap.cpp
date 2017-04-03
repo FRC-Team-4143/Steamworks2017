@@ -82,8 +82,8 @@ void RobotMap::Initialize() {
 	//serialPort1 = new SerialPort(9600, SerialPort::kUSB1);
 	//serialPort2 = new SerialPort(9600, SerialPort::kUSB2);
 
-	//imu = new AHRS(SPI::kMXP); // SPI::kOnboardCS0);//serialPort, 100);
-	imu = new AHRS(SerialPort::kUSB);
+	imu = new AHRS(SPI::kMXP); // SPI::kOnboardCS0);//serialPort, 100);
+	//imu = new AHRS(SerialPort::kUSB);
 	pdp = new PowerDistributionPanel();
 
 	////////////////////////////////////

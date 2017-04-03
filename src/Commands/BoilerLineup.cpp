@@ -6,7 +6,7 @@
 
 BoilerLineup::BoilerLineup(int offset, int side)
 : frc::Command("BoilerLineup"), _offset(offset), _side(side),
-	_timeoutSeconds(5),
+	_timeoutSeconds(1),
 	_counter(0), _waiting(0), _waitingCounter(0),
 	_angle(0),
 	_p(0), _i(0), _d(0), _tol(0),
