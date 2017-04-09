@@ -45,7 +45,6 @@ public:
 	Command* autoShoot;
 	Command* gearLineup;
 	Command* calculateSpeed;
-	//Command* reverseClimb;
 
 	Joystick* GetDriverJoystick() { return driverJoystick; }
 	Joystick* GetDriverJoystick2() { return driverJoystick2; }

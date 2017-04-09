@@ -82,7 +82,6 @@ OI::OI() {
 	autoShoot = new ScriptShootWithVision(10);
 	gearLineup = new GearLineup();
 	calculateSpeed = new CalculateSpeed();
-	//reverseClimb = new ReverseClimb();
 	auto cameraEnableCmd = new BasicCameraEnableCmd(Robot::basicCameraSub);
 
 
@@ -250,31 +249,3 @@ bool OI::GetButtonA() {
 }
 
 // ==========================================================================
-
-
-//saving these controls down here in case we switch back at some point
-/*
-////Secondary Driver Controller///-----------------------------------------------------------
-	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_6))->WhileHeld(spinIndexerCW);
-	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_10))->WhileHeld(spinIndexerCCW);
-	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_7))->WhenPressed(oneBall);
-
-	auto cmdShooterRun = new ShooterRun();
-	auto shooterRunButton = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_TRIG);
-	shooterRunButton->WhileHeld(cmdShooterRun);
-
-	auto cmdShooterSlower = new ShooterSlower();
-	auto shooterSlowerButton = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_4);
-	shooterSlowerButton->WhileHeld(cmdShooterSlower);
-
-	auto shooterSlowerButton2 = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_2);
-	shooterSlowerButton2->WhenPressed(cmdShooterSlower);
-
-	auto cmdShooterFaster = new ShooterFaster();
-	auto shooterFasterButton = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_5);
-	shooterFasterButton->WhileHeld(cmdShooterFaster);
-
-	auto shooterFasterButton2 = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_3);
-	shooterFasterButton2->WhenPressed(cmdShooterFaster);
-////-----------------------------------------------------------------------------------------
-*/

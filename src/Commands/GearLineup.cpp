@@ -9,7 +9,7 @@ GearLineup::GearLineup()
 	_timeoutSeconds(2.5),
 	_counter(0), _waiting(0), _waitingCounter(0),
 	_angle(0),
-	_p(0), _i(0), _d(0), _tol(0),
+	_tol(0),
 	_center(0) {
 	Requires(Robot::driveTrain);
 }
@@ -26,9 +26,6 @@ void GearLineup::Initialize() {
 	_angle /= 90.;
 	_angle = floor(_angle + .5); // round
 	_angle *= 90.;
-	_p = SmartDashboard::GetNumber("vision P", .3);
-	_i = SmartDashboard::GetNumber("vision I", .3);
-	_d = SmartDashboard::GetNumber("vision D", .3);
 	_tol = SmartDashboard::GetNumber("vision tol", 5);
 	_center = SmartDashboard::GetNumber("vision center", 0.0);
 	//Robot::driveTrain->enablePositionControl();

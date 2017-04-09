@@ -61,21 +61,6 @@ void VisionBridgeSub::EnableDebug(bool debug) {
 double VisionBridgeSub::GetGearPosition() {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
 	return (_gearRightX1 + _gearRightX2 + _gearLeftX1 + _gearLeftX2)/4;
-	/*
-	if (_gearRightX1 != 0 && _gearRightX2 != 0 && _gearLeftX1 != 0 && _gearLeftX2 != 0) {
-		return (_gearRightX1 + _gearRightX2 + _gearLeftX1 + _gearLeftX2)/4;
-	}
-	//left camera failed
-	else if (_gearRightX1 != 0 && _gearRightX2 != 0){
-		return (_gearRightX1 + _gearRightX2)/2;
-	}
-	//right camera failed
-	else if (_gearLeftX1 != 0 && _gearLeftX2 != 0){
-		return (_gearLeftX1 + _gearLeftX2)/2;
-	}
-	//both cameras failed
-	return 0;
-	*/
 }
 
 // ==========================================================================
@@ -83,22 +68,6 @@ double VisionBridgeSub::GetGearPosition() {
 double VisionBridgeSub::GetGearDistance() {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
 	return (_gearRightY1 + _gearRightY2 + _gearLeftY1 + _gearLeftY2)/4;
-	/*
-	//both cameras worked
-	if (_gearRightY1 != 0 && _gearRightY2 != 0 && _gearLeftY1 != 0 && _gearLeftY2 != 0) {
-		return (_gearRightY1 + _gearRightY2 + _gearLeftY1 + _gearLeftY2)/4;
-	}
-	//left camera failed
-	else if (_gearRightY1 != 0 && _gearRightY2 != 0){
-		return (_gearRightY1 + _gearRightY2)/2;
-	}
-	//right camera failed
-	else if (_gearLeftY1 != 0 && _gearLeftY2 != 0){
-		return (_gearLeftY1 + _gearLeftY2)/2;
-	}
-	//both cameras failed
-	return 0;
-	*/
 }
 
 // ==========================================================================
@@ -106,9 +75,6 @@ double VisionBridgeSub::GetGearDistance() {
 double VisionBridgeSub::GetBoilerPosition() {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
 	return _boilerX1;
-	//if (_boilerX1 != 0) return _boilerX1;
-	//else if (_boilerX2 != 0) return _boilerX2;
-	//camera failed
 	return 0;
 }
 
@@ -117,9 +83,6 @@ double VisionBridgeSub::GetBoilerPosition() {
 double VisionBridgeSub::GetBoilerDistance() {
 	std::unique_lock<std::recursive_mutex> lock(_mutex);
 	return _boilerY1;
-	//if (_boilerY1 != 0) return _boilerY1;
-	//else if (_boilerY2 != 0) return _boilerY2;
-	//camera failed
 	return 0;
 }
 
@@ -186,20 +149,6 @@ void VisionBridgeSub::ParsePacket(char packet[]) {
 		DebugOutput(packet);
 	}
 	try {
-		/*
-		char* pch = std::strtok(packet, " ");
-		auto boilerPos = std::stod(pch);
-		SetBoilerPosition(boilerPos);
-		pch = std::strtok(nullptr, " ");
-		auto boilerDist = std::stod(pch);
-		SetBoilerDistance(boilerDist);
-		pch = std::strtok(nullptr, " ");
-		auto gearPosition = std::stod(pch);
-		SetGearPosition(gearPosition);
-		pch = std::strtok(nullptr, " ");
-		auto gearDist = std::stod(pch);
-		SetGearDistance(gearDist);
-		*/
 		char* pch = std::strtok(packet, " ");
 		auto x1 = std::stod(pch);
 		pch = std::strtok(nullptr, " ");
@@ -239,13 +188,6 @@ void VisionBridgeSub::SetGearRight(double x1, double y1, double x2, double y2) {
 	SmartDashboard::PutNumber("gearRightY1", y1);
 	SmartDashboard::PutNumber("gearRightX2", x2);
 	SmartDashboard::PutNumber("gearRightY2", y2);
-	/*
-	_gearRightX1 = x1;
-	_gearRightY1 = y1;
-	_gearRightX2 = x2;
-	_gearRightY2 = y2;
-	*/
-
 }
 
 // ==========================================================================
@@ -261,12 +203,6 @@ void VisionBridgeSub::SetGearLeft(double x1, double y1, double x2, double y2) {
 	SmartDashboard::PutNumber("gearLeftY1", y1);
 	SmartDashboard::PutNumber("gearLeftX2", x2);
 	SmartDashboard::PutNumber("gearLeftY2", y2);
-	/*
-	_gearLeftX1 = x1;
-	_gearLeftY1 = y1;
-	_gearLeftX2 = x2;
-	_gearLeftY2 = y2;
-	 */
 }
 
 // ==========================================================================
@@ -281,12 +217,7 @@ void VisionBridgeSub::SetBoiler(double x1, double y1, double x2, double y2) {
 	SmartDashboard::PutNumber("BoilerY1", y1);
 	SmartDashboard::PutNumber("BoilerX2", x2);
 	SmartDashboard::PutNumber("BoilerY2", y2);
-	/*
-	_boilerX1 = x1;
-	_boilerY1 = y1;
-	_boilerX2 = x2;
-	_boilerY2 = y2;
-	*/
+
 }
 
 // ==========================================================================

@@ -24,9 +24,6 @@ private:
 	int _waiting;
 	int _waitingCounter;
 	double _angle;
-	double _p;
-	double _i;
-	double _d;
 	double _tol;
 	double _center;
 

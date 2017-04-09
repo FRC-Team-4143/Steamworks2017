@@ -9,7 +9,7 @@ BoilerLineup::BoilerLineup(int offset, int side)
 	_timeoutSeconds(1),
 	_counter(0), _waiting(0), _waitingCounter(0),
 	_angle(0),
-	_p(0), _i(0), _d(0), _tol(0),
+	_tol(0),
 	_center(0) {
 	Requires(Robot::turret);
 }
@@ -26,9 +26,6 @@ void BoilerLineup::Initialize() {
 	_angle /= 90.;
 	_angle = floor(_angle + .5); // round
 	_angle *= 90.;
-	_p = SmartDashboard::GetNumber("vision P", .3);
-	_i = SmartDashboard::GetNumber("vision I", .3);
-	_d = SmartDashboard::GetNumber("vision D", .3);
 	_tol = SmartDashboard::GetNumber("vision tol", 5);
 	_center = SmartDashboard::GetNumber("vision center", 0.0);
 	//Robot::driveTrain->enablePositionControl();
@@ -76,12 +73,7 @@ void BoilerLineup::Execute() {
 	auto desiredAngle = SmartDashboard::GetNumber("Twist Angle", 0);
 	auto angleError = desiredAngle + pixels;
 	angleError *= (101.3 / 9.9 / 360);
-	/*if (!_waiting) {
-		RobotMap::driveTrainFrontLeftDrive->SetSetpoint(flPos - angleError);
-		RobotMap::driveTrainFrontRightDrive->SetSetpoint(frPos - angleError);
-		RobotMap::driveTrainRearLeftDrive->SetSetpoint(rlPos - angleError);
-		RobotMap::driveTrainRearRightDrive->SetSetpoint(rrPos - angleError);
-	}*/
+
 	if (!_waiting) {
 		if (pixels < -_tol) {
 			Robot::turret->SetSpeed(0.5);
@@ -93,8 +85,8 @@ void BoilerLineup::Execute() {
 			Robot::turret->SetSpeed(0);
 			_counter++;
 		}
-
 	}
+
 	_waiting++;
 	if (_waiting > 20) {
 		_waiting = 0;

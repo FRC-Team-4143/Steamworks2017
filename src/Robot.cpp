@@ -47,14 +47,7 @@ void Robot::RobotInit() {
 	SmartDashboard::PutNumber("Serial 0", 1);
 	SmartDashboard::PutNumber("Serial 1", 1);
 	SmartDashboard::PutNumber("Serial 2", 1);
-/*
-	SmartDashboard::PutNumber("vision center", 40.0);
-	SmartDashboard::PutNumber("vision P", 0.11); // 0.2
-	SmartDashboard::PutNumber("vision I", 0.01); // 0.005 Worked without speed control
-	SmartDashboard::PutNumber("vision D", .022); // 0.05
-	SmartDashboard::PutNumber("vision tol", 5);
-	SmartDashboard::PutNumber("long shot cutoff", 100);
-*/
+
 	gyroSub = new GyroSub();
 	driveTrain = new DriveTrain();
 	pickup = new Pickup();
@@ -92,7 +85,6 @@ void Robot::DisabledPeriodic() {
 	//indexer->ReadPDP();
 
 	SmartDashboard::PutNumber("Sonar", RobotMap::sonar->GetAverageVoltage());
-	//SmartDashboard::PutNumber("Gyro Angle Adjustment", RobotMap::imu->GetAngleAdjustment());
 
 	//char mode = SmartDashboard::GetNumber("Serial 0", 1);
 	//RobotMap::serialPort->Write(&mode, 1);
@@ -100,7 +92,6 @@ void Robot::DisabledPeriodic() {
 	//RobotMap::serialPort1->Write(&mode1, 1);
 	//char mode2 = SmartDashboard::GetNumber("Serial 2", 1);
 	//RobotMap::serialPort2->Write(&mode2, 1);
-
 
 	SmartDashboard::PutNumber("Vision Gear Position", Robot::visionBridge->GetGearPosition());
 	SmartDashboard::PutNumber("Vision Gear Distance", Robot::visionBridge->GetGearDistance());
@@ -159,18 +150,11 @@ void Robot::AutonomousPeriodic() {
 	SmartDashboard::PutNumber("TurretPosition", RobotMap::turretMotor->GetPosition()-turret->startingPosition);
 
 	driveTrain->readLidar();
-	/*
-	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
-	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
-	SmartDashboard::PutNumber("Vision Distance", Robot::visionBridge->GetDistance());
-	*/
 }
 
 void Robot::TeleopInit() {
-	driveTrain->enableSteeringPID(); //ENABLE THIS
+	driveTrain->enableSteeringPID();
 
-	//servo->Set(.15);
-	//servo2->Set(.775);
 	//char mode = 3;
 	//RobotMap::serialPort->Write(&mode, 1);
 	//RobotMap::serialPort1->Write(&mode, 1);
@@ -178,6 +162,7 @@ void Robot::TeleopInit() {
 	//SmartDashboard::PutNumber("Serial 0", 3);
 	//SmartDashboard::PutNumber("Serial 1", 3);
 	//SmartDashboard::PutNumber("Serial 2", 3);
+
 	// This makes sure that the autonomous stops running when
 	// teleop starts running. If you want the autonomous to
 	// continue until interrupted by another command, remove
@@ -211,16 +196,11 @@ void Robot::TeleopPeriodic() {
 	//RobotMap::serialPort1->Write(&mode1, 1);
 	//char mode2 = SmartDashboard::GetNumber("Serial 2", 3);
 	//RobotMap::serialPort2->Write(&mode2, 1);
-	/*
-	SmartDashboard::PutNumber("Vision Position Left", Robot::visionBridge->GetPosition(0));
-	SmartDashboard::PutNumber("Vision Position Right", Robot::visionBridge->GetPosition(1));
-	SmartDashboard::PutNumber("Vision Distance", Robot::visionBridge->GetDistance());
-	*/
 
 	driveTrain->readLidar();
 
 	//make controller rumble at 30 seconds left
-	if (ds.GetMatchTime() < 30 && ds.GetMatchTime() > 28) {
+	if (ds.GetMatchTime() < 30 && ds.GetMatchTime() > 25) {
 		Robot::oi->GetDriverJoystick()->SetRumble(Joystick::kLeftRumble, 1);
 		Robot::oi->GetDriverJoystick()->SetRumble(Joystick::kRightRumble, 1);
 	} else {
@@ -234,19 +214,6 @@ void Robot::TeleopPeriodic() {
 	//SmartDashboard::PutNumber("Indexer Position", indexer->GetPosition());
 
 	SmartDashboard::PutNumber("JoystickXAxis", oi->GetJoystickX2());
-
-	/*
-	SmartDashboard::PutNumber("JoystickYAxis", oi->GetJoystickY2());
-	SmartDashboard::PutNumber("JoystickXAxis", oi->GetJoystickX2());
-
-	SmartDashboard::PutBoolean("Button2", oi->GetButton2());
-	SmartDashboard::PutBoolean("Button3", oi->GetButton3());
-	SmartDashboard::PutBoolean("Button4", oi->GetButton4());
-	SmartDashboard::PutBoolean("Button5", oi->GetButton5());
-	SmartDashboard::PutBoolean("Trigger", oi->GetButtonTrig());
-
-	SmartDashboard::PutBoolean("ButtonA", oi->GetButtonA());
-*/
 }
 
 void Robot::TestPeriodic() {
