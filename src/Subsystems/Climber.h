@@ -5,6 +5,8 @@
 
 class Climber : public Subsystem {
 	CANTalon *climbingMotor;
+	CANTalon *climbingMotor2;
+
 
 private:
 	// It's desirable that everything possible under private except

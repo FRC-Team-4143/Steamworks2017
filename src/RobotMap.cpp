@@ -23,6 +23,7 @@ I2C* RobotMap::lidar = nullptr;
 AnalogInput* RobotMap::sonar = nullptr;
 
 CANTalon* RobotMap::climbingMotor = nullptr;
+CANTalon* RobotMap::climbingMotor2 = nullptr;
 
 //SerialPort* RobotMap::serialPort = nullptr;
 //SerialPort* RobotMap::serialPort1 = nullptr;
@@ -82,8 +83,8 @@ void RobotMap::Initialize() {
 	//serialPort1 = new SerialPort(9600, SerialPort::kUSB1);
 	//serialPort2 = new SerialPort(9600, SerialPort::kUSB2);
 
-	imu = new AHRS(SPI::kMXP); // SPI::kOnboardCS0);//serialPort, 100);
-	//imu = new AHRS(SerialPort::kUSB);
+	//imu = new AHRS(SPI::kMXP); // SPI::kOnboardCS0);//serialPort, 100);
+	imu = new AHRS(SerialPort::kUSB);
 	pdp = new PowerDistributionPanel();
 
 	////////////////////////////////////
@@ -208,6 +209,8 @@ void RobotMap::Initialize() {
 	sonar = new AnalogInput(0);
 
 	climbingMotor = new CANTalon(13); //13
+	climbingMotor2 = new CANTalon(9); //9
+
 
     shooterMotor1 = new CANTalon(11); //11
     shooterMotor2 = new CANTalon(12); //12
@@ -224,7 +227,7 @@ void RobotMap::Initialize() {
 	indexMotor->ConfigNominalOutputVoltage(0.0, 0.0);
 	indexMotor->ConfigPeakOutputVoltage(12.0, -12.0);
 
-	turretMotor = new CANTalon(9); //9
+	turretMotor = new CANTalon(63); //Unused
 	turretMotor->SetControlMode(CANTalon::kSpeed);
 	turretMotor->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
 	turretMotor->SetP(P);

@@ -3,6 +3,7 @@
 
 Climber::Climber() : Subsystem("Climber") {
 	climbingMotor = RobotMap::climbingMotor;
+	climbingMotor2 = RobotMap::climbingMotor2;
 }
 
 void Climber::InitDefaultCommand() {
@@ -13,6 +14,9 @@ void Climber::InitDefaultCommand() {
 void Climber::climb(float speed) {
 	climbingMotor->SetControlMode(CANSpeedController::kPercentVbus);
 	climbingMotor->Set(-speed);
+
+	climbingMotor2->SetControlMode(CANSpeedController::kPercentVbus);
+	climbingMotor2->Set(speed);
 }
 
 void Climber::reverseClimb(float speed) {
@@ -22,4 +26,6 @@ void Climber::reverseClimb(float speed) {
 
 void Climber::stopClimb() {
 	climbingMotor->Set(0);
+	climbingMotor2->Set(0);
+
 }

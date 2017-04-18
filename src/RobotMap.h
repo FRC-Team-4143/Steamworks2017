@@ -28,6 +28,8 @@ public:
 	static AnalogInput* sonar;
 
 	static CANTalon* climbingMotor;
+	static CANTalon* climbingMotor2;
+
 
 	static AHRS* imu;
 
