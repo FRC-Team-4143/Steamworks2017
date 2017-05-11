@@ -1,0 +1,99 @@
+S(time) - sleep
+SH(speed, timeout) - shoot 
+VSH(speed, timeout) - vision lineup then shoot //timeout doesn't account for vision lineup
+D(y, x, z, time) - drive
+DG(y, x, angle, time) - drive with gyro
+FC(y, x, Z, timeout) - field centric crab drive
+DL(target, y, x, z, timeout) - drive til lidar is within tolerance
+DS(y, x, angle, timeout) - drives til sonar reads under a set value
+GL() - gear lineup
+GLS(y, x, z, timeout) - gear lineup while driving til sonar reads under set value
+DL() - boiler lineup
+
+/////////////////////////////////////////////////////////////////
+//////////////////////BOILER LEFT SIDE///////////////////////////
+/////////////////////////////////////////////////////////////////
+
+//shoot, place gear on left peg
+SH(2600, 5) DG(0, 0.5, 0, 1.8) GR(0.25, -30, 1) GL() DG(-0.25, 0, -30, 2)
+
+//shoot, place gear middle peg
+SH(3300, 5) DG(0, 0.25, 0, 0.5) GR(0.25, -90, 1) DG(-0.5, 0, -90, 0.75) GL() DG(-0.25, 0, -90, 4)
+
+//just place gear right peg
+SH(3000, 0.1) DG(0, -0.5, 0, 1.8) GR(0.25, 30, 1) GL() DG(-0.25, 0, 30, 2)
+
+//just place gear left peg
+SH(3000, 0.1) DG(0, 0.5, 0, 1.8) GR(0.25, -30, 1) GL() DG(-0.25, 0, -30, 2)
+
+//place gear left peg, then shoot (BOILER LEFT SIDE)
+SH(3150, 0.1) DG(0, 0.5, 0, 1.8) GR(0.25, -30, 1) GL() P:DG(-0.25, 0, -30, 2) SH(3150, 10)
+
+//place gear mid peg, then shoot
+ DG(-0.4, 0, 0, 0.75) GL() DG(-0.25, 0, 0, 2) S(1) DG(0.25, 0, 0, 1) GR(0.25, 60, 2) P:BL() SH(3300, 15)
+
+
+/////////////////////////////////////////////////////////////////
+//////////////////////BOILER RIGHT SIDE//////////////////////////
+/////////////////////////////////////////////////////////////////
+
+//shoot, place gear on right peg
+SH(2600, 7) DG(0, -0.5, 0, 1.8) GR(0.25, 30, 1) GL() DG(-0.25, 0, 30, 2)
+
+//shoot, place gear middle peg
+SH(3300, 5) DG(0, -0.25, 0, 0.5) GR(0.25, 90, 1) DG(-0.5, 0, 90, 0.75) GL() DG(-0.25, 0, 90, 4)
+
+//just place gear on left peg
+SH(3000, 0.1) DG(0, 0.5, 0, 1.8) GR(0.25, -30, 1) GL() DG(-0.25, 0, -30, 2)
+
+//just place gear right peg
+SH(3000, 0.1) DG(0, -0.5, 0, 1.8) GR(0.25, 30, 1) GL() DG(-0.25, 0, 30, 2)
+
+//place gear right peg, then shoot (BOILER RIGHT SIDE)
+SH(3150, 0.1) DG(0, -0.5, 0, 1.8) GR(0.25, 30, 1) GL() P:DG(-0.25, 0, 30, 2) SH(3150, 10)
+
+//place gear right peg, then shoot (BOILER RIGHT SIDE)
+SH(3150, 0.1) DG(0, -0.5, 0, 1.9) GR(0.25, 30, 1) GL() P:DG(-0.25, 0, 30, 2) P:BL() SH(3150, 10)
+
+
+
+
+/////////////////////////////////////////////////////////////////
+////////////////////////EITHER SIDE//////////////////////////////
+/////////////////////////////////////////////////////////////////
+
+
+//only place gear, middle peg
+SH(3000, 0.1) DG(-0.4, 0, 0, 0.75) GL() DG(-0.25, 0, 0, 3)
+
+
+
+/////////////////////////////////////////////////////////////////
+//////////////////////////UNTESTED///////////////////////////////
+/////////////////////////////////////////////////////////////////
+
+
+//hopper dump shoot (BOILER RIGHT SIDE)
+DG(-0.4, 0, 0, 1) DG(0, -0.25, 0, 0.75) SH(3000, 15)
+DL(500, -0.4, 0, 0, 1) DG(0, -0.25, 0, 0.75) SH(3000, 15)
+
+//hopper dump shoot (BOILER LEFT SIDE)
+DG(-0.4, 0, 0, 1) DG(0, 0.25, 0, 0.75) SH(3000, 15)
+DL(500, -0.4, 0, 0, 1) DG(0, 0.25, 0, 0.75) SH(3000, 15)
+
+//place gear center peg then shoot(BOILER RIGHT SIDE)
+SH(3300, 0.1) DG(-0.4, 0, 0, 0.75) GL() DG(-0.25, 0, 0, 2) DG(0.25, 0, 0, 1) GR(0.25, -60, 2) SH(3300, 15)
+
+//shoot, then place gear right peg (BOILER LEFT SIDE)
+SH(3500, 5) DG(0, 0.5, 0, 1.8) GR(0.25, -150, 3) GL() DS(-0.25, 0, -150, 2)
+
+//shoot, then place gear left peg (BOILER RIGHT SIDE)
+SH(3500, 5) DG(0, -0.5, 0, 1.8) GR(0.25, 150, 3) GL() DS(-0.25, 0, 150, 2)
+
+//gear lineup + sonar backup combined
+//only place gear, middle peg (EITHER SIDE)
+DG(-0.5, 0, 0, 0.75) GLS(-0.25, 0, 0, 4)
+
+SH(2600, 7) DG(0.25, 0, 0, 1) DG(0, -0.5, 0, 4)
+
+SH(3150, 0.1) DG(0, 0.5, 0, 1.9) GR(0.25, -30, 1) GL()  P:DG(-0.25, 0, -30, 2) P: BL() SH(3150, 10)

@@ -15,8 +15,8 @@ void Climber::climb(float speed) {
 	climbingMotor->SetControlMode(CANSpeedController::kPercentVbus);
 	climbingMotor->Set(-speed);
 
-	climbingMotor2->SetControlMode(CANSpeedController::kPercentVbus);
-	climbingMotor2->Set(speed);
+	//climbingMotor2->SetControlMode(CANSpeedController::kPercentVbus);
+	//climbingMotor2->Set(speed);
 }
 
 void Climber::reverseClimb(float speed) {

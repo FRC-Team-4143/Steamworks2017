@@ -35,7 +35,7 @@ void BoilerLineup::Initialize() {
 // ==========================================================================
 
 void BoilerLineup::Execute() {
-
+/*
 	auto flPos = RobotMap::driveTrainFrontLeftDrive->GetPosition();
 	auto frPos = RobotMap::driveTrainFrontRightDrive->GetPosition();
 	auto rlPos = RobotMap::driveTrainRearLeftDrive->GetPosition();
@@ -55,7 +55,7 @@ void BoilerLineup::Execute() {
 		_waiting = 0;
 		_waitingCounter = 0;
 	}
-
+*/
 	//SmartDashboard::PutBoolean("Waiting", _waiting);
 	//SmartDashboard::PutNumber("Waiting counter", _waitingCounter);
 
@@ -69,12 +69,12 @@ void BoilerLineup::Execute() {
 	pixels *= 0.1;
 	SmartDashboard::PutNumber("Pixels", pixels);
 
-	SmartDashboard::PutNumber("Front Left Drive Position", flPos);
-	auto desiredAngle = SmartDashboard::GetNumber("Twist Angle", 0);
-	auto angleError = desiredAngle + pixels;
-	angleError *= (101.3 / 9.9 / 360);
+	//SmartDashboard::PutNumber("Front Left Drive Position", flPos);
+	//auto desiredAngle = SmartDashboard::GetNumber("Twist Angle", 0);
+	//auto angleError = desiredAngle + pixels;
+	//angleError *= (101.3 / 9.9 / 360);
 
-	if (!_waiting) {
+	//if (!_waiting) {
 		if (pixels < -_tol) {
 			Robot::turret->SetSpeed(0.5);
 			_counter = 0;
@@ -85,21 +85,21 @@ void BoilerLineup::Execute() {
 			Robot::turret->SetSpeed(0);
 			_counter++;
 		}
-	}
+	//}
 
-	_waiting++;
+	/*_waiting++;
 	if (_waiting > 20) {
 		_waiting = 0;
-	}
+	}*/
 
-	SmartDashboard::PutNumber("Angle Error", angleError);
+	//SmartDashboard::PutNumber("Angle Error", angleError);
 	//Robot::driveTrain->PositionModeTwist(0);
 }
 
 // ==========================================================================
 
 bool BoilerLineup::IsFinished() {
-	return IsTimedOut() || _counter > 5;
+	return false; //IsTimedOut() || _counter > 5;
 }
 
 // ==========================================================================

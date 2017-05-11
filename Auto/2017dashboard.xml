@@ -1,0 +1,220 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="Angle Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="347" y="21"/>
+	</widget>
+	<widget field="Front Left Drive Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="338" y="0"/>
+	</widget>
+	<widget field="Pixels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="152" y="55"/>
+	</widget>
+	<widget field="Turret Starting Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="140" y="0"/>
+	</widget>
+	<widget field="TurretPosition" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="606"/>
+	</widget>
+	<widget field="Autonomous Counter" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="425"/>
+	</widget>
+	<widget field="GearPixels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="404"/>
+	</widget>
+	<widget field="gearLeftX2" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="383"/>
+	</widget>
+	<widget field="gearLeftX1" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="298"/>
+	</widget>
+	<widget field="Serial 2" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="197"/>
+	</widget>
+	<widget field="Serial 1" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="147"/>
+	</widget>
+	<widget field="Serial 0" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="126"/>
+	</widget>
+	<widget field="gearLeftY2" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="21"/>
+	</widget>
+	<widget field="gearLeftY1" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="0"/>
+	</widget>
+	<widget field="gearRightY2" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="225" y="557"/>
+	</widget>
+	<widget field="gearRightX2" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="227" y="534"/>
+	</widget>
+	<widget field="gearRightY1" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="226" y="513"/>
+	</widget>
+	<widget field="gearRightX1" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="225" y="492"/>
+	</widget>
+	<widget field="BoilerY2" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="57" y="550"/>
+	</widget>
+	<widget field="BoilerX2" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="62" y="529"/>
+	</widget>
+	<widget field="BoilerY1" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="65" y="504"/>
+	</widget>
+	<widget field="BoilerX1" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="65" y="478"/>
+		<height>20</height>
+	</widget>
+	<widget field="Sonar" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1020" y="389"/>
+		<property name="Background" value="0.204.204.255"/>
+	</widget>
+	<widget field="Servo Setpoint" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="277"/>
+	</widget>
+	<widget field="Vision BoilerDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1165" y="457"/>
+		<property name="Background" value="0.204.0.255"/>
+	</widget>
+	<widget field="Vision Boiler Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1165" y="432"/>
+		<property name="Background" value="0.204.0.255"/>
+	</widget>
+	<widget field="Vision Gear Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1166" y="409"/>
+		<property name="Background" value="0.204.0.255"/>
+	</widget>
+	<widget field="Vision Gear Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1161" y="384"/>
+		<property name="Background" value="0.204.0.255"/>
+	</widget>
+	<widget field="JoystickXAxis" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="72"/>
+	</widget>
+	<widget field="Reverse Time" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="51"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="492" y="58"/>
+		<width>380</width>
+		<height>218</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
+	<widget field="PDP Current 14" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="186" y="34"/>
+		<property name="Background" value="153.255.255.255"/>
+	</widget>
+	<widget field="Index Timer" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1012" y="188"/>
+		<property name="Background" value="153.255.255.255"/>
+	</widget>
+	<widget field="Indexer Jammed" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1168" y="162"/>
+		<property name="Background" value="153.255.255.255"/>
+	</widget>
+	<widget field="SetWheelOffsets" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="877" y="460"/>
+	</widget>
+	<widget field="Zero Yaw" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="913" y="488"/>
+	</widget>
+	<widget field="Update Positions" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="75" y="638"/>
+	</widget>
+	<widget field="Validate Script" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="337" y="348"/>
+	</widget>
+	<widget field="Camera On" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="489" y="22"/>
+	</widget>
+	<widget field="Gyro Yaw" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1036" y="494"/>
+	</widget>
+	<widget field="Bottom Velocity" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1177" y="83"/>
+		<property name="Background" value="0.204.153.255"/>
+	</widget>
+	<widget field="ScriptValid" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="504" y="359"/>
+		<property name="Background" value="255.255.51.255"/>
+	</widget>
+	<widget field="Top Velocity" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1193" y="61"/>
+		<property name="Background" value="0.204.153.255"/>
+	</widget>
+	<widget field="Target Shooter Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1145" y="26"/>
+		<height>30</height>
+		<property name="Background" value="0.204.204.255"/>
+	</widget>
+	<widget field="ScriptCommand" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="281" y="395"/>
+		<width>529</width>
+		<property name="Background" value="255.255.51.255"/>
+	</widget>
+	<widget field="Zero Reverse Timer" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="198" y="181"/>
+	</widget>
+	<widget field="PDP Current 11" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="86" y="235"/>
+	</widget>
+	<widget field="PDP Current 10" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="91" y="176"/>
+	</widget>
+	<widget field="Twist Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="217" y="270"/>
+	</widget>
+	<widget field="Turret Max Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="252" y="432"/>
+	</widget>
+	<widget field="PDP Current 7" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="256" y="143"/>
+	</widget>
+	<widget field="Indexer Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="17" y="105"/>
+	</widget>
+	<widget field="lidar distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="369" y="99"/>
+	</widget>
+	<widget field="PDP Current 13" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="161" y="349"/>
+	</widget>
+	<widget field="PDP Current 15" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="161" y="328"/>
+	</widget>
+	<widget field="PDP Current 12" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="161" y="286"/>
+	</widget>
+	<widget field="PDP Current 4" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="585"/>
+	</widget>
+	<widget field="PDP Current 8" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="564"/>
+	</widget>
+	<widget field="PDP Current 1" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="446"/>
+	</widget>
+	<widget field="PDP Current 6" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="362"/>
+	</widget>
+	<widget field="PDP Current 9" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="341"/>
+	</widget>
+	<widget field="PDP Current 2" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="320"/>
+	</widget>
+	<widget field="PDP Current 5" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="265"/>
+	</widget>
+	<widget field="PDP Current 3" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="223"/>
+	</widget>
+	<widget field="PDP Current 0" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="168"/>
+	</widget>
+</dashboard>
+<live-window>
+</live-window>
+</xml>

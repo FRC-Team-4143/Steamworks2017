@@ -19,6 +19,7 @@
 #include "Modules/CommandListParser.h"
 #include "Modules/Logger.h"
 #include "Modules/ScriptCommandFactory.h"
+#include "Commands/BoilerLineup.h"
 
 OI* Robot::oi;
 Pickup* Robot::pickup = nullptr;
@@ -379,6 +380,15 @@ void Robot::ScriptInit() {
 		// if (0 == timeout) timeout = 4;
 		fCreateCommand(command, 0);
 	}));
+
+	parser.AddCommand(CommandParseInfo(
+				"BoilerLineup", {"BL", "bl"},
+				[](std::vector<float> parameters, std::function<void(Command *, float)> fCreateCommand) {
+			parameters.resize(0);
+			Command *command = new BoilerLineup(0, 0);
+			// if (0 == timeout) timeout = 4;
+			fCreateCommand(command, 0);
+		}));
 
 	// Call IsValid to ensure that regular expressions
 	// get built before the start of autonomous.

@@ -2,6 +2,7 @@
 #include "Shooter.h"
 #include "../RobotMap.h"
 #include "../Robot.h"
+#include "../Commands/BoilerLineup.h"
 
 //const int RPM = 7000;
 
@@ -35,7 +36,7 @@ Shooter::Shooter() : Subsystem("Shooter") {
 }
 
 void Shooter::InitDefaultCommand() {
-	//SetDefaultCommand(new ShootDefault());
+	//SetDefaultCommand(new BoilerLineup());
 }
 
 void Shooter::shootFront() {

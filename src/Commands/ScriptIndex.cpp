@@ -2,7 +2,6 @@
 #include "Robot.h"
 
 ScriptIndex::ScriptIndex(float speed, float timeout) {
-	Requires(Robot::turret);
 	Requires(Robot::indexer);
 	_timeout = timeout;
 	_speed = speed;

@@ -45,6 +45,7 @@ public:
 	Command* autoShoot;
 	Command* gearLineup;
 	Command* calculateSpeed;
+	Command* boilerLineup;
 
 	Joystick* GetDriverJoystick() { return driverJoystick; }
 	Joystick* GetDriverJoystick2() { return driverJoystick2; }

@@ -31,6 +31,7 @@
 #include "Commands/ScriptShootWithVision.h"
 #include "Commands/GearLineup.h"
 #include "Commands/CalculateSpeed.h"
+#include "Commands/BoilerLineup.h"
 #include "Robot.h"
 
 const uint32_t JOYSTICK_LX_AXIS = 0;
@@ -82,6 +83,7 @@ OI::OI() {
 	autoShoot = new ScriptShootWithVision(10);
 	gearLineup = new GearLineup();
 	calculateSpeed = new CalculateSpeed();
+	boilerLineup = new BoilerLineup();
 	auto cameraEnableCmd = new BasicCameraEnableCmd(Robot::basicCameraSub);
 
 
@@ -103,7 +105,7 @@ OI::OI() {
 	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_LB))->WhileHeld(spinIndexerCCW);
 	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_Y))->WhenPressed(oneBall);
 
-	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_START))->WhenPressed(autoShoot);
+	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_START))->WhileHeld(boilerLineup);
 	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_BACK))->WhenPressed(calculateSpeed);
 
 	auto cmdShooterRun = new ShooterRun();
