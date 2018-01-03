@@ -2,7 +2,7 @@
 
 #include <WPILib.h>
 #include <AHRS.h>
-#include <CANTalon.h>
+#include <ctrlib/CANTalon.h>
 
 class RobotMap {
 public:
@@ -11,15 +11,19 @@ public:
 	static PowerDistributionPanel* pdp;
 
 	static CANTalon* driveTrainFrontLeftDrive;
+	static CANTalon* driveTrainFrontLeftDriveSlave;
 	static CANTalon* driveTrainFrontLeftSteer;
 
 	static CANTalon* driveTrainFrontRightDrive;
+	static CANTalon* driveTrainFrontRightDriveSlave;
 	static CANTalon* driveTrainFrontRightSteer;
 
 	static CANTalon* driveTrainRearLeftDrive;
+	static CANTalon* driveTrainRearLeftDriveSlave;
 	static CANTalon* driveTrainRearLeftSteer;
 
 	static CANTalon* driveTrainRearRightDrive;
+	static CANTalon* driveTrainRearRightDriveSlave;
 	static CANTalon* driveTrainRearRightSteer;
 
 	static I2C* i2c;

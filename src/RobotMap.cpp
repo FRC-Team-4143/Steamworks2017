@@ -6,15 +6,19 @@ bool RobotMap::SpeedControl = 0;
 PowerDistributionPanel* RobotMap::pdp = nullptr;
 
 CANTalon*          RobotMap::driveTrainFrontLeftDrive = nullptr;
+CANTalon*          RobotMap::driveTrainFrontLeftDriveSlave = nullptr;
 CANTalon*          RobotMap::driveTrainFrontLeftSteer = nullptr;
 
 CANTalon*          RobotMap::driveTrainFrontRightDrive = nullptr;
+CANTalon*          RobotMap::driveTrainFrontRightDriveSlave = nullptr;
 CANTalon*          RobotMap::driveTrainFrontRightSteer = nullptr;
 
 CANTalon*          RobotMap::driveTrainRearLeftDrive = nullptr;
+CANTalon*          RobotMap::driveTrainRearLeftDriveSlave = nullptr;
 CANTalon*          RobotMap::driveTrainRearLeftSteer = nullptr;
 
 CANTalon*          RobotMap::driveTrainRearRightDrive = nullptr;
+CANTalon*          RobotMap::driveTrainRearRightDriveSlave = nullptr;
 CANTalon*          RobotMap::driveTrainRearRightSteer = nullptr;
 
 I2C* RobotMap::i2c = nullptr;
@@ -61,19 +65,19 @@ AHRS* RobotMap::imu = nullptr;
 #define RATIO 1
 
 #define FLD 1
-#define FLP 2
+#define FLDS 21
 #define FLS 5
 
 #define FRD 2
-#define FRP 5
+#define FRDS 22
 #define FRS 6
 
 #define RLD 3
-#define RLP 3
+#define RLDS 23
 #define RLS 7
 
 #define RRD 4
-#define RRP 4
+#define RRDS 24
 #define RRS 8
 
 void RobotMap::Initialize() {

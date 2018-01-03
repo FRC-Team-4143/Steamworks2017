@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Commands/Command.h>
-#include <CANTalon.h>
+#include <ctrlib/CANTalon.h>
 
 // ==========================================================================
 

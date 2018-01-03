@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Commands/Subsystem.h>
-#include <CANTalon.h>
+#include <ctrlib/CANTalon.h>
 
 class Climber : public Subsystem {
 	CANTalon *climbingMotor;

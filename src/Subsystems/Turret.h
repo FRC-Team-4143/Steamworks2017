@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CANTalon.h"
+#include "ctrlib/CANTalon.h"
 #include <Commands/Subsystem.h>
 
 class Turret : public Subsystem {

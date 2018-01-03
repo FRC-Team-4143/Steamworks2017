@@ -9,6 +9,7 @@
 
 #include <string>
 #include <Commands/Command.h>
+template class std::basic_string<char>;  //RJS not sure why
 
 // ==========================================================================
 

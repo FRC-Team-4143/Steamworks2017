@@ -2,7 +2,7 @@
 
 #include <Commands/Subsystem.h>
 #include "Subsystems/GyroSub.h"
-#include "CANTalon.h"
+#include "ctrlib/CANTalon.h"
 
 // ==========================================================================
 

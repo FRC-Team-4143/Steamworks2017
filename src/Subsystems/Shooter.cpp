@@ -1,4 +1,4 @@
-#include "CANTalon.h"
+#include "ctrlib/CANTalon.h"
 #include "Shooter.h"
 #include "../RobotMap.h"
 #include "../Robot.h"
