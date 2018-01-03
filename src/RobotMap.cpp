@@ -109,6 +109,21 @@ void RobotMap::Initialize() {
 	driveTrainFrontLeftDrive->SetIzone(pdriveIZone);
 	driveTrainFrontLeftDrive->SetD(pdriveD);
 	driveTrainFrontLeftDrive->SetF(pdriveF);
+	//Drive Motor Slave
+	driveTrainFrontLeftDriveSlave = new CANTalon(FLDS);
+	driveTrainFrontLeftDriveSlave->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
+	driveTrainFrontLeftDriveSlave->ConfigPeakOutputVoltage(12.0, -12.0);
+	driveTrainFrontLeftDriveSlave->SetP(driveP);
+	driveTrainFrontLeftDriveSlave->SetI(driveI);
+	driveTrainFrontLeftDriveSlave->SetD(driveD);
+	driveTrainFrontLeftDriveSlave->SetF(driveF);
+	driveTrainFrontLeftDriveSlave->SetSensorDirection(true);
+	driveTrainFrontLeftDriveSlave->SelectProfileSlot(1);
+	driveTrainFrontLeftDriveSlave->SetP(pdriveP);
+	driveTrainFrontLeftDriveSlave->SetI(pdriveI);
+	driveTrainFrontLeftDriveSlave->SetIzone(pdriveIZone);
+	driveTrainFrontLeftDriveSlave->SetD(pdriveD);
+	driveTrainFrontLeftDriveSlave->SetF(pdriveF);
 	//Steering Motor
 	driveTrainFrontLeftSteer = new CANTalon(FLS);
 	driveTrainFrontLeftSteer->SetControlMode(CANTalon::kPosition);
@@ -138,6 +153,21 @@ void RobotMap::Initialize() {
 	driveTrainFrontRightDrive->SetIzone(pdriveIZone);
 	driveTrainFrontRightDrive->SetD(pdriveD);
 	driveTrainFrontRightDrive->SetF(pdriveF);
+	//Driving Motor Slave
+	driveTrainFrontRightDriveSlave = new CANTalon(FRDS);
+	driveTrainFrontRightDriveSlave->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
+	driveTrainFrontRightDriveSlave->ConfigPeakOutputVoltage(12.0, -12.0);
+	driveTrainFrontRightDriveSlave->SetP(driveP);
+	driveTrainFrontRightDriveSlave->SetI(driveI);
+	driveTrainFrontRightDriveSlave->SetD(driveD);
+	driveTrainFrontRightDriveSlave->SetF(driveF);
+	driveTrainFrontRightDriveSlave->SetSensorDirection(true);
+	driveTrainFrontRightDriveSlave->SelectProfileSlot(1);
+	driveTrainFrontRightDriveSlave->SetP(pdriveP);
+	driveTrainFrontRightDriveSlave->SetI(pdriveI);
+	driveTrainFrontRightDriveSlave->SetIzone(pdriveIZone);
+	driveTrainFrontRightDriveSlave->SetD(pdriveD);
+	driveTrainFrontRightDriveSlave->SetF(pdriveF);
 	//Steering Motor
 	driveTrainFrontRightSteer = new CANTalon(FRS);
 	driveTrainFrontRightSteer->SetControlMode(CANTalon::kPosition);
@@ -167,6 +197,21 @@ void RobotMap::Initialize() {
 	driveTrainRearLeftDrive->SetIzone(pdriveIZone);
 	driveTrainRearLeftDrive->SetD(pdriveD);
 	driveTrainRearLeftDrive->SetF(pdriveF);
+	//Driving Motor Slave
+	driveTrainRearLeftDriveSlave = new CANTalon(RLDS);
+	driveTrainRearLeftDriveSlave->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
+	driveTrainRearLeftDriveSlave->ConfigPeakOutputVoltage(12.0, -12.0);
+	driveTrainRearLeftDriveSlave->SetP(driveP);
+	driveTrainRearLeftDriveSlave->SetI(driveI);
+	driveTrainRearLeftDriveSlave->SetD(driveD);
+	driveTrainRearLeftDriveSlave->SetF(driveF);
+	driveTrainRearLeftDriveSlave->SetSensorDirection(true);
+	driveTrainRearLeftDriveSlave->SelectProfileSlot(1);
+	driveTrainRearLeftDriveSlave->SetP(pdriveP);
+	driveTrainRearLeftDriveSlave->SetI(pdriveI);
+	driveTrainRearLeftDriveSlave->SetIzone(pdriveIZone);
+	driveTrainRearLeftDriveSlave->SetD(pdriveD);
+	driveTrainRearLeftDriveSlave->SetF(pdriveF);
 	//Steering Motor
 	driveTrainRearLeftSteer = new CANTalon(RLS);
 	driveTrainRearLeftSteer->SetControlMode(CANTalon::kPosition);
@@ -196,6 +241,21 @@ void RobotMap::Initialize() {
 	driveTrainRearRightDrive->SetIzone(pdriveIZone);
 	driveTrainRearRightDrive->SetD(pdriveD);
 	driveTrainRearRightDrive->SetF(pdriveF);
+	//Driving Motor Slave
+	driveTrainRearRightDriveSlave = new CANTalon(RRDS);
+	driveTrainRearRightDriveSlave->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
+	driveTrainRearRightDriveSlave->ConfigPeakOutputVoltage(12.0, -12.0);
+	driveTrainRearRightDriveSlave->SetP(driveP);
+	driveTrainRearRightDriveSlave->SetI(driveI);
+	driveTrainRearRightDriveSlave->SetD(driveD);
+	driveTrainRearRightDriveSlave->SetF(driveF);
+	driveTrainRearRightDriveSlave->SetSensorDirection(true);
+	driveTrainRearRightDriveSlave->SelectProfileSlot(1);
+	driveTrainRearRightDriveSlave->SetP(pdriveP);
+	driveTrainRearRightDriveSlave->SetI(pdriveI);
+	driveTrainRearRightDriveSlave->SetIzone(pdriveIZone);
+	driveTrainRearRightDriveSlave->SetD(pdriveD);
+	driveTrainRearRightDriveSlave->SetF(pdriveF);
 	//Steering Motor
 	driveTrainRearRightSteer = new CANTalon(RRS);
 	driveTrainRearRightSteer->SetControlMode(CANTalon::kPosition);

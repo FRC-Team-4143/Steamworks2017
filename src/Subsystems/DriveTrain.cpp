@@ -14,10 +14,7 @@
 #define SOFTTURNLIMIT 2
 #endif
 
-#define FLS 0
-#define FRS 1
-#define RLS 2
-#define RRS 3
+const float DIFFSCALE = 0.2; // must tune still
 
 const float TWISTSCALE = 0.6;
 
@@ -53,21 +50,25 @@ DriveTrain::DriveTrain() :
 	lasty = 0.0;
 	lasttwist = 0.0;
 
-	FLValue = 0;
-	FRValue = 0;
-	RLValue = 0;
-	RRValue = 0;
+	FLValue = 0.0;
+	FRValue = 0.0;
+	RLValue = 0.0;
+	RRValue = 0.0;
 
 	frontLeftDrive = RobotMap::driveTrainFrontLeftDrive;
+	frontLeftDriveSlave = RobotMap::driveTrainFrontLeftDriveSlave;
 	frontLeftSteer = RobotMap::driveTrainFrontLeftSteer;
 
 	frontRightDrive = RobotMap::driveTrainFrontRightDrive;
+	frontRightDriveSlave = RobotMap::driveTrainFrontRightDriveSlave;
 	frontRightSteer = RobotMap::driveTrainFrontRightSteer;
 
 	rearLeftDrive = RobotMap::driveTrainRearLeftDrive;
+	rearLeftDriveSlave = RobotMap::driveTrainRearLeftDriveSlave;
 	rearLeftSteer = RobotMap::driveTrainRearLeftSteer;
 
 	rearRightDrive = RobotMap::driveTrainRearRightDrive;
+	rearRightDriveSlave = RobotMap::driveTrainRearRightDriveSlave;
 	rearRightSteer = RobotMap::driveTrainRearRightSteer;
 
 	lidar = RobotMap::lidar;
@@ -363,16 +364,29 @@ void DriveTrain::SetSteer(float FLSetPoint, float FRSetPoint,
 
 void DriveTrain::SetDriveSpeed(float FLSpeed, float FRSpeed, float RLSpeed,
 		float RRSpeed) {
+	auto flsdiff = (frontLeftSteer->GetSetpoint() - frontLeftSteer->GetPosition()) * DIFFSCALE;
+	auto frsdiff = (frontRightSteer->GetSetpoint() - frontRightSteer->GetPosition()) * DIFFSCALE;
+	auto rlsdiff = (rearLeftSteer->GetSetpoint() - rearLeftSteer->GetPosition()) * DIFFSCALE;
+	auto rrsdiff = (rearRightSteer->GetSetpoint() - rearRightSteer->GetPosition()) * DIFFSCALE;
+
 	if (RobotMap::SpeedControl) {
 		frontLeftDrive->Set(FLSpeed * FLInv * driveScale);
 		frontRightDrive->Set(FRSpeed * FRInv * driveScale);
 		rearLeftDrive->Set(RLSpeed * RLInv * driveScale);
 		rearRightDrive->Set(RRSpeed * RRInv * driveScale);
+		frontLeftDriveSlave->Set(FLSpeed * -FLInv * driveScale);
+		frontRightDriveSlave->Set(FRSpeed * -FRInv * driveScale);
+		rearLeftDriveSlave->Set(RLSpeed * -RLInv * driveScale);
+		rearRightDriveSlave->Set(RRSpeed * -RRInv * driveScale);
 	} else {
 		frontLeftDrive->Set(FLSpeed * FLInv);
 		frontRightDrive->Set(FRSpeed * FRInv);
 		rearLeftDrive->Set(RLSpeed * RLInv);
 		rearRightDrive->Set(RRSpeed * RRInv);
+		frontLeftDriveSlave->Set((FLSpeed * -FLInv) + flsdiff);
+		frontRightDriveSlave->Set((FRSpeed * -FRInv) + frsdiff);
+		rearLeftDriveSlave->Set((RLSpeed * -RLInv) + rlsdiff);
+		rearRightDriveSlave->Set((RRSpeed * -RRInv) + rrsdiff);
 	}
 }
 
@@ -393,16 +407,16 @@ void DriveTrain::SideLock() {
 // ==========================================================================
 
 void DriveTrain::updateDistanceEncoders() {
-	FLValue = frontLeftDrive->GetPosition();
-	FRValue = frontRightDrive->GetPosition();
-	RLValue = rearLeftDrive->GetPosition();
-	RRValue = rearRightDrive->GetPosition();
+	FLValue = (frontLeftDrive->GetPosition() + frontLeftDriveSlave->GetPosition()) / 2.0;
+	FRValue = (frontRightDrive->GetPosition() + frontRightDriveSlave->GetPosition()) / 2.0;
+	RLValue = (rearLeftDrive->GetPosition() + rearLeftDriveSlave->GetPosition()) / 2.0;
+	RRValue = (rearRightDrive->GetPosition() + rearRightDriveSlave->GetPosition()) / 2.0;
 }
 
 // ==========================================================================
 
 double DriveTrain::getDistanceEncodersValues() {
-	double average = (FLValue + FRValue + RLValue + RRValue) / 4;
+	double average = (FLValue + FRValue + RLValue + RRValue) / 4.0;
 	return average;
 }
 
@@ -413,6 +427,10 @@ void DriveTrain::zeroDistanceEncoders() {
 	frontRightDrive->SetPosition(0);
 	rearLeftDrive->SetPosition(0);
 	rearRightDrive->SetPosition(0);
+	frontLeftDriveSlave->SetPosition(0);
+	frontRightDriveSlave->SetPosition(0);
+	rearLeftDriveSlave->SetPosition(0);
+	rearRightDriveSlave->SetPosition(0);
 }
 
 // ==========================================================================
@@ -559,6 +577,10 @@ void DriveTrain::disableSpeedControl() {
 	frontRightDrive->SetControlMode(CANSpeedController::kPercentVbus);
 	rearLeftDrive->SetControlMode(CANSpeedController::kPercentVbus);
 	rearRightDrive->SetControlMode(CANSpeedController::kPercentVbus);
+	frontLeftDriveSlave->SetControlMode(CANSpeedController::kPercentVbus);
+	frontRightDriveSlave->SetControlMode(CANSpeedController::kPercentVbus);
+	rearLeftDriveSlave->SetControlMode(CANSpeedController::kPercentVbus);
+	rearRightDriveSlave->SetControlMode(CANSpeedController::kPercentVbus);
 	RobotMap::SpeedControl = 0;
 }
 
@@ -577,6 +599,18 @@ void DriveTrain::enableSpeedControl() {
 	frontRightDrive->SetControlMode(CANSpeedController::kSpeed);
 	rearLeftDrive->SetControlMode(CANSpeedController::kSpeed);
 	rearRightDrive->SetControlMode(CANSpeedController::kSpeed);
+	frontLeftDriveSlave->SelectProfileSlot(0);
+	frontRightDriveSlave->SelectProfileSlot(0);
+	rearLeftDriveSlave->SelectProfileSlot(0);
+	rearRightDriveSlave->SelectProfileSlot(0);
+	frontLeftDriveSlave->ConfigPeakOutputVoltage(12.0, -12.0);
+	frontRightDriveSlave->ConfigPeakOutputVoltage(12.0, -12.0);
+	rearLeftDriveSlave->ConfigPeakOutputVoltage(12.0, -12.0);
+	rearRightDriveSlave->ConfigPeakOutputVoltage(12.0, -12.0);
+	frontLeftDriveSlave->SetControlMode(CANSpeedController::kSpeed);
+	frontRightDriveSlave->SetControlMode(CANSpeedController::kSpeed);
+	rearLeftDriveSlave->SetControlMode(CANSpeedController::kSpeed);
+	rearRightDriveSlave->SetControlMode(CANSpeedController::kSpeed);
 	RobotMap::SpeedControl = 1;
 }
 
@@ -595,6 +629,18 @@ void DriveTrain::enablePositionControl() {
 	frontRightDrive->SetControlMode(CANSpeedController::kPosition);
 	rearLeftDrive->SetControlMode(CANSpeedController::kPosition);
 	rearRightDrive->SetControlMode(CANSpeedController::kPosition);
+	frontLeftDriveSlave->SelectProfileSlot(1);
+	frontRightDriveSlave->SelectProfileSlot(1);
+	rearLeftDriveSlave->SelectProfileSlot(1);
+	rearRightDriveSlave->SelectProfileSlot(1);
+	frontLeftDriveSlave->ConfigPeakOutputVoltage(4.0, -4.0);
+	frontRightDriveSlave->ConfigPeakOutputVoltage(4.0, -4.0);
+	rearLeftDriveSlave->ConfigPeakOutputVoltage(4.0, -4.0);
+	rearRightDriveSlave->ConfigPeakOutputVoltage(4.0, -4.0);
+	frontLeftDriveSlave->SetControlMode(CANSpeedController::kPosition);
+	frontRightDriveSlave->SetControlMode(CANSpeedController::kPosition);
+	rearLeftDriveSlave->SetControlMode(CANSpeedController::kPosition);
+	rearRightDriveSlave->SetControlMode(CANSpeedController::kPosition);
 	RobotMap::SpeedControl = 2;
 }
 

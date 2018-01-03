@@ -38,15 +38,19 @@ private:
 	double RRValue; // Current value measured from rear right drive encoder
 
 	CANTalon* frontLeftDrive;			// Speed controller for front left drive motor
+	CANTalon* frontLeftDriveSlave;			// Speed controller for front left drive motor
 	CANTalon* frontLeftSteer;			// Speed controller for front left steering motor
 
 	CANTalon* frontRightDrive;			// Speed controller for front right drive motor
+	CANTalon* frontRightDriveSlave;			// Speed controller for front right drive motor
 	CANTalon* frontRightSteer;			// Speed controller for front right steering motor
 
 	CANTalon* rearLeftDrive;			// Speed controller for rear left drive motor
+	CANTalon* rearLeftDriveSlave;			// Speed controller for rear left drive motor
 	CANTalon* rearLeftSteer;			// Speed controller for rear left steering motor
 
 	CANTalon* rearRightDrive;			// Speed controller for rear right drive motor
+	CANTalon* rearRightDriveSlave;			// Speed controller for rear right drive motor
 	CANTalon* rearRightSteer;			// Speed controller for rear right steering motor
 
 	I2C* lidar;
