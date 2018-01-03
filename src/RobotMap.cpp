@@ -64,21 +64,21 @@ AHRS* RobotMap::imu = nullptr;
 #define PERIOD .02
 #define RATIO 1
 
-#define FLD 1
-#define FLDS 21
-#define FLS 5
+#define FLD 9
+#define FLDS 13
+#define FLS 8
 
-#define FRD 2
-#define FRDS 22
-#define FRS 6
+#define FRD 1
+#define FRDS 2
+#define FRS 7
 
-#define RLD 3
-#define RLDS 23
-#define RLS 7
+#define RLD 11
+#define RLDS 6
+#define RLS 15
 
 #define RRD 4
-#define RRDS 24
-#define RRS 8
+#define RRDS 3
+#define RRS 5
 
 void RobotMap::Initialize() {
 	// LiveWindow* lw = LiveWindow::GetInstance();
@@ -272,16 +272,16 @@ void RobotMap::Initialize() {
 
 	sonar = new AnalogInput(0);
 
-	climbingMotor = new CANTalon(13); //13
+	climbingMotor = new CANTalon(63); //13
 	climbingMotor2 = new CANTalon(63); //9
 
 
-    shooterMotor1 = new CANTalon(11); //11
-    shooterMotor2 = new CANTalon(12); //12
+    shooterMotor1 = new CANTalon(61); //11
+    shooterMotor2 = new CANTalon(62); //12
 
-	pickup = new CANTalon(10); //10
+	pickup = new CANTalon(60); //10
 
-	indexMotor = new CANTalon(14); //14
+	indexMotor = new CANTalon(64); //14
 	indexMotor->SetControlMode(CANTalon::kSpeed);
 	indexMotor->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
 	indexMotor->SetP(P);
@@ -291,7 +291,7 @@ void RobotMap::Initialize() {
 	indexMotor->ConfigNominalOutputVoltage(0.0, 0.0);
 	indexMotor->ConfigPeakOutputVoltage(12.0, -12.0);
 
-	turretMotor = new CANTalon(9); //Unused
+	turretMotor = new CANTalon(61); //Unused
 	turretMotor->SetControlMode(CANTalon::kSpeed);
 	turretMotor->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
 	turretMotor->SetP(P);

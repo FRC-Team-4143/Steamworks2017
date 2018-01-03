@@ -14,7 +14,7 @@
 #define SOFTTURNLIMIT 2
 #endif
 
-const float DIFFSCALE = 0.2; // must tune still
+const float DIFFSCALE = 0.9; // must tune still
 
 const float TWISTSCALE = 0.6;
 
@@ -383,10 +383,10 @@ void DriveTrain::SetDriveSpeed(float FLSpeed, float FRSpeed, float RLSpeed,
 		frontRightDrive->Set(FRSpeed * FRInv);
 		rearLeftDrive->Set(RLSpeed * RLInv);
 		rearRightDrive->Set(RRSpeed * RRInv);
-		frontLeftDriveSlave->Set((FLSpeed * -FLInv) + flsdiff);
-		frontRightDriveSlave->Set((FRSpeed * -FRInv) + frsdiff);
-		rearLeftDriveSlave->Set((RLSpeed * -RLInv) + rlsdiff);
-		rearRightDriveSlave->Set((RRSpeed * -RRInv) + rrsdiff);
+		frontLeftDriveSlave->Set((FLSpeed * -FLInv) - flsdiff);
+		frontRightDriveSlave->Set((FRSpeed * -FRInv) - frsdiff);
+		rearLeftDriveSlave->Set((RLSpeed * -RLInv) - rlsdiff);
+		rearRightDriveSlave->Set((RRSpeed * -RRInv) - rrsdiff);
 	}
 }
 
@@ -514,6 +514,7 @@ void DriveTrain::Dashboard() {
 	SmartDashboard::PutNumber("Steering Motor Encoder RR",
 			rearRightSteer->GetPosition());
 
+	return;
 	SmartDashboard::PutNumber("FR Setpoint", frontRightSteer->GetSetpoint());
 	SmartDashboard::PutNumber("FL Setpoint", frontLeftSteer->GetSetpoint());
 	SmartDashboard::PutNumber("RR Setpoint", rearRightSteer->GetSetpoint());
