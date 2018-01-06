@@ -14,7 +14,10 @@
 #define SOFTTURNLIMIT 2
 #endif
 
-const float DIFFSCALE = 0.9; // must tune still
+const float DIFFSCALE = 3.0; // must tune still
+const float DIFFMAX = 0.15;
+const float DIFFMIN = 0.001;
+const float DIFFDEAD = 0.001;
 
 const float TWISTSCALE = 0.6;
 
@@ -364,12 +367,30 @@ void DriveTrain::SetSteer(float FLSetPoint, float FRSetPoint,
 
 void DriveTrain::SetDriveSpeed(float FLSpeed, float FRSpeed, float RLSpeed,
 		float RRSpeed) {
-	auto flsdiff = (frontLeftSteer->GetSetpoint() - frontLeftSteer->GetPosition()) * DIFFSCALE;
-	auto frsdiff = (frontRightSteer->GetSetpoint() - frontRightSteer->GetPosition()) * DIFFSCALE;
-	auto rlsdiff = (rearLeftSteer->GetSetpoint() - rearLeftSteer->GetPosition()) * DIFFSCALE;
-	auto rrsdiff = (rearRightSteer->GetSetpoint() - rearRightSteer->GetPosition()) * DIFFSCALE;
+	float flsdiff = (frontLeftSteer->GetSetpoint() - frontLeftSteer->GetPosition()) * DIFFSCALE;
+	float frsdiff = (frontRightSteer->GetSetpoint() - frontRightSteer->GetPosition()) * DIFFSCALE;
+	float rlsdiff = (rearLeftSteer->GetSetpoint() - rearLeftSteer->GetPosition()) * DIFFSCALE;
+	float rrsdiff = (rearRightSteer->GetSetpoint() - rearRightSteer->GetPosition()) * DIFFSCALE * 1.5;
 
-	if (RobotMap::SpeedControl) {
+	char sz[256];
+	sprintf(sz, "diffs: FL %f, FR %f, RL %f, RR %f", flsdiff, frsdiff, rlsdiff, rrsdiff);
+	LOG(sz);
+
+	if(flsdiff > DIFFDEAD) flsdiff += DIFFMIN;
+	if(flsdiff < -DIFFDEAD) flsdiff -= DIFFMIN;
+	if(frsdiff > DIFFDEAD) frsdiff += DIFFMIN;
+	if(frsdiff < -DIFFDEAD) frsdiff -= DIFFMIN;
+	if(rlsdiff > DIFFDEAD) rlsdiff += DIFFMIN;
+	if(rlsdiff < -DIFFDEAD) rlsdiff -= DIFFMIN;
+	if(rrsdiff > DIFFDEAD) rrsdiff += DIFFMIN;
+	if(rrsdiff < -DIFFDEAD) rrsdiff -= DIFFMIN;
+
+	flsdiff = std::min(DIFFMAX - (float) 0.10, std::max(-DIFFMAX + (float) 0.10, flsdiff));
+	frsdiff = std::min(DIFFMAX, std::max(-DIFFMAX, frsdiff));
+	rlsdiff = std::min(DIFFMAX, std::max(-DIFFMAX, rlsdiff));
+	rrsdiff = std::min(DIFFMAX + (float).10, std::max(-DIFFMAX - (float).10, rrsdiff));
+
+	if (RobotMap::SpeedControl) { //this mode not implemented for diff swerve yet
 		frontLeftDrive->Set(FLSpeed * FLInv * driveScale);
 		frontRightDrive->Set(FRSpeed * FRInv * driveScale);
 		rearLeftDrive->Set(RLSpeed * RLInv * driveScale);
@@ -379,10 +400,10 @@ void DriveTrain::SetDriveSpeed(float FLSpeed, float FRSpeed, float RLSpeed,
 		rearLeftDriveSlave->Set(RLSpeed * -RLInv * driveScale);
 		rearRightDriveSlave->Set(RRSpeed * -RRInv * driveScale);
 	} else {
-		frontLeftDrive->Set(FLSpeed * FLInv);
-		frontRightDrive->Set(FRSpeed * FRInv);
-		rearLeftDrive->Set(RLSpeed * RLInv);
-		rearRightDrive->Set(RRSpeed * RRInv);
+		frontLeftDrive->Set((FLSpeed * FLInv) - flsdiff);
+		frontRightDrive->Set((FRSpeed * FRInv) - frsdiff);
+		rearLeftDrive->Set((RLSpeed * RLInv) - rlsdiff);
+		rearRightDrive->Set((RRSpeed * RRInv) - rrsdiff);
 		frontLeftDriveSlave->Set((FLSpeed * -FLInv) - flsdiff);
 		frontRightDriveSlave->Set((FRSpeed * -FRInv) - frsdiff);
 		rearLeftDriveSlave->Set((RLSpeed * -RLInv) - rlsdiff);
