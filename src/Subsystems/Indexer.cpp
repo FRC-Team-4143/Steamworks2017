@@ -40,7 +40,7 @@ void Indexer::SpinCW() {
 	ReadPDP();
 
 	if (indexJammed) {
-		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
+		indexMotor->Set(ControlMode::Velocity, 0);
 		indexMotor->Set(0.5);
 		if (timer->Get() > reverseTime) {
 			indexJammed = false;
@@ -49,7 +49,7 @@ void Indexer::SpinCW() {
 			reverseTime = 0;
 		}
 	} else {
-		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
+		indexMotor->Set(ControlMode::PercentOutput, 0);
 		indexMotor->Set(-SmartDashboard::GetNumber("Indexer Speed", 0.65));
 		if (IsJammed()) {
 			RobotMap::i2c->Write(13, 0);
@@ -65,7 +65,7 @@ void Indexer::SpinCW() {
 void Indexer::SpinCCW() {
 	SmartDashboard::PutBoolean("Indexer Jammed", indexJammed);
 	if (indexJammed) {
-		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
+		indexMotor->Set(ControlMode::PercentOutput, 0);
 		indexMotor->Set(-0.5);
 		if (timer->Get() > reverseTime) {
 			indexJammed = false;
@@ -75,7 +75,7 @@ void Indexer::SpinCCW() {
 		}
 	}
 	else {
-		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
+		indexMotor->Set(ControlMode::PercentOutput, 0);
 		indexMotor->Set(SmartDashboard::GetNumber("Indexer Speed", 0.65));
 		if (IsJammed()) {
 			RobotMap::i2c->Write(13, 0);
@@ -91,7 +91,7 @@ void Indexer::SpinCCW() {
 //USED FOR AUTONOMOUS//
 void Indexer::SpinCW(float speed){
 	if (indexJammed){
-		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
+		indexMotor->Set(ControlMode::PercentOutput, 0);
 		indexMotor->Set(0.5);
 		if (timer->Get() > reverseTime){
 			indexJammed = false;
@@ -100,7 +100,7 @@ void Indexer::SpinCW(float speed){
 		}
 
 	} else {
-		indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
+		indexMotor->Set(ControlMode::PercentOutput, 0);
 		indexMotor->Set(-speed);
 		if (IsJammed()) {
 			RobotMap::i2c->Write(13, 0);
@@ -115,18 +115,18 @@ void Indexer::SpinCW(float speed){
 }
 //////////////////////
 
-void Indexer::SpinBall() {
-	indexMotor->SetControlMode(CANSpeedController::kPosition);
+/*void Indexer::SpinBall() {
+	indexMotor->Set(ControlMode::PercentOutput, 10);
 	indexMotor->SetPosition(0.0);
 	indexMotor->SetSetpoint(-1.0);
-}
+}*/
 
 void Indexer::SetLoadingOne(bool loadingOne) {
 	_loadingOne = loadingOne;
 }
 
 void Indexer::Stop() {
-	indexMotor->SetControlMode(CANSpeedController::kPercentVbus);
+	indexMotor->Set(ControlMode::PercentOutput, 0);
 	indexMotor->Set(0);
 	RobotMap::i2c->Write(6, 0);
 }
@@ -156,7 +156,7 @@ void Indexer::ReadPDP() {
 void Indexer::SetSpeed(double speed) {
 	if (!Robot::oi->GetButton6() && !Robot::oi->GetButton10() && !_loadingOne) {
 		//indexMotor->SetControlMode(CANTalon::kSpeed);
-		indexMotor->SetControlMode(CANTalon::kPercentVbus);
+		indexMotor->Set(ControlMode::Velocity, 10);
 		indexMotor->Set(speed);
 	}
 }
@@ -166,7 +166,7 @@ void Indexer::ZeroTimer() {
 }
 
 double Indexer::GetPosition() const {
-	return indexMotor->GetEncPosition();
+	return indexMotor->GetSelectedSensorPosition(0);
 }
 
 double Indexer::GetReverseTime() const {

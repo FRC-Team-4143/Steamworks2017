@@ -11,13 +11,13 @@ void Pickup::InitDefaultCommand() {
 }
 
 void Pickup::In() {
-	pickup->SetControlMode(CANSpeedController::kPercentVbus);
-	pickup->Set(0.25);
+	pickup->Set(ControlMode::PercentOutput, 0.25);
+	//pickup->Set(0.25);
 }
 
 void Pickup::Out() {
-	pickup->SetControlMode(CANSpeedController::kPercentVbus);
-	pickup->Set(-0.25);
+	pickup->Set(ControlMode::PercentOutput, -0.25);
+	//pickup->Set(-0.25);
 }
 
 void Pickup::Stop() {

@@ -5,43 +5,43 @@ bool RobotMap::SpeedControl = 0;
 
 PowerDistributionPanel* RobotMap::pdp = nullptr;
 
-CANTalon*          RobotMap::driveTrainFrontLeftDrive = nullptr;
-CANTalon*          RobotMap::driveTrainFrontLeftSteer = nullptr;
+WPI_TalonSRX*          RobotMap::driveTrainFrontLeftDrive = nullptr;
+WPI_TalonSRX*          RobotMap::driveTrainFrontLeftSteer = nullptr;
 
-CANTalon*          RobotMap::driveTrainFrontRightDrive = nullptr;
-CANTalon*          RobotMap::driveTrainFrontRightSteer = nullptr;
+WPI_TalonSRX*          RobotMap::driveTrainFrontRightDrive = nullptr;
+WPI_TalonSRX*          RobotMap::driveTrainFrontRightSteer = nullptr;
 
-CANTalon*          RobotMap::driveTrainRearLeftDrive = nullptr;
-CANTalon*          RobotMap::driveTrainRearLeftSteer = nullptr;
+WPI_TalonSRX*          RobotMap::driveTrainRearLeftDrive = nullptr;
+WPI_TalonSRX*          RobotMap::driveTrainRearLeftSteer = nullptr;
 
-CANTalon*          RobotMap::driveTrainRearRightDrive = nullptr;
-CANTalon*          RobotMap::driveTrainRearRightSteer = nullptr;
+WPI_TalonSRX*          RobotMap::driveTrainRearRightDrive = nullptr;
+WPI_TalonSRX*          RobotMap::driveTrainRearRightSteer = nullptr;
 
 I2C* RobotMap::i2c = nullptr;
 I2C* RobotMap::lidar = nullptr;
 
 AnalogInput* RobotMap::sonar = nullptr;
 
-CANTalon* RobotMap::climbingMotor = nullptr;
-CANTalon* RobotMap::climbingMotor2 = nullptr;
+WPI_TalonSRX* RobotMap::climbingMotor = nullptr;
+WPI_TalonSRX* RobotMap::climbingMotor2 = nullptr;
 
 //SerialPort* RobotMap::serialPort = nullptr;
 //SerialPort* RobotMap::serialPort1 = nullptr;
 //SerialPort* RobotMap::serialPort2 = nullptr;
 
-CANTalon* RobotMap::shooterMotor1;
-CANTalon* RobotMap::shooterMotor2;
+WPI_TalonSRX* RobotMap::shooterMotor1;
+WPI_TalonSRX* RobotMap::shooterMotor2;
 
-CANTalon* RobotMap::turretMotor;
-CANTalon* RobotMap::indexMotor;
-CANTalon* RobotMap::pickup;
+WPI_TalonSRX* RobotMap::turretMotor;
+WPI_TalonSRX* RobotMap::indexMotor;
+WPI_TalonSRX* RobotMap::pickup;
 
 AHRS* RobotMap::imu = nullptr;
 
 #define CONTINUOUS true
-#define P 1.1 // 0.7
+#define P 0.7 // 0.7
 #define I 0.0
-#define D 0.1 // 0.0
+#define D 0.0 // 0.0
 #define F 0.0
 #define driveP 0.3
 #define driveI 0.0
@@ -55,7 +55,7 @@ AHRS* RobotMap::imu = nullptr;
 #define pdriveF 0.0
 #define POTMIN 0.0
 #define POTMAX 5.0
-#define STEERPOW 1.0
+#define STEERPOW 0.5 // 1
 #define TOLERANCE 0.1
 #define PERIOD .02
 #define RATIO 1
@@ -91,150 +91,169 @@ void RobotMap::Initialize() {
 	////Front Left Wheel////////////////
 	////////////////////////////////////
 	//Drive Motor
-	driveTrainFrontLeftDrive = new CANTalon(FLD);
-	driveTrainFrontLeftDrive->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
-	driveTrainFrontLeftDrive->ConfigPeakOutputVoltage(12.0, -12.0);
-	driveTrainFrontLeftDrive->SetP(driveP);
-	driveTrainFrontLeftDrive->SetI(driveI);
-	driveTrainFrontLeftDrive->SetD(driveD);
-	driveTrainFrontLeftDrive->SetF(driveF);
-	driveTrainFrontLeftDrive->SetSensorDirection(true);
-	driveTrainFrontLeftDrive->SelectProfileSlot(1);
-	driveTrainFrontLeftDrive->SetP(pdriveP);
-	driveTrainFrontLeftDrive->SetI(pdriveI);
-	driveTrainFrontLeftDrive->SetIzone(pdriveIZone);
-	driveTrainFrontLeftDrive->SetD(pdriveD);
-	driveTrainFrontLeftDrive->SetF(pdriveF);
+	driveTrainFrontLeftDrive = new WPI_TalonSRX(FLD);
+		driveTrainFrontLeftDrive->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative,0,10);
+		driveTrainFrontLeftDrive->ConfigPeakOutputForward(1,10);
+		driveTrainFrontLeftDrive->ConfigPeakOutputReverse(-1,10);
+		driveTrainFrontLeftDrive->Config_kP(0,driveP,10);
+		driveTrainFrontLeftDrive->Config_kI(0,driveI,10);
+		driveTrainFrontLeftDrive->Config_kD(0,driveD,10);
+		driveTrainFrontLeftDrive->Config_kF(0,driveF,10);
+		driveTrainFrontLeftDrive->SetSensorPhase(false);
+		driveTrainFrontLeftDrive->SelectProfileSlot(0,0);
+		driveTrainFrontLeftDrive->Config_kP(1,pdriveP,10);
+		driveTrainFrontLeftDrive->Config_kI(1,pdriveI,10);
+		driveTrainFrontLeftDrive->Config_IntegralZone(1,pdriveIZone,10);
+		driveTrainFrontLeftDrive->Config_kD(1,pdriveD,10);
+		driveTrainFrontLeftDrive->Config_kF(1,pdriveF,10);
 	//Steering Motor
-	driveTrainFrontLeftSteer = new CANTalon(FLS);
-	driveTrainFrontLeftSteer->SetControlMode(CANTalon::kPosition);
-	driveTrainFrontLeftSteer->SetFeedbackDevice(CANTalon::CtreMagEncoder_Absolute);
-	driveTrainFrontLeftSteer->SetP(P);
-	driveTrainFrontLeftSteer->SetI(I);
-	driveTrainFrontLeftSteer->SetD(D);
-	driveTrainFrontLeftSteer->SetF(F);
-	driveTrainFrontLeftSteer->ConfigNominalOutputVoltage(0.0, 0.0);
-	driveTrainFrontLeftSteer->ConfigPeakOutputVoltage(12.0*STEERPOW, -12.0*STEERPOW);
+		driveTrainFrontLeftSteer = new WPI_TalonSRX(FLS);
+		driveTrainFrontLeftSteer->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Absolute,0,10);
+		driveTrainFrontLeftSteer->SelectProfileSlot(0, 0);
+		driveTrainFrontLeftSteer->Config_kP(0,P,10);
+		driveTrainFrontLeftSteer->Config_kI(0,I,10);
+		driveTrainFrontLeftSteer->Config_kD(0,D,10);
+		driveTrainFrontLeftSteer->Config_kF(0,F,10);
+		driveTrainFrontLeftSteer->SetSensorPhase(false);
+		driveTrainFrontLeftSteer->ConfigNominalOutputForward(0,10);
+		driveTrainFrontLeftSteer->ConfigNominalOutputReverse(0,10);
+		driveTrainFrontLeftSteer->ConfigPeakOutputForward(STEERPOW,10);
+		driveTrainFrontLeftSteer->ConfigPeakOutputReverse(-STEERPOW,10);
 
 	////////////////////////////////////
 	////Front Right Wheel///////////////
 	////////////////////////////////////
 	//Driving Motor
-	driveTrainFrontRightDrive = new CANTalon(FRD);
-	driveTrainFrontRightDrive->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
-	driveTrainFrontRightDrive->ConfigPeakOutputVoltage(12.0, -12.0);
-	driveTrainFrontRightDrive->SetP(driveP);
-	driveTrainFrontRightDrive->SetI(driveI);
-	driveTrainFrontRightDrive->SetD(driveD);
-	driveTrainFrontRightDrive->SetF(driveF);
-	driveTrainFrontRightDrive->SetSensorDirection(true);
-	driveTrainFrontRightDrive->SelectProfileSlot(1);
-	driveTrainFrontRightDrive->SetP(pdriveP);
-	driveTrainFrontRightDrive->SetI(pdriveI);
-	driveTrainFrontRightDrive->SetIzone(pdriveIZone);
-	driveTrainFrontRightDrive->SetD(pdriveD);
-	driveTrainFrontRightDrive->SetF(pdriveF);
+		driveTrainFrontRightDrive = new WPI_TalonSRX(FRD);
+		driveTrainFrontRightDrive->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative,0,10);
+		driveTrainFrontRightDrive->ConfigPeakOutputForward(1,10);
+		driveTrainFrontRightDrive->ConfigPeakOutputReverse(-1,10);
+		driveTrainFrontRightDrive->Config_kP(0,driveP,10);
+		driveTrainFrontRightDrive->Config_kI(0,driveI,10);
+		driveTrainFrontRightDrive->Config_kD(0,driveD,10);
+		driveTrainFrontRightDrive->Config_kF(0,driveF,10);
+		driveTrainFrontRightDrive->SetSensorPhase(false);
+		driveTrainFrontRightDrive->SelectProfileSlot(0,0);
+		driveTrainFrontRightDrive->Config_kP(1,pdriveP,10);
+		driveTrainFrontRightDrive->Config_kI(1,pdriveI,10);
+		driveTrainFrontRightDrive->Config_IntegralZone(1,pdriveIZone,100);
+		driveTrainFrontRightDrive->Config_kD(1,pdriveD,10);
+		driveTrainFrontRightDrive->Config_kF(1,pdriveF,10);
 	//Steering Motor
-	driveTrainFrontRightSteer = new CANTalon(FRS);
-	driveTrainFrontRightSteer->SetControlMode(CANTalon::kPosition);
-	driveTrainFrontRightSteer->SetFeedbackDevice(CANTalon::CtreMagEncoder_Absolute);
-	driveTrainFrontRightSteer->SetP(P);
-	driveTrainFrontRightSteer->SetI(I);
-	driveTrainFrontRightSteer->SetD(D);
-	driveTrainFrontRightSteer->SetF(F);
-	driveTrainFrontRightSteer->ConfigNominalOutputVoltage(0.0, 0.0);
-	driveTrainFrontRightSteer->ConfigPeakOutputVoltage(12.0*STEERPOW, -12.0*STEERPOW);
+		driveTrainFrontRightSteer = new WPI_TalonSRX(FRS);
+		driveTrainFrontRightSteer->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Absolute,0,10);
+		driveTrainFrontRightSteer->SelectProfileSlot(0, 0);
+		driveTrainFrontRightSteer->Config_kP(0,P,10);
+		driveTrainFrontRightSteer->Config_kI(0,I,10);
+		driveTrainFrontRightSteer->Config_kD(0,D,10);
+		driveTrainFrontRightSteer->Config_kF(0,F,10);
+		driveTrainFrontRightSteer->SetSensorPhase(false);
+		driveTrainFrontRightSteer->ConfigNominalOutputForward(0,10);
+		driveTrainFrontRightSteer->ConfigNominalOutputReverse(0,10);
+		driveTrainFrontRightSteer->ConfigPeakOutputForward(STEERPOW,10);
+		driveTrainFrontRightSteer->ConfigPeakOutputReverse(-STEERPOW,10);
 
 	////////////////////////////////////
 	////Rear Left Wheel/////////////////
 	////////////////////////////////////
 	//Driving Motor
-	driveTrainRearLeftDrive = new CANTalon(RLD);
-	driveTrainRearLeftDrive->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
-	driveTrainRearLeftDrive->ConfigPeakOutputVoltage(12.0, -12.0);
-	driveTrainRearLeftDrive->SetP(driveP);
-	driveTrainRearLeftDrive->SetI(driveI);
-	driveTrainRearLeftDrive->SetD(driveD);
-	driveTrainRearLeftDrive->SetF(driveF);
-	driveTrainRearLeftDrive->SetSensorDirection(true);
-	driveTrainRearLeftDrive->SelectProfileSlot(1);
-	driveTrainRearLeftDrive->SetP(pdriveP);
-	driveTrainRearLeftDrive->SetI(pdriveI);
-	driveTrainRearLeftDrive->SetIzone(pdriveIZone);
-	driveTrainRearLeftDrive->SetD(pdriveD);
-	driveTrainRearLeftDrive->SetF(pdriveF);
+		driveTrainRearLeftDrive = new WPI_TalonSRX(RLD);
+		driveTrainRearLeftDrive->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative,0,10);
+		driveTrainRearLeftDrive->ConfigPeakOutputForward(1,10);
+		driveTrainRearLeftDrive->ConfigPeakOutputReverse(-1,10);
+		driveTrainRearLeftDrive->Config_kP(0,driveP,10);
+		driveTrainRearLeftDrive->Config_kI(0,driveI,10);
+		driveTrainRearLeftDrive->Config_kD(0,driveD,10);
+		driveTrainRearLeftDrive->Config_kF(0,driveF+.00,10);  //  take out .05 for comp bot
+		driveTrainRearLeftDrive->SetSensorPhase(false);
+		driveTrainRearLeftDrive->SelectProfileSlot(0,0);
+		driveTrainRearLeftDrive->Config_kP(1,pdriveP,10);
+		driveTrainRearLeftDrive->Config_kI(1,pdriveI,10);
+		driveTrainRearLeftDrive->Config_IntegralZone(1,pdriveIZone,10);
+		driveTrainRearLeftDrive->Config_kD(1,pdriveD,10);
+		driveTrainRearLeftDrive->Config_kF(1,pdriveF,10);
 	//Steering Motor
-	driveTrainRearLeftSteer = new CANTalon(RLS);
-	driveTrainRearLeftSteer->SetControlMode(CANTalon::kPosition);
-	driveTrainRearLeftSteer->SetFeedbackDevice(CANTalon::CtreMagEncoder_Absolute);
-	driveTrainRearLeftSteer->SetP(P);
-	driveTrainRearLeftSteer->SetI(I);
-	driveTrainRearLeftSteer->SetD(D);
-	driveTrainRearLeftSteer->SetF(F);
-	driveTrainRearLeftSteer->ConfigNominalOutputVoltage(0.0, 0.0);
-	driveTrainRearLeftSteer->ConfigPeakOutputVoltage(12.0*STEERPOW, -12.0*STEERPOW);
+		driveTrainRearLeftSteer = new WPI_TalonSRX(RLS);
+		driveTrainRearLeftSteer->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Absolute,0,10);
+		driveTrainRearLeftSteer->SelectProfileSlot(0, 0);
+		driveTrainRearLeftSteer->Config_kP(0,P,10);
+		driveTrainRearLeftSteer->Config_kI(0,I,10);
+		driveTrainRearLeftSteer->Config_kD(0,D,10);
+		driveTrainRearLeftSteer->Config_kF(0,F,10);
+		driveTrainRearLeftSteer->SetSensorPhase(false);
+		driveTrainRearLeftSteer->ConfigNominalOutputForward(0,10);
+		driveTrainRearLeftSteer->ConfigNominalOutputReverse(0,10);
+		driveTrainRearLeftSteer->ConfigPeakOutputForward(STEERPOW,10);
+		driveTrainRearLeftSteer->ConfigPeakOutputReverse(-STEERPOW,10);
 
 	////////////////////////////////////
 	////Rear Right Wheel////////////////
 	////////////////////////////////////
 	//Driving Motor
-	driveTrainRearRightDrive = new CANTalon(RRD);
-	driveTrainRearRightDrive->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
-	driveTrainRearRightDrive->ConfigPeakOutputVoltage(12.0, -12.0);
-	driveTrainRearRightDrive->SetP(driveP);
-	driveTrainRearRightDrive->SetI(driveI);
-	driveTrainRearRightDrive->SetD(driveD);
-	driveTrainRearRightDrive->SetF(driveF);
-	driveTrainRearRightDrive->SetSensorDirection(true);
-	driveTrainRearRightDrive->SelectProfileSlot(1);
-	driveTrainRearRightDrive->SetP(pdriveP);
-	driveTrainRearRightDrive->SetI(pdriveI);
-	driveTrainRearRightDrive->SetIzone(pdriveIZone);
-	driveTrainRearRightDrive->SetD(pdriveD);
-	driveTrainRearRightDrive->SetF(pdriveF);
+		driveTrainRearRightDrive = new WPI_TalonSRX(RRD);
+		driveTrainRearRightDrive->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative,0,10);
+		driveTrainRearRightDrive->ConfigPeakOutputForward(1,10);
+		driveTrainRearRightDrive->ConfigPeakOutputReverse(-1,10);
+		driveTrainRearRightDrive->Config_kP(0,driveP,10);
+		driveTrainRearRightDrive->Config_kI(0,driveI,10);
+		driveTrainRearRightDrive->Config_kD(0,driveD,10);
+		driveTrainRearRightDrive->Config_kF(0,driveF,10);
+		driveTrainRearRightDrive->SetSensorPhase(false);
+		driveTrainRearRightDrive->SelectProfileSlot(0, 0);
+		driveTrainRearRightDrive->Config_kP(1,pdriveP,10);
+		driveTrainRearRightDrive->Config_kI(1,pdriveI,10);
+		driveTrainRearRightDrive->Config_IntegralZone(1,pdriveIZone,10);
+		driveTrainRearRightDrive->Config_kD(1,pdriveD,10);
+		driveTrainRearRightDrive->Config_kF(1,pdriveF,10);
 	//Steering Motor
-	driveTrainRearRightSteer = new CANTalon(RRS);
-	driveTrainRearRightSteer->SetControlMode(CANTalon::kPosition);
-	driveTrainRearRightSteer->SetFeedbackDevice(CANTalon::CtreMagEncoder_Absolute);
-	driveTrainRearRightSteer->SetP(P);
-	driveTrainRearRightSteer->SetI(I);
-	driveTrainRearRightSteer->SetD(D);
-	driveTrainRearRightSteer->SetF(F);
-	driveTrainRearRightSteer->ConfigNominalOutputVoltage(0.0, 0.0);
-	driveTrainRearRightSteer->ConfigPeakOutputVoltage(12.0*STEERPOW, -12.0*STEERPOW);
+		driveTrainRearRightSteer = new WPI_TalonSRX(RRS);
+		driveTrainRearRightSteer->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Absolute,0,10);
+		driveTrainRearRightSteer->SelectProfileSlot(0,0);
+		driveTrainRearRightSteer->Config_kP(0,P,10);
+		driveTrainRearRightSteer->Config_kI(0,I,10);
+		driveTrainRearRightSteer->Config_kD(0,D,10);
+		driveTrainRearRightSteer->Config_kF(0,F,10);
+		driveTrainRearRightSteer->SetSensorPhase(false);
+		driveTrainRearRightSteer->ConfigNominalOutputForward(0,10);
+		driveTrainRearRightSteer->ConfigNominalOutputReverse(0,10);
+		driveTrainRearRightSteer->ConfigPeakOutputForward(STEERPOW,10);
+		driveTrainRearRightSteer->ConfigPeakOutputReverse(-STEERPOW,10);
 
 	i2c = new I2C(I2C::Port::kMXP, 0x04);
 	lidar = new I2C(I2C::Port::kOnboard, 0x05);
 
 	sonar = new AnalogInput(0);
 
-	climbingMotor = new CANTalon(13); //13
-	climbingMotor2 = new CANTalon(63); //9
+	climbingMotor = new WPI_TalonSRX(13); //13
+	climbingMotor2 = new WPI_TalonSRX(63); //9
 
 
-    shooterMotor1 = new CANTalon(11); //11
-    shooterMotor2 = new CANTalon(12); //12
+    shooterMotor1 = new WPI_TalonSRX(11); //11
+    shooterMotor2 = new WPI_TalonSRX(12); //12
 
-	pickup = new CANTalon(10); //10
+	pickup = new WPI_TalonSRX(10); //10
 
-	indexMotor = new CANTalon(14); //14
-	indexMotor->SetControlMode(CANTalon::kSpeed);
-	indexMotor->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
-	indexMotor->SetP(P);
-	indexMotor->SetI(0);
-	indexMotor->SetD(0);
-	indexMotor->SetF(0.02827);
-	indexMotor->ConfigNominalOutputVoltage(0.0, 0.0);
-	indexMotor->ConfigPeakOutputVoltage(12.0, -12.0);
+	indexMotor = new WPI_TalonSRX(14); //14
+	indexMotor->Set(ControlMode::Velocity, 10);
+	indexMotor->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);
+	indexMotor->Config_kP(0, P, 10);
+	indexMotor->Config_kI(0, 0, 10);
+	indexMotor->Config_kD(0, 0, 10);
+	indexMotor->Config_kF(0, 0.02827, 10);
+	indexMotor->ConfigNominalOutputForward(0.0, 10);
+	indexMotor->ConfigNominalOutputReverse(0.0, 10);
+	indexMotor->ConfigPeakOutputForward(12.0, 10);
+	indexMotor->ConfigPeakOutputReverse(12.0, 10);
 
-	turretMotor = new CANTalon(9); //Unused
-	turretMotor->SetControlMode(CANTalon::kSpeed);
-	turretMotor->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
-	turretMotor->SetP(P);
-	turretMotor->SetI(0);
-	turretMotor->SetD(0);
-	turretMotor->SetF(0.02827);
-	turretMotor->ConfigNominalOutputVoltage(0.0, 0.0);
-	turretMotor->ConfigPeakOutputVoltage(12.0, -12.0);
-
+	turretMotor = new WPI_TalonSRX(9); //Unused
+	turretMotor->Set(ControlMode::Velocity, 0);
+	turretMotor->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);
+	turretMotor->Config_kP(0, P, 10);
+	turretMotor->Config_kI(0, 0, 10);
+	turretMotor->Config_kD(0, 0, 10);
+	turretMotor->Config_kF(0, 0.02827, 10);
+	turretMotor->ConfigNominalOutputForward(0.0, 10);
+	turretMotor->ConfigNominalOutputReverse(0.0, 10);
+	turretMotor->ConfigPeakOutputForward(12.0, 10);
+	turretMotor->ConfigPeakOutputReverse(12.0, 10);
 }

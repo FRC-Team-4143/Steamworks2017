@@ -2,7 +2,7 @@
 
 #include <Commands/Subsystem.h>
 #include "Subsystems/GyroSub.h"
-#include "CANTalon.h"
+#include "ctre/phoenix.h"
 
 // ==========================================================================
 
@@ -37,26 +37,26 @@ private:
 	double RLValue; // Current value measured from rear left drive encoder
 	double RRValue; // Current value measured from rear right drive encoder
 
-	CANTalon* frontLeftDrive;			// Speed controller for front left drive motor
-	CANTalon* frontLeftSteer;			// Speed controller for front left steering motor
+	WPI_TalonSRX* frontLeftDrive;			// Speed controller for front left drive motor
+	WPI_TalonSRX* frontLeftSteer;			// Speed controller for front left steering motor
 
-	CANTalon* frontRightDrive;			// Speed controller for front right drive motor
-	CANTalon* frontRightSteer;			// Speed controller for front right steering motor
+	WPI_TalonSRX* frontRightDrive;			// Speed controller for front right drive motor
+	WPI_TalonSRX* frontRightSteer;			// Speed controller for front right steering motor
 
-	CANTalon* rearLeftDrive;			// Speed controller for rear left drive motor
-	CANTalon* rearLeftSteer;			// Speed controller for rear left steering motor
+	WPI_TalonSRX* rearLeftDrive;			// Speed controller for rear left drive motor
+	WPI_TalonSRX* rearLeftSteer;			// Speed controller for rear left steering motor
 
-	CANTalon* rearRightDrive;			// Speed controller for rear right drive motor
-	CANTalon* rearRightSteer;			// Speed controller for rear right steering motor
+	WPI_TalonSRX* rearRightDrive;			// Speed controller for rear right drive motor
+	WPI_TalonSRX* rearRightSteer;			// Speed controller for rear right steering motor
 
 	I2C* lidar;
 
-	double CorrectSteerSetpoint(double setpoint, CANTalon* talon);
+	double CorrectSteerSetpoint(double setpoint, WPI_TalonSRX* talon);
 	void SetSteer(float FLSetPoint, float FRSetPoint, float RLSetPoint, float RRSetPoint);
-	void SetSteerSetpoint(float setpoint, CANTalon* talon, int *inverse);
+	void SetSteerSetpoint(float setpoint, WPI_TalonSRX* talon, int *inverse);
 	void SetDriveSpeed(float FLSpeed, float FRSpeed, float RLSpeed, float RRSpeed);
 	void CurrentLimit();
-	double getTalonPosition(CANTalon* talon);
+	double getTalonPosition(WPI_TalonSRX* talon);
 
 public:
 	DriveTrain();
@@ -71,6 +71,7 @@ public:
 	void InitDefaultCommand(); // sets default command
 	void Crab(float twist, float y, float x, bool operatorControl); // default driving command
 	void Lock();
+	void SetSteerLockInv(float FLSetPoint, float FRSetPoint, float RLSetPoint, float RRSetPoint);
 	void SideLock(); // locks steering
 	bool unwind();     // float y, float x); //unwinds all wheels
 	void doneunwind(); // called when unwinding is finished

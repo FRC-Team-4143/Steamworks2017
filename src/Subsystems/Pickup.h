@@ -1,10 +1,10 @@
 #pragma once
 
 #include <Commands/Subsystem.h>
-#include <CANTalon.h>
+#include <ctre/phoenix.h>
 
 class Pickup : public Subsystem {
-	CANTalon *pickup;
+	WPI_TalonSRX *pickup;
 
 private:
 

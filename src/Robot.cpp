@@ -49,19 +49,36 @@ void Robot::RobotInit() {
 	SmartDashboard::PutNumber("Serial 1", 1);
 	SmartDashboard::PutNumber("Serial 2", 1);
 
+	printf("*** Initializing subsystems\r\n");
+	printf("--- Initializing GyroSub\r\n");
 	gyroSub = new GyroSub();
+	printf("--- Initializing DriveTrain\r\n");
 	driveTrain = new DriveTrain();
+	printf("--- Initializing Pickup\r\n");
 	pickup = new Pickup();
+	printf("--- Initializing Indexer\r\n");
 	indexer = new Indexer();
+	printf("--- Initializing Turret\r\n");
 	turret = new Turret();
+	printf("--- Initializing BasicCameraSub\r\n");
 	basicCameraSub.reset(new BasicCameraSub("cam0"));
+	printf("--- Initializing VisionBridgeSub\r\n");
 	visionBridge = new VisionBridgeSub();
+	printf("--- Initializing Climber\r\n");
 	climber = new Climber();
-	driveTrain->SetWheelbase(26.8, 26.8, 22.8);
-	driveTrain->loadWheelOffsets();
+
+	printf("--- Initializing Shooter\r\n");
 	shooter = new Shooter();
+
+	printf("--- Setting wheelbase\r\n");
+	driveTrain->SetWheelbase(26.8, 26.8, 22.8);
+	printf("--- Loading wheel offsets\r\n");
+	driveTrain->loadWheelOffsets();
+
+	printf("*** Initializing OI\r\n");
 	oi = new OI();
 
+	printf("*** Initializing servos\r\n");
 	servo = new Servo(0);
 	servo2 = new Servo(1);
 }
@@ -85,7 +102,7 @@ void Robot::DisabledPeriodic() {
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
 	//indexer->ReadPDP();
 
-	SmartDashboard::PutNumber("Sonar", RobotMap::sonar->GetAverageVoltage());
+	//SmartDashboard::PutNumber("Sonar", RobotMap::sonar->GetAverageVoltage());
 
 	//char mode = SmartDashboard::GetNumber("Serial 0", 1);
 	//RobotMap::serialPort->Write(&mode, 1);
@@ -94,13 +111,13 @@ void Robot::DisabledPeriodic() {
 	//char mode2 = SmartDashboard::GetNumber("Serial 2", 1);
 	//RobotMap::serialPort2->Write(&mode2, 1);
 
-	SmartDashboard::PutNumber("Vision Gear Position", Robot::visionBridge->GetGearPosition());
-	SmartDashboard::PutNumber("Vision Gear Distance", Robot::visionBridge->GetGearDistance());
-	SmartDashboard::PutNumber("Vision Boiler Position", Robot::visionBridge->GetBoilerPosition());
-	SmartDashboard::PutNumber("Vision BoilerDistance", Robot::visionBridge->GetBoilerDistance());
+	//SmartDashboard::PutNumber("Vision Gear Position", Robot::visionBridge->GetGearPosition());
+	//SmartDashboard::PutNumber("Vision Gear Distance", Robot::visionBridge->GetGearDistance());
+	//SmartDashboard::PutNumber("Vision Boiler Position", Robot::visionBridge->GetBoilerPosition());
+	//SmartDashboard::PutNumber("Vision BoilerDistance", Robot::visionBridge->GetBoilerDistance());
 
-	SmartDashboard::PutNumber("Turret Starting Position", turret->startingPosition);
-	SmartDashboard::PutNumber("TurretPosition", RobotMap::turretMotor->GetPosition()-turret->startingPosition);
+	//SmartDashboard::PutNumber("Turret Starting Position", turret->startingPosition);
+	//SmartDashboard::PutNumber("TurretPosition", RobotMap::turretMotor->GetSelectedSensorPosition(0)-turret->startingPosition);
 
 	driveTrain->readLidar();
 
@@ -115,7 +132,7 @@ void Robot::AutonomousInit() {
 	driveTrain->enableSteeringPID();
 	RobotMap::imu->ZeroYaw();
 
-	turret->startingPosition = RobotMap::turretMotor->GetPosition();
+	turret->startingPosition = RobotMap::turretMotor->GetSelectedSensorPosition(0);
 
 	//char mode = 3;
 	//RobotMap::serialPort->Write(&mode, 1);
@@ -148,7 +165,7 @@ void Robot::AutonomousPeriodic() {
 	SmartDashboard::PutNumber("Vision BoilerDistance", Robot::visionBridge->GetBoilerDistance());
 
 	SmartDashboard::PutNumber("Turret Starting Position", turret->startingPosition);
-	SmartDashboard::PutNumber("TurretPosition", RobotMap::turretMotor->GetPosition()-turret->startingPosition);
+	SmartDashboard::PutNumber("TurretPosition", RobotMap::turretMotor->GetSelectedSensorPosition(0)-turret->startingPosition);
 
 	driveTrain->readLidar();
 }
@@ -175,21 +192,21 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 	Scheduler::GetInstance()->Run();
-	SmartDashboard::PutBoolean("Indexer Jammed", indexer->IsIndexJammed());
-	SmartDashboard::PutNumber("Index Timer", indexer->GetTimer());
-	SmartDashboard::PutNumber("Reverse Time", indexer->GetReverseTime());
+	//SmartDashboard::PutBoolean("Indexer Jammed", indexer->IsIndexJammed());
+	//SmartDashboard::PutNumber("Index Timer", indexer->GetTimer());
+	//SmartDashboard::PutNumber("Reverse Time", indexer->GetReverseTime());
 	//indexer->ReadPDP();
 	//driveTrain->Dashboard();
 	SmartDashboard::PutNumber("Gyro Yaw", RobotMap::imu->GetYaw());
-	SmartDashboard::PutNumber("Sonar", RobotMap::sonar->GetAverageVoltage());
+	//SmartDashboard::PutNumber("Sonar", RobotMap::sonar->GetAverageVoltage());
 
-	SmartDashboard::PutNumber("Turret Starting Position", turret->startingPosition);
-	SmartDashboard::PutNumber("TurretPosition", RobotMap::turretMotor->GetPosition()-turret->startingPosition);
+	//SmartDashboard::PutNumber("Turret Starting Position", turret->startingPosition);
+	//SmartDashboard::PutNumber("TurretPosition", RobotMap::turretMotor->GetSelectedSensorPosition(0)-turret->startingPosition);
 
-	SmartDashboard::PutNumber("Vision Gear Position", Robot::visionBridge->GetGearPosition());
-	SmartDashboard::PutNumber("Vision Gear Distance", Robot::visionBridge->GetGearDistance());
-	SmartDashboard::PutNumber("Vision Boiler Position", Robot::visionBridge->GetBoilerPosition());
-	SmartDashboard::PutNumber("Vision BoilerDistance", Robot::visionBridge->GetBoilerDistance());
+	//SmartDashboard::PutNumber("Vision Gear Position", Robot::visionBridge->GetGearPosition());
+	//SmartDashboard::PutNumber("Vision Gear Distance", Robot::visionBridge->GetGearDistance());
+	//SmartDashboard::PutNumber("Vision Boiler Position", Robot::visionBridge->GetBoilerPosition());
+	//SmartDashboard::PutNumber("Vision BoilerDistance", Robot::visionBridge->GetBoilerDistance());
 
 	//char mode = SmartDashboard::GetNumber("Serial 0", 3);
 	//RobotMap::serialPort->Write(&mode, 1);
@@ -200,7 +217,7 @@ void Robot::TeleopPeriodic() {
 
 	driveTrain->readLidar();
 
-	//make controller rumble at 30 seconds left
+	/*make controller rumble at 30 seconds left
 	if (ds.GetMatchTime() < 30 && ds.GetMatchTime() > 25) {
 		Robot::oi->GetDriverJoystick()->SetRumble(Joystick::kLeftRumble, 1);
 		Robot::oi->GetDriverJoystick()->SetRumble(Joystick::kRightRumble, 1);
@@ -208,9 +225,9 @@ void Robot::TeleopPeriodic() {
 		Robot::oi->GetDriverJoystick()->SetRumble(Joystick::kLeftRumble, 0);
 		Robot::oi->GetDriverJoystick()->SetRumble(Joystick::kRightRumble, 0);
 	}
-
-	SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSpeed());
-	SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSpeed());
+	*/
+	//SmartDashboard::PutNumber("Bottom Velocity", shooter->shooterMotor1->GetSelectedSensorVelocity, 0);
+	//SmartDashboard::PutNumber("Top Velocity", shooter->shooterMotor2->GetSelectedSensorVelocity, 0);
 	SmartDashboard::PutNumber("Target Shooter Speed", shooter->targetShooterSpeed);
 	//SmartDashboard::PutNumber("Indexer Position", indexer->GetPosition());
 

@@ -80,47 +80,54 @@ OI::OI() {
 	oneBall = new OneBall();
 	climb = new Climb();
 	zeroReverse = new ZeroReverse();
+
+	printf("--- Creating ScriptShootWithVision\r\n");
 	autoShoot = new ScriptShootWithVision(10);
+	printf("--- Creating GearLineup\r\n");
 	gearLineup = new GearLineup();
+	printf("--- Creating CalculateSpeed\r\n");
 	calculateSpeed = new CalculateSpeed();
+	printf("--- Creating BoilerLineup\r\n");
 	boilerLineup = new BoilerLineup();
+	printf("--- Creating BasicCameraEnableCmd\r\n");
 	auto cameraEnableCmd = new BasicCameraEnableCmd(Robot::basicCameraSub);
 
+	printf("--- Assigning buttons\r\n");
 
 ////Main Driver Controller///----------------------------------------------------------------
-	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_LB))->WhileHeld(gyroCrab);
-	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_RB))->WhileHeld(fieldCentric);
+	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_BACK))->WhileHeld(gyroCrab);
+	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_START))->WhileHeld(fieldCentric);
 
-	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_START))->WhileHeld(climb);
+	//(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_START))->WhileHeld(climb);
 
-	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_X))->WhileHeld(autoShoot);
+	//(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_X))->WhileHeld(autoShoot);
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_RIGHT))->WhileHeld(gearLineup);
 
 	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_Y))->ToggleWhenPressed(gearLight);
-	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_A))->ToggleWhenPressed(fuelLight);
+	//(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_A))->ToggleWhenPressed(fuelLight);
 ////-----------------------------------------------------------------------------------------
 
 ////Secondary Driver Controller///-----------------------------------------------------------
-	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_RB))->WhileHeld(spinIndexerCW);
-	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_LB))->WhileHeld(spinIndexerCCW);
-	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_Y))->WhenPressed(oneBall);
+	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_RB))->WhileHeld(spinIndexerCW);
+	(new JoystickButton(driverJoystick, JOYSTICK_BUTTON_LB))->WhileHeld(spinIndexerCCW);
+	//(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_Y))->WhenPressed(oneBall);
 
-	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_START))->WhileHeld(boilerLineup);
-	(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_BACK))->WhenPressed(calculateSpeed);
+	//(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_START))->WhileHeld(boilerLineup);
+	//(new JoystickButton(driverJoystick2, JOYSTICK_BUTTON_BACK))->WhenPressed(calculateSpeed);
 
 	auto cmdShooterRun = new ShooterRun();
-	auto shooterRunButton = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_A);
+	auto shooterRunButton = new frc::JoystickButton(driverJoystick, JOYSTICK_BUTTON_A);
 	shooterRunButton->WhileHeld(cmdShooterRun);
 
 	auto cmdShooterSlower = new ShooterSlower();
-	auto shooterSlowerButton = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_X);
+	auto shooterSlowerButton = new frc::JoystickButton(driverJoystick, JOYSTICK_BUTTON_X);
 	shooterSlowerButton->WhenPressed(cmdShooterSlower);
 
 	//auto shooterSlowerButton2 = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_2);
 	//shooterSlowerButton2->WhenPressed(cmdShooterSlower);
 
 	auto cmdShooterFaster = new ShooterFaster();
-	auto shooterFasterButton = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_B);
+	auto shooterFasterButton = new frc::JoystickButton(driverJoystick, JOYSTICK_BUTTON_B);
 	shooterFasterButton->WhenPressed(cmdShooterFaster);
 
 	//auto shooterFasterButton2 = new frc::JoystickButton(driverJoystick2, JOYSTICK_BUTTON_3);

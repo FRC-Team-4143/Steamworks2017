@@ -9,8 +9,8 @@ OneBall::OneBall() {
 
 void OneBall::Initialize() {
 	SetTimeout(1);
-	Robot::indexer->SpinBall();
-	Robot::indexer->SetLoadingOne(true);
+	//Robot::indexer->SpinBall();
+	//Robot::indexer->SetLoadingOne(true);
 }
 
 void OneBall::Execute() {

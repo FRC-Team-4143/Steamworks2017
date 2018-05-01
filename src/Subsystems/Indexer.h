@@ -1,13 +1,13 @@
 #pragma once
 
 #include <Commands/Subsystem.h>
-#include <CANTalon.h>
+#include <ctre/phoenix.h>
 #include <WPILib.h>
 #include <Timer.h>
 
 class Indexer : public Subsystem {
 private:
-	CANTalon *indexMotor;
+	WPI_TalonSRX *indexMotor;
 	PowerDistributionPanel *pdp;
 	Timer *timer;
 	bool indexJammed;

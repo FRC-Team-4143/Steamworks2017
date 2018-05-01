@@ -1,4 +1,4 @@
-#include "CANTalon.h"
+#include "ctre/phoenix.h"
 #include "Shooter.h"
 #include "../RobotMap.h"
 #include "../Robot.h"
@@ -10,17 +10,17 @@ Shooter::Shooter() : Subsystem("Shooter") {
    shooterMotor1 = RobotMap::shooterMotor1;
    shooterMotor2 = RobotMap::shooterMotor2;
 
-   shooterMotor1->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
-   shooterMotor2->SetFeedbackDevice(CANTalon::CtreMagEncoder_Relative);
-
-   shooterMotor1->SetControlMode(CANSpeedController::kSpeed);
+   shooterMotor1->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);
+   shooterMotor2->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0 ,10);
+/*
+   shooterMotor1->ControlMode(CANSpeedController::kSpeed);
    shooterMotor1->ConfigNominalOutputVoltage(0.0, 0.0);
    shooterMotor1->ConfigPeakOutputVoltage(12.0, -12.0);
    shooterMotor1->SetSensorDirection(true);
-   shooterMotor1->SetP(0.04);
-   shooterMotor1->SetI(0.0);
-   shooterMotor1->SetD(0);
-   shooterMotor1->SetF(0.028);
+   shooterMotor1->Config_kP(0, 0.04, 0);
+   shooterMotor1->Config_kI(0, 0.0, 0);
+   shooterMotor1->Config_kD(0, 0, 0);
+   shooterMotor1->Config_kF(0, 0.028, 0);
 
    shooterMotor2->SetControlMode(CANSpeedController::kSpeed);
    shooterMotor2->ConfigNominalOutputVoltage(0.0, 0.0);
@@ -30,7 +30,7 @@ Shooter::Shooter() : Subsystem("Shooter") {
    shooterMotor2->SetI(0.0);
    shooterMotor2->SetD(0.0);
    shooterMotor2->SetF(0.02827);
-
+*/
    //SmartDashboard::PutNumber("Set Shooter Speed", 7000);
    targetShooterSpeed = 3000;
 }
@@ -44,10 +44,10 @@ void Shooter::shootFront() {
 	//shooterMotor1->Set(.35);
 	//shooterMotor2->SetControlMode(CANSpeedController::kPercentVbus);
 	//shooterMotor2->Set(-.35);
-	shooterMotor1->SetControlMode(CANSpeedController::kSpeed);
-	shooterMotor1->Set(targetShooterSpeed);
-	shooterMotor2->SetControlMode(CANSpeedController::kSpeed);
-	shooterMotor2->Set(targetShooterSpeed);
+	shooterMotor1->Set(ControlMode::Velocity, targetShooterSpeed);
+	//shooterMotor1->Set(targetShooterSpeed);
+	shooterMotor2->Set(ControlMode::Velocity, targetShooterSpeed);
+	//shooterMotor2->Set(targetShooterSpeed);
 }
 
 void Shooter::shootBack() {
@@ -56,9 +56,9 @@ void Shooter::shootBack() {
 }
 
 void Shooter::stopFront() {
-	shooterMotor1->SetControlMode(CANSpeedController::kPercentVbus);
+	shooterMotor1->Set(ControlMode::PercentOutput, 0);
 	shooterMotor1->Set(0);
-	shooterMotor2->SetControlMode(CANSpeedController::kPercentVbus);
+	shooterMotor2->Set(ControlMode::PercentOutput, 0);
 	shooterMotor2->Set(0);
 }
 
@@ -68,8 +68,8 @@ void Shooter::stopBack() {
 }
 
 void Shooter::shootDefault(float right, float left) {
-	SmartDashboard::PutNumber("Bottom Velocity", shooterMotor1->GetSpeed());
-	SmartDashboard::PutNumber("Top Velocity", shooterMotor2->GetSpeed());
+	SmartDashboard::PutNumber("Bottom Velocity", shooterMotor1->GetSelectedSensorVelocity(0));
+	SmartDashboard::PutNumber("Top Velocity", shooterMotor2->GetSelectedSensorVelocity(0));
 	SmartDashboard::PutNumber("Target Shooter Speed", targetShooterSpeed);
 	if(right > 0.1) {
 		shootFront();
@@ -94,7 +94,7 @@ void Shooter::DecreaseTargetRpm() {
 }
 
 double Shooter::getVelocity() {
-	return shooterMotor1->GetSpeed();
+	return shooterMotor1->GetSelectedSensorVelocity(0);
 }
 
 void Shooter::readValues() {

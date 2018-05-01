@@ -2,7 +2,7 @@
 
 #include <WPILib.h>
 #include <AHRS.h>
-#include <CANTalon.h>
+#include <ctre/phoenix.h>
 
 class RobotMap {
 public:
@@ -10,25 +10,25 @@ public:
 
 	static PowerDistributionPanel* pdp;
 
-	static CANTalon* driveTrainFrontLeftDrive;
-	static CANTalon* driveTrainFrontLeftSteer;
+	static WPI_TalonSRX* driveTrainFrontLeftDrive;
+	static WPI_TalonSRX* driveTrainFrontLeftSteer;
 
-	static CANTalon* driveTrainFrontRightDrive;
-	static CANTalon* driveTrainFrontRightSteer;
+	static WPI_TalonSRX* driveTrainFrontRightDrive;
+	static WPI_TalonSRX* driveTrainFrontRightSteer;
 
-	static CANTalon* driveTrainRearLeftDrive;
-	static CANTalon* driveTrainRearLeftSteer;
+	static WPI_TalonSRX* driveTrainRearLeftDrive;
+	static WPI_TalonSRX* driveTrainRearLeftSteer;
 
-	static CANTalon* driveTrainRearRightDrive;
-	static CANTalon* driveTrainRearRightSteer;
+	static WPI_TalonSRX* driveTrainRearRightDrive;
+	static WPI_TalonSRX* driveTrainRearRightSteer;
 
 	static I2C* i2c;
 	static I2C* lidar;
 
 	static AnalogInput* sonar;
 
-	static CANTalon* climbingMotor;
-	static CANTalon* climbingMotor2;
+	static WPI_TalonSRX* climbingMotor;
+	static WPI_TalonSRX* climbingMotor2;
 
 
 	static AHRS* imu;
@@ -37,12 +37,12 @@ public:
 	//static SerialPort* serialPort1;
 	//static SerialPort* serialPort2;
 
-    static CANTalon* shooterMotor1;
-    static CANTalon* shooterMotor2;
+    static WPI_TalonSRX* shooterMotor1;
+    static WPI_TalonSRX* shooterMotor2;
 
-	static CANTalon* pickup;
-	static CANTalon* indexMotor;
-	static CANTalon* turretMotor;
+	static WPI_TalonSRX* pickup;
+	static WPI_TalonSRX* indexMotor;
+	static WPI_TalonSRX* turretMotor;
 
 	static void Initialize();
 };

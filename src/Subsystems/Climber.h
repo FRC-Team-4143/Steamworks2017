@@ -1,11 +1,11 @@
 #pragma once
 
 #include <Commands/Subsystem.h>
-#include <CANTalon.h>
+#include <ctre/Phoenix.h>
 
 class Climber : public Subsystem {
-	CANTalon *climbingMotor;
-	CANTalon *climbingMotor2;
+	WPI_TalonSRX *climbingMotor;
+	WPI_TalonSRX *climbingMotor2;
 
 
 private:

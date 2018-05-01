@@ -1,12 +1,12 @@
 #pragma once
 
-#include "CANTalon.h"
+#include "ctre/phoenix.h"
 #include <Commands/Subsystem.h>
 
 class Turret : public Subsystem {
 private:
 	//CANTalon *indexMotor;
-	CANTalon *turretMotor;
+	WPI_TalonSRX *turretMotor;
 
 public:
 	Turret();
